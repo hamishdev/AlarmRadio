@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers;
+package com.example.goodmorninggamers.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,10 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-public class AlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnDataPass {
+import com.example.goodmorninggamers.R;
+import com.example.goodmorninggamers.TimePickerFragment;
+
+public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnDataPass {
 
 
     int alarmHour;

@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers;
+package com.example.goodmorninggamers.alarms;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;

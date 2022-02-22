@@ -16,8 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".twitchActivity"></activity>
-        <activity android:name = ".AlarmScreenActivity"> </activity>
+        <activity android:name=".alarms.twitchActivity"></activity>
+        <activity android:name = ".screens.SetAlarmScreenActivity"> </activity>
     </application>
 
 </manifest>

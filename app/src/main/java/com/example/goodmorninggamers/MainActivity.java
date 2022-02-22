@@ -2,29 +2,41 @@ package com.example.goodmorninggamers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.example.goodmorninggamers.screens.OnePlus7AlarmActivity;
+import com.example.goodmorninggamers.screens.SetAlarmScreenActivity;
+
+import org.json.JSONArray;
 
 import java.util.Calendar;
-
-import static android.Manifest.permission_group.CALENDAR;
 
 public class MainActivity extends AppCompatActivity {
 
     Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=-5KAN9_CzSA"));
     //https://dev.twitch.tv/docs/api/reference#get-streams
     Intent twitchIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.twitch.tv/sneakylol"));
+    Intent OnePlus7AlarmIntent = new Intent(this, OnePlus7AlarmActivity.class);
+    Intent h3h3Intent = new Intent(Intent.ACTION_VIEW,Uri.parse(generateH3H3URL()));
+
+    private String generateH3H3URL() {
+        String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
+
+        //Connect to youtube to get specific video ID of a H3H3 livestream
+        YoutAPI_client APIClient = new YoutAPI_client();
+        String videoID =APIClient.GetVideoIDyoutubeLivestream(H3H3channelID);
+
+        return "https://www.youtube.com/watch?v="+videoID;
+    }
+
     private AlarmManager alrmmanager;
     int count;
     int alarmHour;
@@ -39,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         AlarmTime="null";
         youtubeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        final Intent alarmScreenActivityIntent = new Intent(this,AlarmScreenActivity.class);
+
+        final Intent alarmScreenActivityIntent = new Intent(this, SetAlarmScreenActivity.class);
 
         super.onCreate(savedInstanceState);
         count = -1;
@@ -88,28 +101,35 @@ public class MainActivity extends AppCompatActivity {
                 // set alarm time
                 AlarmTime = returnString;
                 setAlarmFields(returnString);
-                setTwitchAlarm();
+                setAlarm();
             }
         }
     }
 
+    //set internal public field alarm times
     private void setAlarmFields(String alarmString){
         String[] time = alarmString.split(" ");
         alarmHour= Integer.parseInt(time[0]);
         alarmMinute= Integer.parseInt(time[1]);
     }
 
-    private void setTwitchAlarm() {
-        AlarmManager myTwitchAlarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+    private void setAlarm() {
+        AlarmManager myAlarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Calendar CalendarAlarmTime = Calendar.getInstance();
 
+        //Set this alarm to the public field alarm times set in alternate view
         CalendarAlarmTime.set(Calendar.HOUR_OF_DAY,alarmHour);
         CalendarAlarmTime.set(Calendar.MINUTE,alarmMinute);
 
+        //**IMPLEMENT**
         //Choose channel
         //Choose highest priority user choice, if none online do current top views
-        //GET https://api.twitch.tv/helix/extensions/live
-        myTwitchAlarm.set(AlarmManager.RTC_WAKEUP, CalendarAlarmTime.getTimeInMillis(), PendingIntent.getActivity(this, 0, twitchIntent,PendingIntent.FLAG_ONE_SHOT));
+        //GET https://api.twitch.tv/helix/extensions/live]
+        myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,OnePlus7AlarmIntent,PendingIntent.FLAG_ONE_SHOT));
+                //or
+        myAlarm.setExact(AlarmManager.RTC_WAKEUP, CalendarAlarmTime.getTimeInMillis(), PendingIntent.getActivity(this, 0, twitchIntent,PendingIntent.FLAG_ONE_SHOT));
+                //But actually only
+        myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,h3h3Intent,PendingIntent.FLAG_ONE_SHOT));
     }
 
 
