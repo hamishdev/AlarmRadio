@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
 
         //Connect to youtube to get specific video ID of a H3H3 livestream
-        YoutAPI_client APIClient = new YoutAPI_client();
+        YoutAPI_client APIClient = new YoutAPI_client(this);
         String videoID =APIClient.GetVideoIDyoutubeLivestream(H3H3channelID);
 
         return "https://www.youtube.com/watch?v="+videoID;
