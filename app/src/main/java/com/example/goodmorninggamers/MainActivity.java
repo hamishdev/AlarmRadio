@@ -26,13 +26,23 @@ public class MainActivity extends AppCompatActivity {
     Intent twitchIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.twitch.tv/sneakylol"));
     Intent OnePlus7AlarmIntent = new Intent(this, OnePlus7AlarmActivity.class);
     Intent h3h3Intent = new Intent(Intent.ACTION_VIEW,Uri.parse(generateH3H3URL()));
-
+    Intent testIntent = new Intent(Intent.ACTION_VIEW,Uri.parse(generateTestURL()));
     private String generateH3H3URL() {
         String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
 
         //Connect to youtube to get specific video ID of a H3H3 livestream
         YoutAPI_client APIClient = new YoutAPI_client(this);
         String videoID =APIClient.GetVideoIDyoutubeLivestream(H3H3channelID);
+
+        return "https://www.youtube.com/watch?v="+videoID;
+    }
+
+    private String generateTestURL() {
+        String testChannelID = "UCBIe28uoEnt_LEdNFbWankA";
+
+        //Connect to youtube to get specific video ID of a H3H3 livestream
+        YoutAPI_client APIClient = new YoutAPI_client(this);
+        String videoID =APIClient.GetVideoIDyoutubeLivestream(testChannelID);
 
         return "https://www.youtube.com/watch?v="+videoID;
     }
@@ -62,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         final Button detailsButton = (Button) findViewById(R.id.detailsButton);
         final TextView alarmtime = findViewById(R.id.alarmTime);
         final Button alarmScreenButton = (Button) findViewById(R.id.AlarmScreenButton);
-
+        final Button testYoutubeAPIIntentButton= (Button) findViewById(R.id.TestYoutubeAPIIntentBUtton);
 
 
         //BUTTON CLICKS
@@ -77,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
         detailsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 alarmtime.setText("AlarmTime: "+AlarmTime);
+
+            }
+        });
+
+
+        testYoutubeAPIIntentButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                startActivityForResult(testIntent,0);
 
             }
         });
