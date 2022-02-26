@@ -2,6 +2,7 @@ package com.example.goodmorninggamers;
 
 import android.content.Context;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -21,18 +22,16 @@ import org.json.JSONObject;
 //https://developer.android.com/training/volley
 public class YoutAPI_client {
     private static final String TAG = "YoutAPI_client";
-    String VideoID;
+    private String VideoID;
     String APIKey = "AIzaSyBErDC2FJEo492JeSC1kPYZrSzsBwdQd3g";
 
+    public YoutAPI_client(){
 
-    Context context;
-    public YoutAPI_client(Context context){
-        this.context = context;
     }
 
     public void volleyJSONRequest_H3H3LivestreamVideoID(String url){
 
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = Volley.newRequestQueue(GlobalClass.context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -55,15 +54,16 @@ public class YoutAPI_client {
         queue.add(jsonObjectRequest);
     }
 
-    public String GetVideoIDyoutubeLivestream(String ChannelID) {
+    public String getVideoID(){
+        Log.v(TAG,"video ID = "+ VideoID);
+        return VideoID;
+    }
+    public void SendChannelVideoLivestreamRequest(String ChannelID) {
 
         String URL = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId="+ChannelID+"&eventType=live&maxResults=25&type=video&key="+APIKey;
         //Send request
+        Log.v(TAG, "Url "+ URL);
         volleyJSONRequest_H3H3LivestreamVideoID(URL);
 
-        if(!VideoID.isEmpty()) {
-            return VideoID;
-        }
-        else return null;
     }
 }

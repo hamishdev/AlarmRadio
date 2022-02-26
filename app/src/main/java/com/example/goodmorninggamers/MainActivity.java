@@ -8,43 +8,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.goodmorninggamers.screens.OnePlus7AlarmActivity;
 import com.example.goodmorninggamers.screens.SetAlarmScreenActivity;
-
-import org.json.JSONArray;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+    String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
     Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=-5KAN9_CzSA"));
     //https://dev.twitch.tv/docs/api/reference#get-streams
     Intent twitchIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.twitch.tv/sneakylol"));
     //Intent OnePlus7AlarmIntent = new Intent(this, OnePlus7AlarmActivity.class);
-    Intent h3h3Intent = new Intent(Intent.ACTION_VIEW,Uri.parse(generateH3H3URL()));
-    Intent testIntent = new Intent(Intent.ACTION_VIEW,Uri.parse(generateTestURL()));
-    private String generateH3H3URL() {
-        String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
+    YoutAPI_client APIClient = new YoutAPI_client();
 
-        //Connect to youtube to get specific video ID of a H3H3 livestream
-        YoutAPI_client APIClient = new YoutAPI_client(this);
-        String videoID =APIClient.GetVideoIDyoutubeLivestream(H3H3channelID);
-
-        return "https://www.youtube.com/watch?v="+videoID;
-    }
-
-    private String generateTestURL() {
-        String testChannelID = "UCBIe28uoEnt_LEdNFbWankA";
-
-        //Connect to youtube to get specific video ID of a H3H3 livestream
-        YoutAPI_client APIClient = new YoutAPI_client(this);
-        String videoID =APIClient.GetVideoIDyoutubeLivestream(testChannelID);
-
-        return "https://www.youtube.com/watch?v="+videoID;
+    private void checkLiveStream() {
+        String testChannelID = "UCLtREJY21xRfCuEKvdki1Kw";
+        APIClient.SendChannelVideoLivestreamRequest(testChannelID);
     }
 
     private AlarmManager alrmmanager;
@@ -61,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         AlarmTime="null";
         youtubeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        //test
+        checkLiveStream();
         final Intent alarmScreenActivityIntent = new Intent(this, SetAlarmScreenActivity.class);
 
         super.onCreate(savedInstanceState);
@@ -94,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
         testYoutubeAPIIntentButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                startActivityForResult(testIntent,0);
+                String videoID = APIClient.getVideoID();
+                Log.v(TAG,"videoID"+videoID);
+                startActivityForResult(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+videoID)),0);
 
             }
         });
