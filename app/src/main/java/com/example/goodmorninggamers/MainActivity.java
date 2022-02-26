@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=-5KAN9_CzSA"));
     //https://dev.twitch.tv/docs/api/reference#get-streams
     Intent twitchIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.twitch.tv/sneakylol"));
-    Intent OnePlus7AlarmIntent = new Intent(this, OnePlus7AlarmActivity.class);
+    //Intent OnePlus7AlarmIntent = new Intent(this, OnePlus7AlarmActivity.class);
     Intent h3h3Intent = new Intent(Intent.ACTION_VIEW,Uri.parse(generateH3H3URL()));
     Intent testIntent = new Intent(Intent.ACTION_VIEW,Uri.parse(generateTestURL()));
     private String generateH3H3URL() {
@@ -143,11 +143,11 @@ public class MainActivity extends AppCompatActivity {
         //Choose channel
         //Choose highest priority user choice, if none online do current top views
         //GET https://api.twitch.tv/helix/extensions/live]
-        myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,OnePlus7AlarmIntent,PendingIntent.FLAG_ONE_SHOT));
+        //myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,OnePlus7AlarmIntent,PendingIntent.FLAG_ONE_SHOT));
                 //or
         myAlarm.setExact(AlarmManager.RTC_WAKEUP, CalendarAlarmTime.getTimeInMillis(), PendingIntent.getActivity(this, 0, twitchIntent,PendingIntent.FLAG_ONE_SHOT));
                 //But actually only
-        myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,h3h3Intent,PendingIntent.FLAG_ONE_SHOT));
+        //myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,h3h3Intent,PendingIntent.FLAG_ONE_SHOT));
     }
 
 
