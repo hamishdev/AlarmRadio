@@ -41,8 +41,9 @@ public class YoutAPI_client {
                         String JsonString = response.toString();
                         Gson gson = new Gson();
                         YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(),YoutAPI_getLiveStream_JSONobject.class);
+                        if(!obj.getItems().isEmpty()){
                         VideoID = obj.getItems().get(0).getId().getVideoId();
-                    }
+                    }}
                 }, new Response.ErrorListener() {
 
                     @Override
