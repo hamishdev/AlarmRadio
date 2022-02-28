@@ -1,6 +1,7 @@
 package com.example.goodmorninggamers;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -128,8 +129,24 @@ public class MainActivity extends AppCompatActivity {
         //setTwitchAlarm(CalendarAlarmTime,myAlarm);
         setYoutubeAlarm(CalendarAlarmTime,myAlarm);
 
+
+
     }
 
+    private void setTestAlarm(Calendar calendar, AlarmManager alarm){
+        Log.v(TAG,"test alarm");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channelID")
+                .setSmallIcon(android.R.drawable.arrow_up_float)
+                .setContentTitle("alarm!!")
+                .setContentText("Youtube B)")
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        // request code and flags not added for demo purposes
+        Intent testIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=0mgu0n81nYE"));
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, testIntent , PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE);
+
+        builder.setFullScreenIntent(pendingIntent, true); // THIS HERE is the full-screen intent
+    }
     //Alarm. set exact not opening application is closed....
     private void setYoutubeAlarm(Calendar calendar,AlarmManager alarm){
 

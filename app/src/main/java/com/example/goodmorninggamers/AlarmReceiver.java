@@ -23,6 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         H3H3intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
 
+
         //Need to start a fullscreenIntent
         //https://medium.com/android-news/full-screen-intent-notifications-android-85ea2f5b5dc1
         //Can't just open apps that aren't in the foreground on a trigger without user input, need to show a notification and get user to click that or break user immersion and do an exception
