@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,24 +21,13 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
     Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=-5KAN9_CzSA"));
-    //https://dev.twitch.tv/docs/api/reference#get-streams
     Intent twitchIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.twitch.tv/sneakylol"));
-    //Intent OnePlus7AlarmIntent = new Intent(this, OnePlus7AlarmActivity.class);
     YoutAPI_client APIClient = new YoutAPI_client();
 
-    private void checkLiveStream() {
-        //String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
-        String testChannelID = "UCBIe28uoEnt_LEdNFbWankA";
-        APIClient.SendChannelVideoLivestreamRequest(testChannelID);
-    }
 
-    private AlarmManager alrmmanager;
-    int count;
     int alarmHour;
     int alarmMinute;
-    long AlarmMilliseconds;
     String AlarmTime;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
 
@@ -47,12 +37,11 @@ public class MainActivity extends AppCompatActivity {
         AlarmTime="null";
         youtubeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //test
+
         checkLiveStream();
         final Intent alarmScreenActivityIntent = new Intent(this, SetAlarmScreenActivity.class);
 
         super.onCreate(savedInstanceState);
-        count = -1;
         setContentView(R.layout.main_activity);
 
 
@@ -62,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         final Button testYoutubeAPIIntentButton= (Button) findViewById(R.id.TestYoutubeAPIIntentBUtton);
 
 
-        //BUTTON CLICKS
+        //ALARM SCREEN
         alarmScreenButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 startActivityForResult(alarmScreenActivityIntent,SECOND_ACTIVITY_REQUEST_CODE);
@@ -70,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //BUTTON CLICKS
+        //DETAILS
         detailsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 alarmtime.setText("AlarmTime: "+AlarmTime);
@@ -78,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //TEST YOUTUBE API
         testYoutubeAPIIntentButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 String videoID = APIClient.getVideoID();
@@ -90,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private void checkLiveStream() {
+        //String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
+        String testChannelID = "UCBIe28uoEnt_LEdNFbWankA";
+        APIClient.SendChannelVideoLivestreamRequest(testChannelID);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -108,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 // set alarm time
                 AlarmTime = returnString;
                 setAlarmFields(returnString);
+
                 setAlarm();
+                Log.v(TAG,"alarm time set!");
             }
         }
     }
@@ -123,35 +121,40 @@ public class MainActivity extends AppCompatActivity {
     private void setAlarm() {
         AlarmManager myAlarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Calendar CalendarAlarmTime = Calendar.getInstance();
-
         //Set this alarm to the public field alarm times set in alternate view
         CalendarAlarmTime.set(Calendar.HOUR_OF_DAY,alarmHour);
         CalendarAlarmTime.set(Calendar.MINUTE,alarmMinute);
 
         //setTwitchAlarm(CalendarAlarmTime,myAlarm);
         setYoutubeAlarm(CalendarAlarmTime,myAlarm);
-        //**IMPLEMENT**
-        //Choose channel
-        //Choose highest priority user choice, if none online do current top views
-        //GET https://api.twitch.tv/helix/extensions/live]
-        //myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,OnePlus7AlarmIntent,PendingIntent.FLAG_ONE_SHOT));
-                //or
 
-                //But actually only
-        //myAlarm.setExact(AlarmManager.RTC_WAKEUP,CalendarAlarmTime.getTimeInMillis(),PendingIntent.getActivity(this,0,h3h3Intent,PendingIntent.FLAG_ONE_SHOT));
     }
 
+    //Alarm. set exact not opening application is closed....
     private void setYoutubeAlarm(Calendar calendar,AlarmManager alarm){
-        String videoID = APIClient.getVideoID();
-        Log.v(TAG,"videoID"+videoID);
-        Intent H3H3intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+videoID));
-        alarm.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getActivity(this, 0, H3H3intent,PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE));
+
+        Intent intent = new Intent(getApplicationContext(),AlarmReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE);
+        Log.v(TAG,"alarm intent set");
+        alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
     }
     private void setTwitchAlarm(Calendar calendar,AlarmManager alarm){
-        alarm.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getActivity(this, 0, twitchIntent,PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE));
+        PendingIntent alarmIntent =  PendingIntent.getBroadcast(this, 0, twitchIntent,PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE);
+        alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
     }
 
-
+   /* public class AlarmReceiver extends BroadcastReceiver {
+        private static final String TAG = "AlarmReceiver";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.v(TAG, "Received alarm");
+            String videoID = APIClient.getVideoID();
+            Log.v(TAG,"videoID"+videoID);
+            Intent H3H3intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+videoID));
+            startActivityForResult(H3H3intent,0);
+        }
+    }
+*/
 
 
 }
