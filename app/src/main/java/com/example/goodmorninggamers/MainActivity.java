@@ -2,13 +2,17 @@ package com.example.goodmorninggamers;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
     int alarmMinute;
     String AlarmTime;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
+    public static String ChannelID;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ChannelID="Alarm";
+        createNotificationChannel();
         AlarmTime="null";
         youtubeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -73,13 +80,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 String videoID = APIClient.getVideoID();
                 Log.v(TAG,"videoID"+videoID);
-                startActivityForResult(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+videoID)),0);
+                buildAlarmNotification();
+                //startActivityForResult(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+videoID)),0);
 
             }
         });
 
 
     }
+
 
     private void checkLiveStream() {
         //String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
@@ -126,27 +135,84 @@ public class MainActivity extends AppCompatActivity {
         CalendarAlarmTime.set(Calendar.HOUR_OF_DAY,alarmHour);
         CalendarAlarmTime.set(Calendar.MINUTE,alarmMinute);
 
+
+        Intent intent = new Intent(this,broadcastReceiverAlarmNotificationBuild.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_IMMUTABLE);
+        Log.v(TAG,"alarm broadcast set");
+        myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, CalendarAlarmTime.getTimeInMillis(), alarmIntent);
+
         //setTwitchAlarm(CalendarAlarmTime,myAlarm);
-        setYoutubeAlarm(CalendarAlarmTime,myAlarm);
+        //setYoutubeAlarm(CalendarAlarmTime,myAlarm);
 
 
 
     }
 
-    private void setTestAlarm(Calendar calendar, AlarmManager alarm){
-        Log.v(TAG,"test alarm");
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channelID")
-                .setSmallIcon(android.R.drawable.arrow_up_float)
-                .setContentTitle("alarm!!")
-                .setContentText("Youtube B)")
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Alarm notifications";
+            String description = "Channel for Alarm notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(ChannelID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+    private void buildAlarmNotification(){
 
         // request code and flags not added for demo purposes
         Intent testIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=0mgu0n81nYE"));
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, testIntent , PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE);
+        testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, testIntent , PendingIntent.FLAG_IMMUTABLE);
 
-        builder.setFullScreenIntent(pendingIntent, true); // THIS HERE is the full-screen intent
+        Log.v(TAG,"test notification");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, ChannelID)
+                .setSmallIcon(android.R.drawable.arrow_up_float)
+                .setContentTitle("alarm!!")
+                .setContentText("Youtube B)")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setFullScreenIntent(pendingIntent,true)
+                .setAutoCancel(true);
+
+
+
     }
+
+
+
+    public static class broadcastReceiverAlarmNotificationBuild extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // request code and flags not added for demo purposes
+            Intent testIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=0mgu0n81nYE"));
+            testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, testIntent , PendingIntent.FLAG_IMMUTABLE);
+
+            Log.v(TAG,"test notification");
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ChannelID)
+                    .setSmallIcon(android.R.drawable.arrow_up_float)
+                    .setContentTitle("alarm!!")
+                    .setContentText("Youtube B)")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setFullScreenIntent(pendingIntent,true)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            int notificationId = 1;
+// notificationId is a unique int for each notification that you must define
+            notificationManager.notify(notificationId, builder.build());
+        }
+    }
+
+
+
     //Alarm. set exact not opening application is closed....
     private void setYoutubeAlarm(Calendar calendar,AlarmManager alarm){
 
