@@ -17,16 +17,16 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
 
     int alarmHour;
     int alarmMinute;
-
+    private static final String TAG = "SetAlarmScreenActivity";
     public void onCreate(Bundle SavedInstanceState) {
 
         super.onCreate(SavedInstanceState);
         setContentView(R.layout.alarm_screen_activity);
 
-        final Button alarmTimeDialogButton = (Button) findViewById(R.id.AlarmTimeDialogButton);
+        final Button setAlarmTimeDialogButton = (Button) findViewById(R.id.setAlarmTimeDialogueButton);
         final Button showAlarmTimeButton = (Button) findViewById(R.id.ShowAlarmTimeButton);
 
-        alarmTimeDialogButton.setOnClickListener(new View.OnClickListener() {
+        setAlarmTimeDialogButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 DialogFragment newFragment = new TimePickerFragment();
                 newFragment.show(getSupportFragmentManager(), "timePicker");
@@ -49,20 +49,12 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
 
     @Override
     public void onDataPass(String data) {
-        dataParse(data);
-    }
 
-    private void dataParse(String data) {
-
-
-        Log.d("dataparse",data);
-
+        Log.d(TAG,"passing data:"+data);
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_TEXT, data);
         setResult(RESULT_OK, intent);
         finish();
-
-
 
     }
 }

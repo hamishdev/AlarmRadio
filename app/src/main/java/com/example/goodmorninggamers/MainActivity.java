@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.goodmorninggamers.screens.SetAlarmScreenActivity;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     int alarmHour;
     int alarmMinute;
     String AlarmTime;
-    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
+    private static final int SETALARM_ACTIVITY_REQUEST_CODE = 0;
     public static String ChannelID;
     public static String sleepytimesYTChannelID ="UCBIe28uoEnt_LEdNFbWankA";
     public static String H3H3YTChannelID = "UCLtREJY21xRfCuEKvdki1Kw";
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         //ALARM SCREEN
         alarmScreenButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                startActivityForResult(alarmScreenActivityIntent,SECOND_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(alarmScreenActivityIntent, SETALARM_ACTIVITY_REQUEST_CODE);
 
             }
         });
@@ -94,13 +95,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    //woa
+    //
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // check that it is the SecondActivity with an OK result
-        if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
+        // check that it is the SETALARM activity with an OK result
+        if (requestCode == SETALARM_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
                 // get String data from Intent
@@ -129,10 +131,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAlarm() {
         AlarmManager myAlarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+
+        Calendar now = Calendar.getInstance();
         Calendar CalendarAlarmTime = Calendar.getInstance();
+
         //Set this alarm to the public field alarm times set in alternate view
         CalendarAlarmTime.set(Calendar.HOUR_OF_DAY,alarmHour);
         CalendarAlarmTime.set(Calendar.MINUTE,alarmMinute);
+
+        //Alarm was set in the past
+        Log.v(TAG,"userSetAlarm ="+CalendarAlarmTime.getTimeInMillis()+"Actual time="+now.getTimeInMillis());
+        if(CalendarAlarmTime.getTimeInMillis()<now.getTimeInMillis()){
+            //Set alarm to tomorrow
+            Log.v(TAG, "alarm time PRE ="+ CalendarAlarmTime.toString());
+            CalendarAlarmTime.add(Calendar.DAY_OF_YEAR,+1);
+            Log.v(TAG, "alarm time POST ="+ CalendarAlarmTime.toString());
+        }
+        //Alarm was set in the future
+        else{
+            //Alarm is already set to today in the future
+        }
 
 
         Intent intent = new Intent(this,broadcastReceiverAlarmNotificationBuild.class);
