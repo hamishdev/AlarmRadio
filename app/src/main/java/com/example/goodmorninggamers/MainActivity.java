@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=-5KAN9_CzSA"));
     Intent twitchIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.twitch.tv/sneakylol"));
-    YoutAPI_client APIClient = new YoutAPI_client();
+
 
 
     int alarmHour;
@@ -37,17 +37,21 @@ public class MainActivity extends AppCompatActivity {
     String AlarmTime;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     public static String ChannelID;
-
+    public static String sleepytimesYTChannelID ="UCBIe28uoEnt_LEdNFbWankA";
+    public static String H3H3YTChannelID = "UCLtREJY21xRfCuEKvdki1Kw";
+    public static String currentYTchannelID;
+    static YoutAPI_client APIClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        currentYTchannelID= H3H3YTChannelID;
+        APIClient = new YoutAPI_client(currentYTchannelID);
         ChannelID="Alarm";
         createNotificationChannel();
         AlarmTime="null";
         youtubeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        checkLiveStream();
         final Intent alarmScreenActivityIntent = new Intent(this, SetAlarmScreenActivity.class);
 
         super.onCreate(savedInstanceState);
@@ -90,12 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private void checkLiveStream() {
-        //String H3H3channelID = "UCLtREJY21xRfCuEKvdki1Kw";
-        String testChannelID = "UCBIe28uoEnt_LEdNFbWankA";
-        APIClient.SendChannelVideoLivestreamRequest(testChannelID);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -192,8 +190,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // request code and flags not added for demo purposes
-            Intent testIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=0mgu0n81nYE"));
+
+            //Triggers livestream check inside broadcastreceiver
+            APIClient.SendChannelVideoLivestreamRequest(currentYTchannelID);
+            //Choose Intent based on whether channel is live or not
+            Intent testIntent = chooseIntent();
             testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, testIntent , PendingIntent.FLAG_IMMUTABLE);
 
@@ -210,6 +211,21 @@ public class MainActivity extends AppCompatActivity {
             int notificationId = 1;
 // notificationId is a unique int for each notification that you must define
             notificationManager.notify(notificationId, builder.build());
+        }
+
+        private Intent chooseIntent() {
+
+            //H3h3 live
+            if (APIClient.H3H3isLive){
+                String videoID = APIClient.getVideoID();
+                Log.v(TAG, "h3h3 livestream retrieved videoID"+ videoID+"<-VideoID");
+                return new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v="+videoID));
+            }
+            //H3H3 not live, send to lofi
+            else{
+                Log.v(TAG,"H3H3 not live, sending to Lofi");
+                return new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=xgirCNccI68"));
+            }
         }
     }
 
