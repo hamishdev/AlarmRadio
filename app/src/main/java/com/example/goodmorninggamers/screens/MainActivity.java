@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers;
+package com.example.goodmorninggamers.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -20,6 +20,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.goodmorninggamers.AlarmReceiver;
+import com.example.goodmorninggamers.R;
+import com.example.goodmorninggamers.YoutAPI_client;
 import com.example.goodmorninggamers.screens.SetAlarmScreenActivity;
 
 import java.util.Calendar;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     int alarmHour;
     int alarmMinute;
     String AlarmTime;
+    String timeOfTheAlarmAsWords;
     private static final int SETALARM_ACTIVITY_REQUEST_CODE = 0;
     public static String ChannelID;
     public static String sleepytimesYTChannelID ="UCBIe28uoEnt_LEdNFbWankA";
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         //DETAILS
         detailsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                alarmtime.setText("AlarmTime: "+AlarmTime);
+                alarmtime.setText("AlarmTime: "+timeOfTheAlarmAsWords);
 
             }
         });
@@ -156,12 +160,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,broadcastReceiverAlarmNotificationBuild.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_IMMUTABLE);
         Log.v(TAG,"alarm broadcast set");
+        Log.v(TAG, String.valueOf(CalendarAlarmTime.getTimeInMillis()));
+        timeOfTheAlarmAsWords = CalendarAlarmTime.getTime().toString();
+        Log.v(TAG,timeOfTheAlarmAsWords);
+
+        //Set AlARM
         myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, CalendarAlarmTime.getTimeInMillis(), alarmIntent);
-
-        //setTwitchAlarm(CalendarAlarmTime,myAlarm);
-        //setYoutubeAlarm(CalendarAlarmTime,myAlarm);
-
-
 
     }
 
@@ -179,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+
         }
     }
     private void buildAlarmNotification(){
@@ -252,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
     //Alarm. set exact not opening application is closed....
     private void setYoutubeAlarm(Calendar calendar,AlarmManager alarm){
 
-        Intent intent = new Intent(getApplicationContext(),AlarmReceiver.class);
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE);
         Log.v(TAG,"alarm intent set");
         alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
