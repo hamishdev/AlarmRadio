@@ -41,15 +41,16 @@ public class MainActivity extends AppCompatActivity {
     String AlarmTime;
     String timeOfTheAlarmAsWords;
     private static final int SETALARM_ACTIVITY_REQUEST_CODE = 0;
+    private static final int ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE = 1;
+
     public static String ChannelID;
     public static String sleepytimesYTChannelID ="UCBIe28uoEnt_LEdNFbWankA";
     public static String H3H3YTChannelID = "UCLtREJY21xRfCuEKvdki1Kw";
-    public static String currentYTchannelID;
+    public static String currentYTchannelID = H3H3YTChannelID;
     static YoutAPI_client APIClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        currentYTchannelID= H3H3YTChannelID;
         APIClient = new YoutAPI_client(currentYTchannelID);
         ChannelID="Alarm";
         createNotificationChannel();
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         final Intent alarmScreenActivityIntent = new Intent(this, SetAlarmScreenActivity.class);
-
+        final Intent alarmHomeScreenActivityIntent = new Intent(this, AlarmHomeScreenActivity.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
@@ -66,9 +67,18 @@ public class MainActivity extends AppCompatActivity {
         final Button detailsButton = (Button) findViewById(R.id.detailsButton);
         final TextView alarmtime = findViewById(R.id.alarmTime);
         final Button alarmScreenButton = (Button) findViewById(R.id.AlarmScreenButton);
+        final Button newAlarmsButton = (Button) findViewById(R.id.new_alarms);
         final Button testYoutubeAPIIntentButton= (Button) findViewById(R.id.TestYoutubeAPIIntentBUtton);
 
 
+
+        //NEW ALARMS SCREEN
+        newAlarmsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                startActivityForResult(alarmHomeScreenActivityIntent, ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE);
+
+            }
+        });
         //ALARM SCREEN
         alarmScreenButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
