@@ -31,7 +31,6 @@
         </activity>
         <activity android:name=".alarms.twitchActivity"></activity>
         <activity android:name = ".screens.SetAlarmScreenActivity"> </activity>
-        <activity android:name=".screens.AlarmHomeScreenActivity"></activity>
         <receiver android:name=".screens.MainActivity$broadcastReceiverAlarmNotificationBuild" android:exported = "true">
 
         </receiver>

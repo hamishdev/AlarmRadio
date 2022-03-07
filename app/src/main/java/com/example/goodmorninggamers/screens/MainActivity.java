@@ -17,16 +17,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.goodmorninggamers.AlarmReceiver;
 import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.YoutAPI_client;
-import com.example.goodmorninggamers.screens.SetAlarmScreenActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,37 +52,39 @@ public class MainActivity extends AppCompatActivity {
     public static String H3H3YTChannelID = "UCLtREJY21xRfCuEKvdki1Kw";
     public static String currentYTchannelID = H3H3YTChannelID;
     static YoutAPI_client APIClient;
-
+    public ArrayList<Alarm> myAlarmArray;
+    public ArrayAdapter<Alarm> alarmArrayAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
+        //ONCREATE
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.alarmhomescreen_activty);
+
         APIClient = new YoutAPI_client(currentYTchannelID);
         ChannelID="Alarm";
         createNotificationChannel();
         AlarmTime="null";
+        if(myAlarmArray==null){
+            myAlarmArray = new ArrayList<Alarm>(){};
+        };
+
         youtubeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         final Intent alarmScreenActivityIntent = new Intent(this, SetAlarmScreenActivity.class);
-        final Intent alarmHomeScreenActivityIntent = new Intent(this, AlarmHomeScreenActivity.class);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+
+        alarmArrayAdapter = new ArrayAdapter<Alarm>(this, android.R.layout.simple_list_item_1,myAlarmArray);
+        ListView alarmsListView = (ListView) findViewById(R.id.AlarmListView);
+        alarmsListView.setAdapter(alarmArrayAdapter);
 
 
         final Button detailsButton = (Button) findViewById(R.id.detailsButton);
         final TextView alarmtime = findViewById(R.id.alarmTime);
-        final Button alarmScreenButton = (Button) findViewById(R.id.AlarmScreenButton);
-        final Button newAlarmsButton = (Button) findViewById(R.id.new_alarms);
-        final Button testYoutubeAPIIntentButton= (Button) findViewById(R.id.TestYoutubeAPIIntentBUtton);
+        final Button alarmScreenButton = (Button) findViewById(R.id.alarmScreenButton);
 
 
-
-        //NEW ALARMS SCREEN
-        newAlarmsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                startActivityForResult(alarmHomeScreenActivityIntent, ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE);
-
-            }
-        });
         //ALARM SCREEN
         alarmScreenButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -91,17 +97,6 @@ public class MainActivity extends AppCompatActivity {
         detailsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 alarmtime.setText("AlarmTime: "+timeOfTheAlarmAsWords);
-
-            }
-        });
-
-        //TEST YOUTUBE API
-        testYoutubeAPIIntentButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                String videoID = APIClient.getVideoID();
-                Log.v(TAG,"videoID"+videoID);
-                buildAlarmNotification();
-                //startActivityForResult(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+videoID)),0);
 
             }
         });
@@ -122,18 +117,32 @@ public class MainActivity extends AppCompatActivity {
                 // get String data from Intent
                 String returnString = data.getStringExtra(Intent.EXTRA_TEXT);
 
-                // set text view with string
-                TextView textView = (TextView) findViewById(R.id.alarmTime);
-                textView.setText(returnString);
+                //Log the alarm
+                turnAlarmFragmentIntoAlarm(returnString);
+                Log.v(TAG,"is there any alarms here lul"+myAlarmArray.get(0).ToString());
 
-                // set alarm time
-                AlarmTime = returnString;
-                setAlarmFields(returnString);
 
-                setAlarm();
-                Log.v(TAG,"alarm time set!");
             }
         }
+    }
+
+    private void turnAlarmFragmentIntoAlarm(String alarmFragment){
+        // set text view with string
+        TextView textView = (TextView) findViewById(R.id.alarmTime);
+        textView.setText(alarmFragment);
+
+        // set alarm time
+        AlarmTime = alarmFragment;
+        setAlarmFields(alarmFragment);
+        Calendar calendar =Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,alarmHour);
+        calendar.set(Calendar.MINUTE,alarmMinute);
+        long calendarTimeInMillis =calendar.getTimeInMillis();
+
+        setAlarm();
+        myAlarmArray.add(new Alarm(calendarTimeInMillis));
+        alarmArrayAdapter.notifyDataSetChanged();
+        Log.v(TAG,"alarm time set!");
     }
 
     //set internal public field alarm times
@@ -289,6 +298,67 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 */
+
+
+}
+class Alarm{
+    private static final int TODAY =0;
+    private static final int TOMORROW =1;
+    private static final int ANYOTHER =2;
+    private Calendar timeOfAlarm;
+    private int dayInRelationToToday;
+    private Calendar today;
+    private int amPM;
+
+    public Alarm(long timeInMillis){
+        timeOfAlarm = Calendar.getInstance();
+        timeOfAlarm.setTimeInMillis(timeInMillis);
+        today = Calendar.getInstance();
+        SetAMPM();
+        SetDayInRelationToToday();
+
+
+    }
+    public void SetAMPM(){
+        amPM = timeOfAlarm.get(Calendar.AM_PM);
+    }
+
+    private void SetDayInRelationToToday(){
+        //if date && year matches
+        if(timeOfAlarm.get(Calendar.DAY_OF_YEAR)==today.get(Calendar.DAY_OF_YEAR)&&timeOfAlarm.get(Calendar.YEAR)==today.get(Calendar.YEAR)){
+            dayInRelationToToday=TODAY;
+        }
+        //if year matches && day == next one
+        else if(timeOfAlarm.get(Calendar.YEAR)==today.get(Calendar.YEAR)&&timeOfAlarm.get(Calendar.DAY_OF_YEAR)==today.get(Calendar.DAY_OF_YEAR)+1){
+            dayInRelationToToday=TOMORROW;
+        }
+        //NOT TODAY OR TOMORROW
+        else {
+            dayInRelationToToday=ANYOTHER;
+        }
+
+    }
+
+    public String Day(){
+        switch(dayInRelationToToday){
+            case 0:
+                return "Today";
+            case 1:
+                return "Tomorrow";
+            case 2:
+                return timeOfAlarm.get(Calendar.DAY_OF_MONTH)+" "+timeOfAlarm.get(Calendar.MONTH);
+        }
+        return "ERORR";
+    }
+
+    public String TimeToString(){
+        return timeOfAlarm.get(Calendar.HOUR)+":"+timeOfAlarm.get(Calendar.MINUTE)+(amPM==Calendar.AM?"am":"pm");
+    }
+    public String ToString(){
+        String alarmTimeToString = new SimpleDateFormat("MM/dd/yyyy").format(timeOfAlarm.getTime());
+        return alarmTimeToString;
+    }
+
 
 
 }

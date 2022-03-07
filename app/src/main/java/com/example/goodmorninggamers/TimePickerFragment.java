@@ -36,6 +36,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
         dataPass(hourOfDay+" "+minute);
         // Do something with the time chosen by the user
         //LAST THING TO DO!!!!!
