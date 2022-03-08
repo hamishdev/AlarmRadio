@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent intent = new Intent(this,broadcastReceiverAlarmNotificationBuild.class);
+        intent.putExtra(Intent.EXTRA_TEXT, alarmURL);
         final int id= (int) System.currentTimeMillis();
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this,id,intent,PendingIntent.FLAG_IMMUTABLE);
         Log.v(TAG,"alarm broadcast set");
@@ -221,25 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-    private void buildAlarmNotification(){
 
-        // request code and flags not added for demo purposes
-        Intent testIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=0mgu0n81nYE"));
-        testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, testIntent , PendingIntent.FLAG_IMMUTABLE);
-
-        Log.v(TAG,"test notification");
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, ChannelID)
-                .setSmallIcon(android.R.drawable.arrow_up_float)
-                .setContentTitle("alarm!!")
-                .setContentText("Youtube B)")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setFullScreenIntent(pendingIntent,true)
-                .setAutoCancel(true);
-
-
-
-    }
 
 
 
@@ -249,10 +232,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            String intentString = intent.getStringExtra(Intent.EXTRA_TEXT);
             //Triggers livestream check inside broadcastreceiver
             APIClient.SendChannelVideoLivestreamRequest(currentYTchannelID);
             //Choose Intent based on whether channel is live or not
-            Intent testIntent = chooseIntent();
+            Intent testIntent = chooseIntent(intentString);
             testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, testIntent , PendingIntent.FLAG_IMMUTABLE);
 
@@ -260,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ChannelID)
                     .setSmallIcon(android.R.drawable.arrow_up_float)
                     .setContentTitle("alarm!!")
-                    .setContentText("Youtube B)")
+                    .setContentText(intentString)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setFullScreenIntent(pendingIntent,true)
                     .setAutoCancel(true);
@@ -271,18 +255,24 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.notify(notificationId, builder.build());
         }
 
-        private Intent chooseIntent() {
+        private Intent chooseIntent(String url) {
+            if (url.equals("H3H3")) {
+                //H3h3 live
+                if (APIClient.H3H3isLive){
+                    String videoID = APIClient.getVideoID();
+                    Log.v(TAG, "h3h3 livestream retrieved videoID"+ videoID+"<-VideoID");
+                    return new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v="+videoID));
+                }
+                //H3H3 not live, send to lofi
+                else{
+                    Log.v(TAG,"H3H3 not live, sending to Lofi");
+                    return new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=xgirCNccI68"));
+                }
 
-            //H3h3 live
-            if (APIClient.H3H3isLive){
-                String videoID = APIClient.getVideoID();
-                Log.v(TAG, "h3h3 livestream retrieved videoID"+ videoID+"<-VideoID");
-                return new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v="+videoID));
             }
-            //H3H3 not live, send to lofi
             else{
-                Log.v(TAG,"H3H3 not live, sending to Lofi");
-                return new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=xgirCNccI68"));
+                Log.v(TAG,"Pure URL");
+                return new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             }
         }
     }
