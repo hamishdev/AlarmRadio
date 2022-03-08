@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers.getLiveStreamJSONObject
+package com.example.goodmorninggamers.helpers.getLiveStreamJSONObject
 
 data class PageInfo(
     val resultsPerPage: Int,

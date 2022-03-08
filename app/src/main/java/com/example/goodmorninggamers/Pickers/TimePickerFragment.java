@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers;
+package com.example.goodmorninggamers.Pickers;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -15,12 +15,12 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
 
 
-    OnDataPass dataPasser;
+    OnTimePass dataPasser;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        dataPasser = (OnDataPass) context;
+        dataPasser = (OnTimePass) context;
     }
 
     @Override
@@ -38,16 +38,17 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
         dataPass(hourOfDay+" "+minute);
+
         // Do something with the time chosen by the user
         //LAST THING TO DO!!!!!
         //Set alarm with above values
     }
 
     public void dataPass(String data){
-        dataPasser.onDataPass(data);
+        dataPasser.onTimePass(data);
     }
 
-    public interface OnDataPass {
-        public void onDataPass(String data);
+    public interface OnTimePass {
+        public void onTimePass(String data);
     }
 }

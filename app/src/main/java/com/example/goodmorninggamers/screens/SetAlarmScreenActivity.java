@@ -10,14 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.goodmorninggamers.R;
-import com.example.goodmorninggamers.TimePickerFragment;
+import com.example.goodmorninggamers.Pickers.TimePickerFragment;
+import com.example.goodmorninggamers.Pickers.UrlPickerFragment;
 
-public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnDataPass {
+import java.util.ArrayList;
+
+public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnTimePass,UrlPickerFragment.ONURLPASS {
 
 
     int alarmHour;
     int alarmMinute;
     private static final String TAG = "SetAlarmScreenActivity";
+    private String URL;
     public void onCreate(Bundle SavedInstanceState) {
 
         super.onCreate(SavedInstanceState);
@@ -28,8 +32,8 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
 
         setAlarmTimeDialogButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                DialogFragment newFragment = new TimePickerFragment();
-                newFragment.show(getSupportFragmentManager(), "timePicker");
+                DialogFragment newFragment = new UrlPickerFragment();
+                newFragment.show(getSupportFragmentManager(), "urlPicker");
             }
         });
 
@@ -38,6 +42,8 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
                 showAlarmTimeButton.setText(alarmHour +":"+alarmMinute);
             }
         });
+
+
     }
 
     public void setAlarmHour(int fragmentAlarmHour){
@@ -48,13 +54,24 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
     }
 
     @Override
-    public void onDataPass(String data) {
+    public void onUrlPass(String data) {
 
-        Log.d(TAG,"passing data:"+data);
+        Log.d(TAG,"passing URL data:"+data);
+        URL= data;
+        DialogFragment finalFragment = new TimePickerFragment();
+        finalFragment.show(getSupportFragmentManager(), "timePicker");
+
+    }
+    @Override
+    public void onTimePass(String data) {
+
+        Log.d(TAG,"passing time data:"+data);
         Intent intent = new Intent();
-        intent.putExtra(Intent.EXTRA_TEXT, data);
+        String allData = data + " " + URL;
+        intent.putExtra(Intent.EXTRA_TEXT, allData);
         setResult(RESULT_OK, intent);
         finish();
 
     }
+
 }
