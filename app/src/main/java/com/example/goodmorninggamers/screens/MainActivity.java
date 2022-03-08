@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.example.goodmorninggamers.Alarm;
 import com.example.goodmorninggamers.AlarmAdapter;
-import com.example.goodmorninggamers.AlarmReceiver;
 import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.Network.YoutAPI_client;
 
@@ -125,6 +124,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //set internal public field alarm times
+    private void parseAlarmData(String alarmString){
+        String[] time = alarmString.split(" ");
+        alarmHour= Integer.parseInt(time[0]);
+        alarmMinute= Integer.parseInt(time[1]);
+        if(time.length<3){
+            alarmURL="null";
+        }
+        else{
+            alarmURL = time[2];
+        }
+
+    }
+
+
     private void turnAlarmDataIntoAlarm(String alarmData){
         // set text view with string
         TextView textView = (TextView) findViewById(R.id.alarmTime);
@@ -137,20 +151,21 @@ public class MainActivity extends AppCompatActivity {
         calendar.set(Calendar.HOUR_OF_DAY,alarmHour);
         calendar.set(Calendar.MINUTE,alarmMinute);
         long calendarTimeInMillis =calendar.getTimeInMillis();
+        Calendar now = Calendar.getInstance();
 
         setPhysicalAlarm();
+        if(calendarTimeInMillis<Calendar.getInstance().getTimeInMillis()){
+            if(!(now.get(Calendar.MINUTE)==calendar.get(Calendar.MINUTE)&&now.get(Calendar.HOUR_OF_DAY)==calendar.get(Calendar.HOUR_OF_DAY))){
+                calendar.add(Calendar.DAY_OF_YEAR,+1);
+            }
+
+        }
+        calendarTimeInMillis =calendar.getTimeInMillis();
         myAlarmArray.add(new Alarm(calendarTimeInMillis,alarmURL));
         alarmArrayAdapter.notifyDataSetChanged();
         Log.v(TAG,"alarm time set!");
     }
 
-    //set internal public field alarm times
-    private void parseAlarmData(String alarmString){
-        String[] time = alarmString.split(" ");
-        alarmHour= Integer.parseInt(time[0]);
-        alarmMinute= Integer.parseInt(time[1]);
-        alarmURL = time[2];
-    }
 
     private void setPhysicalAlarm() {
         AlarmManager myAlarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -177,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent intent = new Intent(this,broadcastReceiverAlarmNotificationBuild.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_IMMUTABLE);
+        final int id= (int) System.currentTimeMillis();
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this,id,intent,PendingIntent.FLAG_IMMUTABLE);
         Log.v(TAG,"alarm broadcast set");
         Log.v(TAG, String.valueOf(CalendarAlarmTime.getTimeInMillis()));
         timeOfTheAlarmAsWords = CalendarAlarmTime.getTime().toString();
@@ -272,32 +288,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    //Alarm. set exact not opening application is closed....
-    private void setYoutubeAlarm(Calendar calendar,AlarmManager alarm){
-
-        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE);
-        Log.v(TAG,"alarm intent set");
-        alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-    }
-    private void setTwitchAlarm(Calendar calendar,AlarmManager alarm){
-        PendingIntent alarmIntent =  PendingIntent.getBroadcast(this, 0, twitchIntent,PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_IMMUTABLE);
-        alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-    }
-
-   /* public class AlarmReceiver extends BroadcastReceiver {
-        private static final String TAG = "AlarmReceiver";
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.v(TAG, "Received alarm");
-            String videoID = APIClient.getVideoID();
-            Log.v(TAG,"videoID"+videoID);
-            Intent H3H3intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+videoID));
-            startActivityForResult(H3H3intent,0);
-        }
-    }
-*/
 
 
 }
