@@ -29,7 +29,6 @@
                 <data android:host="www.youtube.com" android:mimeType="text/*" />
             </intent-filter>
         </activity>
-        <activity android:name=".alarms.twitchActivity"></activity>
         <activity android:name = ".screens.SetAlarmScreenActivity"> </activity>
         <receiver android:name=".screens.MainActivity$broadcastReceiverAlarmNotificationBuild" android:exported = "true">
 

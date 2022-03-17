@@ -12,10 +12,13 @@ import com.example.goodmorninggamers.GlobalClass;
 import com.example.goodmorninggamers.helpers.getLiveStreamJSONObject.YoutAPI_getLiveStream_JSONobject;
 import com.google.gson.Gson;
 
-
 import org.json.JSONObject;
 
-//https://developer.android.com/training/volley
+
+//Youtube API client should connect to the public Youtube API and return a JSON object of the response from the request
+//There could be a lot of things required from the youtube API
+// Channel picture, Channel name, Channel live video ID, Channel subscribers, verified status,
+//Probably need a helper class which gets the information, and this class purely handles making the requests thru Volley (and maybe parsing the data into objects)((maybe))
 public class YoutAPI_client {
     private static final String TAG = "YoutAPI_client";
     public boolean H3H3isLive;

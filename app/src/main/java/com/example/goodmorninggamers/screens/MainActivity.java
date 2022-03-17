@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.goodmorninggamers.Alarm;
+import com.example.goodmorninggamers.apppieces.Alarm;
 import com.example.goodmorninggamers.AlarmAdapter;
 import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.Network.YoutAPI_client;
@@ -32,26 +32,16 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=-5KAN9_CzSA"));
-    Intent twitchIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.twitch.tv/sneakylol"));
 
 
-
-    int alarmHour;
-    int alarmMinute;
-    String alarmURL;
-    String AlarmTime;
-    String timeOfTheAlarmAsWords;
     private static final int SETALARM_ACTIVITY_REQUEST_CODE = 0;
     private static final int ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE = 1;
 
-    public static String ChannelID;
-    public static String sleepytimesYTChannelID ="UCBIe28uoEnt_LEdNFbWankA";
-    public static String H3H3YTChannelID = "UCLtREJY21xRfCuEKvdki1Kw";
-    public static String currentYTchannelID = H3H3YTChannelID;
+    public static String AndroidChannelID = "Alarm";
     static YoutAPI_client APIClient;
-    public ArrayList<Alarm> myAlarmArray;
+    public ArrayList<Alarm> m_alarms;
     public AlarmAdapter alarmArrayAdapter;
+    public AlarmSetter m_alarmSetter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -59,21 +49,15 @@ public class MainActivity extends AppCompatActivity {
         //ONCREATE
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarmhomescreen_activty);
-
-        APIClient = new YoutAPI_client(currentYTchannelID);
-        ChannelID="Alarm";
+        APIClient = new YoutAPI_client();
         createNotificationChannel();
-        AlarmTime="null";
-        if(myAlarmArray==null){
-            myAlarmArray = new ArrayList<Alarm>(){};
+        if(m_alarms ==null){
+            m_alarms = new ArrayList<Alarm>(){};
         };
-
-        youtubeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        twitchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         final Intent alarmScreenActivityIntent = new Intent(this, SetAlarmScreenActivity.class);
 
-        alarmArrayAdapter = new AlarmAdapter(this,myAlarmArray);
+        alarmArrayAdapter = new AlarmAdapter(this, m_alarms);
         ListView alarmsListView = (ListView) findViewById(R.id.AlarmListView);
         alarmsListView.setAdapter(alarmArrayAdapter);
 
@@ -117,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Log the alarm
                 turnAlarmDataIntoAlarm(returnString);
-                Log.v(TAG,"is there any alarms here lul"+myAlarmArray.get(0).ToString());
+                Log.v(TAG,"is there any alarms here lul"+ m_alarms.get(0).ToString());
 
 
             }
@@ -161,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         calendarTimeInMillis =calendar.getTimeInMillis();
-        myAlarmArray.add(new Alarm(calendarTimeInMillis,alarmURL));
+        m_alarms.add(new Alarm(calendarTimeInMillis,alarmURL));
         alarmArrayAdapter.notifyDataSetChanged();
         Log.v(TAG,"alarm time set!");
     }
@@ -212,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             CharSequence name = "Alarm notifications";
             String description = "Channel for Alarm notifications";
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(ChannelID, name, importance);
+            NotificationChannel channel = new NotificationChannel(AndroidChannelID, name, importance);
             channel.setDescription(description);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             // Register the channel with the system; you can't change the importance
@@ -241,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, testIntent , PendingIntent.FLAG_IMMUTABLE);
 
             Log.v(TAG,"test notification");
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ChannelID)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AndroidChannelID)
                     .setSmallIcon(android.R.drawable.arrow_up_float)
                     .setContentTitle("alarm!!")
                     .setContentText(intentString)
