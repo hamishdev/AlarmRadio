@@ -21,14 +21,8 @@ import org.json.JSONObject;
 //Probably need a helper class which gets the information, and this class purely handles making the requests thru Volley (and maybe parsing the data into objects)((maybe))
 public class YoutAPI_client {
     private static final String TAG = "YoutAPI_client";
-    public boolean H3H3isLive;
-    private String VideoID;
-    String APIKey = "AIzaSyBErDC2FJEo492JeSC1kPYZrSzsBwdQd3g";
-    private static String ytChannelID;
 
-    public YoutAPI_client(String ytChannelID){
-        this.ytChannelID = ytChannelID;
-        H3H3isLive =false;
+    public YoutAPI_client(){
         SendChannelVideoLivestreamRequest(ytChannelID);
     }
 

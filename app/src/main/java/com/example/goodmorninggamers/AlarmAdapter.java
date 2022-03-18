@@ -37,7 +37,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
 
         TextView time = (TextView) listItem.findViewById(R.id.textView_name);
-        time.setText(currentAlarm.getTime());
+        time.setText(currentAlarm.getTimeToString());
 
         TextView day = (TextView) listItem.findViewById(R.id.textView_release);
         day.setText(currentAlarm.getDay());

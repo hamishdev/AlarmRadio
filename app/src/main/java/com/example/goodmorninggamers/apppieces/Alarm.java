@@ -1,40 +1,53 @@
 package com.example.goodmorninggamers.apppieces;
 
+import com.example.goodmorninggamers.Data.StreamerChannel;
+
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Alarm {
+public class Alarm implements Serializable {
+
     private static final int TODAY = 0;
     private static final int TOMORROW = 1;
     private static final int ANYOTHER = 2;
-    private Calendar timeOfAlarm;
     private int dayInRelationToToday;
     private Calendar today;
     private int amPM;
     private String murl;
 
-    public Alarm(long timeInMillis,String url) {
-        timeOfAlarm = Calendar.getInstance();
-        timeOfAlarm.setTimeInMillis(timeInMillis);
+    private Calendar m_time;
+    private ArrayList<StreamerChannel> m_wakeUpChannels;
+
+
+    public Alarm(Calendar time, ArrayList<StreamerChannel> wakeUpChannels){
+        m_time = time;
+        m_wakeUpChannels = wakeUpChannels;
         today = Calendar.getInstance();
         SetAMPM();
         SetDayInRelationToToday();
-        murl = url;
-
-
     }
 
+
+
+    public String getTwelvehourclock(){
+        return null;
+    }
+    public ArrayList<StreamerChannel> getWakeUpChannels(){
+        return m_wakeUpChannels;
+    }
     public void SetAMPM() {
-        amPM = timeOfAlarm.get(Calendar.AM_PM);
+        amPM = m_time.get(Calendar.AM_PM);
     }
 
     private void SetDayInRelationToToday() {
         //if date && year matches
-        if (timeOfAlarm.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) && timeOfAlarm.get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
+        if (m_time.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) && m_time.get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
             dayInRelationToToday = TODAY;
         }
         //if year matches && day == next one
-        else if (timeOfAlarm.get(Calendar.YEAR) == today.get(Calendar.YEAR) && timeOfAlarm.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) + 1) {
+        else if (m_time.get(Calendar.YEAR) == today.get(Calendar.YEAR) && m_time.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) + 1) {
             dayInRelationToToday = TOMORROW;
         }
         //NOT TODAY OR TOMORROW
@@ -52,16 +65,19 @@ public class Alarm {
             case 1:
                 return "Tomorrow";
             case 2:
-                return timeOfAlarm.get(Calendar.DAY_OF_MONTH) + " " + timeOfAlarm.get(Calendar.MONTH);
+                return m_time.get(Calendar.DAY_OF_MONTH) + " " + m_time.get(Calendar.MONTH);
         }
         return "ERORR";
     }
 
+    public Calendar getCalendarTime(){
+        return m_time;
+    }
     public String getURL(){
         return murl;
     }
 
-    public String getTime() {
+    public String getTimeToString() {
         return getDisplayHour() + ":" + getDisplayMinute() + (amPM == Calendar.AM ? "am" : "pm");
     }
 
@@ -70,12 +86,12 @@ public class Alarm {
     }
 
     public String ToString() {
-        String alarmTimeToString = new SimpleDateFormat("MM/dd/yyyy").format(timeOfAlarm.getTime());
+        String alarmTimeToString = new SimpleDateFormat("MM/dd/yyyy").format(m_time.getTime());
         return alarmTimeToString;
     }
 
     private String getDisplayMinute(){
-        int minute = timeOfAlarm.get(Calendar.MINUTE);
+        int minute = m_time.get(Calendar.MINUTE);
         if(String.valueOf(minute).length()==1){
             return "0"+String.valueOf(minute);
         }
@@ -83,7 +99,7 @@ public class Alarm {
     }
 
     private String getDisplayHour(){
-        int hour = timeOfAlarm.get(Calendar.HOUR);
+        int hour = m_time.get(Calendar.HOUR);
         if(hour==0){
             return "12";
         }
