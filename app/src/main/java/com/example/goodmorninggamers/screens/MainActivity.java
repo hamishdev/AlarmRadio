@@ -1,6 +1,7 @@
 package com.example.goodmorninggamers.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -17,8 +18,10 @@ import com.example.goodmorninggamers.apppieces.Alarm;
 import com.example.goodmorninggamers.AlarmAdapter;
 import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.apppieces.AlarmCreator;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ONCREATE
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alarmhomescreen_activty);
+        setContentView(R.layout.newalarm_home_screen_activity);
         createNotificationChannel();
 
 
@@ -49,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         };
         alarmArrayAdapter = new AlarmAdapter(this, m_alarms);
         //Initialise alarm ListView
-        ListView alarmsListView = (ListView) findViewById(R.id.AlarmListView);
+        ListView alarmsListView = (ListView) findViewById(R.id.list);
         alarmsListView.setAdapter(alarmArrayAdapter);
 
 
+        FloatingActionButton setAlarmButton = (FloatingActionButton) findViewById(R.id.setAlarmActionButton);
+
         //SET ALARM SCREEN
-        final Button setAlarmButton = (Button) findViewById(R.id.alarmScreenButton);
         final Intent setAlarmActivity = new Intent(this, SetAlarmScreenActivity.class);
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -76,12 +80,17 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 // get Alarm from SetAlarmScreen
-                Alarm alarm = (Alarm)data.getSerializableExtra("alarm");
-                m_alarms.add(alarm);
+                try {
+                    Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
+                    m_alarms.add(alarm);
 
-                m_alarmCreator.createAlarm(m_alarms.get(m_alarms.size()-1));
-                alarmArrayAdapter.notifyDataSetChanged();
-                Log.v(TAG,"All alarms: "+ m_alarms.get(0).ToString());
+                    m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
+                    alarmArrayAdapter.notifyDataSetChanged();
+                    Log.v(TAG, "All alarms: " + m_alarms.get(0).ToString());
+                }
+                catch(java.lang.NullPointerException e){
+                    Log.e(TAG,e.toString());
+                }
 
 
             }

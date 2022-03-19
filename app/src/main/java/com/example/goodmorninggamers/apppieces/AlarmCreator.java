@@ -19,9 +19,9 @@ public class AlarmCreator extends AppCompatActivity {
     public AlarmCreator(){
     }
 
-    public void createAlarm(Alarm alarm){
+    public void createAlarm(Context context, Alarm alarm){
 
-        AlarmManager myAlarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        AlarmManager myAlarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
 
 

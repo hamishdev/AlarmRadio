@@ -8,5 +8,7 @@ public class YouTubePortal {
 
     }
 
-    public getVideoURL
+    public String getVideoURL(){
+        return null;
+    }
 }

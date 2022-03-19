@@ -30,20 +30,10 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null)
-            listItem = LayoutInflater.from(context).inflate(R.layout.alarmlistlayout,parent,false);
+            listItem = LayoutInflater.from(context).inflate(R.layout.newalarm_list_layout,parent,false);
 
         Alarm currentAlarm = alarms.get(position);
 
-
-
-        TextView time = (TextView) listItem.findViewById(R.id.textView_name);
-        time.setText(currentAlarm.getTimeToString());
-
-        TextView day = (TextView) listItem.findViewById(R.id.textView_release);
-        day.setText(currentAlarm.getDay());
-
-        TextView URL = (TextView) listItem.findViewById(R.id.textView_URL);
-        URL.setText(currentAlarm.getURL());
 
 
 

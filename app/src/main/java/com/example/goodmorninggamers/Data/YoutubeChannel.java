@@ -16,7 +16,7 @@ public class YoutubeChannel extends StreamerChannel{
 
     */
 
-    private image m_BannerProfilePic;
+    //private image m_BannerProfilePic;
     private String m_ChannelName;
     private int m_SubscriberCount;
     private int m_videoCount;
@@ -24,8 +24,8 @@ public class YoutubeChannel extends StreamerChannel{
     //Backend
     private String m_ChannelID;
 
-    public YoutubeChannel(image bannerPFP, String ChnnlName, int SubCount, int VidCount, boolean addedToApp, String ChnlID){
-        m_BannerProfilePic = bannerPFP;
+    public YoutubeChannel( String ChnnlName, int SubCount, int VidCount, boolean addedToApp, String ChnlID){
+        //m_BannerProfilePic = bannerPFP;
         m_ChannelName = ChnnlName;
 m_SubscriberCount = SubCount;
 m_videoCount =VidCount;
@@ -33,9 +33,9 @@ m_addedToApp = addedToApp;
 m_ChannelID = ChnlID;
     }
 
-    public image getBannerProfilePic(){
-        return m_BannerProfilePic;
-    }
+    //public image getBannerProfilePic(){
+    //    return m_BannerProfilePic;
+    //}
 
     public String getChannelName(){
         return m_ChannelName;

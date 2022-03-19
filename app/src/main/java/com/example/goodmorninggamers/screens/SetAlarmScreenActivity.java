@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -15,7 +16,6 @@ import com.example.goodmorninggamers.Pickers.TimePickerFragment;
 import com.example.goodmorninggamers.Pickers.UrlPickerFragment;
 import com.example.goodmorninggamers.apppieces.Alarm;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnTimePass,UrlPickerFragment.ONURLPASS {
@@ -25,30 +25,97 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
     int alarmMinute;
     private static final String TAG = "SetAlarmScreenActivity";
     private String URL;
+    private Calendar m_clockTime;
+
     public void onCreate(Bundle SavedInstanceState) {
 
         super.onCreate(SavedInstanceState);
-        setContentView(R.layout.alarm_screen_activity);
+        m_clockTime = Calendar.getInstance();
+        setContentView(R.layout.newset_alarm_activity);
 
-        final Button setAlarmTimeDialogButton = (Button) findViewById(R.id.setAlarmTimeDialogueButton);
-        final Button showAlarmTimeButton = (Button) findViewById(R.id.ShowAlarmTimeButton);
+        TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
+        ImageButton setFirstStreamerButton = (ImageButton) findViewById(R.id.firstStreamer);
+        ImageButton setSecondStreamerButton = (ImageButton) findViewById(R.id.secondsStreamer);
+        ImageButton setDefaultStreamerButton = (ImageButton) findViewById(R.id.defaultStreamer);
+        ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
+        TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
 
-        setAlarmTimeDialogButton.setOnClickListener(new View.OnClickListener() {
+
+        clock.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
+                updateAlarmTime(i,i1);
+                updateAlarmTimeText(alarmTimeText);
+            }
+        });
+
+        //FirstStreamer
+        setFirstStreamerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                DialogFragment newFragment = new UrlPickerFragment();
-                newFragment.show(getSupportFragmentManager(), "urlPicker");
+
             }
         });
 
-        showAlarmTimeButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
-                showAlarmTimeButton.setText(alarmHour +":"+alarmMinute);
+
+        //SecondStreamer
+        setSecondStreamerButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
             }
         });
+
+
+        //DefaultStreamer
+        setDefaultStreamerButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+            }
+        });
+
+        //SetAlarm
+        setAlarmButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                Intent intent = new Intent();
+                Alarm alarm = turnFieldsIntoAlarm();
+                intent.putExtra("Alarm",alarm);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
 
 
     }
 
+    public void updateAlarmTime(int hourOfDay,int minute){
+
+        Calendar clockTime =Calendar.getInstance();
+        clockTime.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        clockTime.set(Calendar.MINUTE,minute);
+        long clockTimeInMillis =clockTime.getTimeInMillis();
+        Calendar now = Calendar.getInstance();
+
+        //If alarm is set in the past assume alarm should be in the next day 
+        if(clockTimeInMillis<now.getTimeInMillis()){
+            //(AS long as the alarm isn't set for the current minute)
+            if(!(now.get(Calendar.MINUTE)==clockTime.get(Calendar.MINUTE)&&now.get(Calendar.HOUR_OF_DAY)==clockTime.get(Calendar.HOUR_OF_DAY))){
+                clockTime.add(Calendar.DAY_OF_YEAR,+1);
+            }
+
+        }
+        m_clockTime = clockTime;
+
+    }
+
+    public void updateAlarmTimeText(TextView alarmTimeText){
+        long difference = m_clockTime.getTimeInMillis()-Calendar.getInstance().getTimeInMillis();
+        int days = (int) (difference / (1000*60*60*24));
+        int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
+        int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+        String clockAlarmString = "Next alarm will ring in "+(hours==0?"":hours+"h")+min+"m";
+        alarmTimeText.setText(clockAlarmString);
+    }
     public void setAlarmHour(int fragmentAlarmHour){
         alarmHour=fragmentAlarmHour;
     }
@@ -69,47 +136,19 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
     public void onTimePass(String data) {
 
         Log.d(TAG,"passing time data:"+data);
-        Intent intent = new Intent();
+
         String allData = data + " " + URL;
 
-        Alarm alarm = turnAlarmDataIntoAlarm(data);
-        intent.putExtra("Alarm",alarm);
-        setResult(RESULT_OK, intent);
-        finish();
+
 
     }
 
 
     //Copy pasted from main activity to help with making the alarm when time comes to it.
-    private Alarm turnAlarmDataIntoAlarm(String alarmData){
-
-        Calendar calendar =Calendar.getInstance();
-        long calendarTimeInMillis =calendar.getTimeInMillis();
-        Calendar now = Calendar.getInstance();
-
-        if(calendarTimeInMillis<Calendar.getInstance().getTimeInMillis()){
-            if(!(now.get(Calendar.MINUTE)==calendar.get(Calendar.MINUTE)&&now.get(Calendar.HOUR_OF_DAY)==calendar.get(Calendar.HOUR_OF_DAY))){
-                calendar.add(Calendar.DAY_OF_YEAR,+1);
-            }
-
-        }
-        //////THIS IS LOGIC TO PARSE HOUR/MINUTE INFORMATION INTO WHETHER THE ALARM SHOULD BE MEANT FOR TOMORROW OR NOT
-        //////AM REVAMPING WHOLE ALARM SETTING PAGE SO THIS WHOLE SECTION WILL BE REDONE ANYWAY IT'S JUST NICE TO REMEMBER THIS ONE FEATURE
-        //Alarm was set in the past
-        Log.v(TAG,"userSetAlarm ="+AlarmTime.getTimeInMillis()+"Actual time="+now.getTimeInMillis());
-        if(AlarmTime.getTimeInMillis()<now.getTimeInMillis()){
-            //Set alarm to tomorrow
-            Log.v(TAG, "alarm time PRE ="+ AlarmTime.toString());
-            AlarmTime.add(Calendar.DAY_OF_YEAR,+1);
-            Log.v(TAG, "alarm time POST ="+ AlarmTime.toString());
-        }
-        //Alarm was set in the future
-        else{
-            //Alarm is already set to today in the future
-        }
+    private Alarm turnFieldsIntoAlarm(){
 
 
-        Alarm fromData = new Alarm(alarmTime,null);
+        Alarm fromData = new Alarm(m_clockTime,null);
         Log.v(TAG,"alarm time set!");
         return fromData;
     }

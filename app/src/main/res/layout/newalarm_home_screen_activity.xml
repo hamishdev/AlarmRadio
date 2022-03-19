@@ -7,6 +7,7 @@
 
 
     <View
+        android:id="@+id/view3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="4dp"
@@ -57,11 +58,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/alarm_square_icon_transparent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="404dp"
-        android:layout_height="587dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="92dp"
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/setAlarmActionButton"
+        android:layout_width="55dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="624dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/plus_transparent" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

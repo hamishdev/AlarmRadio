@@ -23,17 +23,15 @@ public class YoutAPI_client {
     private static final String TAG = "YoutAPI_client";
 
     public YoutAPI_client(){
-        SendChannelVideoLivestreamRequest(ytChannelID);
     }
 
     public String getVideoID(){
-        Log.v(TAG,"video ID = "+ VideoID);
-        return VideoID;
+        return null;
     }
 
 
     public void SendChannelVideoLivestreamRequest(String ChannelID) {
-
+        String APIKey = null;
         String URL = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId="+ChannelID+"&eventType=live&maxResults=25&type=video&key="+APIKey;
         //Send request
         Log.v(TAG, "Url "+ URL);
@@ -42,6 +40,7 @@ public class YoutAPI_client {
     }
 
     public void volleyJSONRequest_H3H3LivestreamVideoID(String url){
+
 
         RequestQueue queue = Volley.newRequestQueue(GlobalClass.context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -57,12 +56,11 @@ public class YoutAPI_client {
                             //REsponse comes back with full JSON
                             //Videos (getItems) is not empty
                             if(!obj.getItems().isEmpty()){
-                                VideoID = obj.getItems().get(0).getId().getVideoId();
-                                H3H3isLive = true;
+                                String VideoID = obj.getItems().get(0).getId().getVideoId();
+                                Boolean H3H3isLive = true;
                             }
                             else{
-                                //Shouldn't get here
-                                H3H3isLive = false;
+
                             }
                     }
                 }, new Response.ErrorListener() {
