@@ -16,7 +16,7 @@
         >
 
 
-        <activity android:name=".screens.MainActivity"
+        <activity android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +29,8 @@
                 <data android:host="www.youtube.com" android:mimeType="text/*" />
             </intent-filter>
         </activity>
-        <activity android:name = ".screens.SetAlarmScreenActivity"> </activity>
-        <receiver android:name=".screens.GoodMorningGamersAlarmBroadcastReceiver" android:exported = "true">
+        <activity android:name = ".Activities.SetAlarmScreenActivity"> </activity>
+        <receiver android:name=".Activities.GoodMorningGamersAlarmBroadcastReceiver" android:exported = "true">
 
         </receiver>
     </application>

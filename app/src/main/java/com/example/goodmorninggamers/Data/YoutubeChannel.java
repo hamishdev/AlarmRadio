@@ -24,13 +24,10 @@ public class YoutubeChannel extends StreamerChannel{
     //Backend
     private String m_ChannelID;
 
-    public YoutubeChannel( String ChnnlName, int SubCount, int VidCount, boolean addedToApp, String ChnlID){
-        //m_BannerProfilePic = bannerPFP;
-        m_ChannelName = ChnnlName;
-m_SubscriberCount = SubCount;
-m_videoCount =VidCount;
-m_addedToApp = addedToApp;
-m_ChannelID = ChnlID;
+
+
+    public YoutubeChannel(String name, Boolean verified, String pic, long followers, boolean currentlyLive) {
+        super(name, verified, pic, followers, currentlyLive);
     }
 
     //public image getBannerProfilePic(){

@@ -1,6 +1,6 @@
 package com.example.goodmorninggamers.apppieces;
 
-import com.example.goodmorninggamers.Data.StreamerChannel;
+import com.example.goodmorninggamers.invisibleapppieces.RingtoneOption;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -18,12 +18,12 @@ public class Alarm implements Serializable {
     private String murl;
 
     private Calendar m_time;
-    private ArrayList<StreamerChannel> m_wakeUpChannels;
+    private ArrayList<RingtoneOption> m_Ringtone_Options;
 
 
-    public Alarm(Calendar time, ArrayList<StreamerChannel> wakeUpChannels){
+    public Alarm(Calendar time, ArrayList<RingtoneOption> ringtoneOptions){
         m_time = time;
-        m_wakeUpChannels = wakeUpChannels;
+        m_Ringtone_Options = ringtoneOptions;
         today = Calendar.getInstance();
         SetAMPM();
         SetDayInRelationToToday();
@@ -34,8 +34,8 @@ public class Alarm implements Serializable {
     public String getTwelvehourclock(){
         return null;
     }
-    public ArrayList<StreamerChannel> getWakeUpChannels(){
-        return m_wakeUpChannels;
+    public ArrayList<RingtoneOption> getWakeupOptions(){
+        return m_Ringtone_Options;
     }
     public void SetAMPM() {
         amPM = m_time.get(Calendar.AM_PM);

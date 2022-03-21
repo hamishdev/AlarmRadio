@@ -1,7 +1,6 @@
-package com.example.goodmorninggamers.screens;
+package com.example.goodmorninggamers.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.goodmorninggamers.apppieces.Alarm;
@@ -21,7 +19,6 @@ import com.example.goodmorninggamers.apppieces.AlarmCreator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ONCREATE
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.newalarm_home_screen_activity);
+        setContentView(R.layout.home_screen);
         createNotificationChannel();
 
 

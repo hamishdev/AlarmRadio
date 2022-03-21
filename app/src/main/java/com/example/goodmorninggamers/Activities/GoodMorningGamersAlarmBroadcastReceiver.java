@@ -1,18 +1,15 @@
-package com.example.goodmorninggamers.screens;
+package com.example.goodmorninggamers.Activities;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.goodmorninggamers.apppieces.Alarm;
-
-import java.util.stream.Stream;
 
 public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver {
 
@@ -29,7 +26,7 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver {
         int ChannelChoice = findChannelToOpen(receivedAlarm);
 
         //Build streamer intent
-        String StreamerURL = receivedAlarm.getWakeUpChannels().get(ChannelChoice).getLiveContentURL();
+        String StreamerURL = receivedAlarm.getWakeupOptions().get(ChannelChoice).getLiveContentURL();
         Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
         StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
