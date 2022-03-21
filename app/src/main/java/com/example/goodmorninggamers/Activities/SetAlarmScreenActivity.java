@@ -18,8 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.example.goodmorninggamers.Data.StreamerChannel;
 import com.example.goodmorninggamers.Data.TwitchChannel;
 import com.example.goodmorninggamers.Network.TwitchClient;
+import com.example.goodmorninggamers.Network.VolleyListener;
 import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.Pickers.TimePickerFragment;
 import com.example.goodmorninggamers.Pickers.UrlPickerFragment;
@@ -29,7 +31,7 @@ import com.example.goodmorninggamers.invisibleapppieces.RingtoneOption;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnTimePass,UrlPickerFragment.ONURLPASS {
+public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnTimePass,UrlPickerFragment.ONURLPASS, VolleyListener {
 
 
     int alarmHour;
@@ -38,6 +40,9 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
     private String URL;
     private Calendar m_clockTime;
     private ArrayList<RingtoneOption> m_wakeupRingtoneOptions;
+    private TwitchClient m_twitchClient;
+    private Boolean m_loaded = false;
+
     public void onCreate(Bundle SavedInstanceState) {
 
         super.onCreate(SavedInstanceState);
@@ -56,7 +61,8 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         ImageButton setDefaultStreamerButton = (ImageButton) findViewById(R.id.defaultStreamer);
         ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
-
+        m_twitchClient = new TwitchClient();
+        Glide.with(this).load("http://goo.gl/gEgYUd").into(setFirstStreamerButton);
 
 
         clock.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -89,16 +95,30 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
                                         if (keyCode==KeyEvent.KEYCODE_ENTER) {
                                            //SearchTwitch API
                                             String searchString = input.getText().toString();
-                                            TwitchClient client = new TwitchClient();
-                                            TwitchChannel topChannel = (TwitchChannel) client.getChannelsFromString(searchString).get(0);
+                                            m_twitchClient.loadChannelsFromString(SetAlarmScreenActivity.this, searchString);
+                                            //wait until channels load
+                                            Boolean loading = true;
+                                            int count = 0;
+                                            /*
+                                            while(loading){
+                                                loading = !m_loaded;
+                                                Log.v(TAG, ""+count);
+                                                count++;
+                                            }
+                                            */
+/*
+                                            StreamerChannel topChannel = m_twitchClient.getChannelsFromSearch().get(0);
                                             String url = topChannel.getLiveContentURL();
                                             String picURL = topChannel.getPicURL();
                                             m_wakeupRingtoneOptions.set(0, new RingtoneOption(url,picURL));
+
+ */
                                             AlertDialog.Builder builder3 = new AlertDialog.Builder(SetAlarmScreenActivity.this);
-                                            final ImageView temporary = new ImageView(SetAlarmScreenActivity.this);
-                                            Glide.with(SetAlarmScreenActivity.this).load(topChannel.getPicURL()).into(temporary);
+                                            ImageView temporary = new ImageView(SetAlarmScreenActivity.this);
+                                            temporary.setImageResource(R.drawable.number1);
                                             builder3.setView(temporary);
-                                            builder3.show();
+                                            Glide.with(SetAlarmScreenActivity.this).load("https://lh6.ggpht.com/9SZhHdv4URtBzRmXpnWxZcYhkgTQurFuuQ8OR7WZ3R7fyTmha77dYkVvcuqMu3DLvMQ=w300").into(temporary);
+                                            builder3.create().show();
 
 
                                         }
@@ -156,6 +176,8 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
 
 
     }
+
+
 
     public void updateAlarmTime(int hourOfDay,int minute){
 
@@ -222,4 +244,13 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         return fromData;
     }
 
+    @Override
+    public void requestFinished(boolean existence) {
+        Log.v(TAG,"requestFinished");
+
+    }
+
+    private void setLoaded(){
+        m_loaded = true;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.goodmorninggamers.Network;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -9,8 +10,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenActivity;
 import com.example.goodmorninggamers.Data.StreamerChannel;
 import com.example.goodmorninggamers.Data.TwitchChannel;
 import com.example.goodmorninggamers.GlobalClass;
@@ -28,19 +32,30 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class TwitchClient {
 
     private  String TAG = "TwitchClient";
-    public ArrayList<StreamerChannel> getChannelsFromString(String searchInput){
-        ArrayList<StreamerChannel> searchResults = new ArrayList<StreamerChannel>();
-        Log.v(TAG, "got here");
+    private ArrayList<StreamerChannel> m_searchResults;
 
+    public ArrayList<StreamerChannel> getChannelsFromSearch(){
+        return m_searchResults;
+    }
+    public TwitchClient(){
+        m_searchResults = new ArrayList<StreamerChannel>();
+    }
+    public void loadChannelsFromString(Context context, String searchInput){
+        VolleyListener volleyListener = (VolleyListener) context;
+        Log.v(TAG, "got here");
+        VolleyLog.DEBUG = true;
 String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
         Log.v(TAG, "url");
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization","Bearer ref82ho2xug5awjywyggqnd3ilhnnt");
+        headers.put("Client-ID", "cfu1ujuc54ske6vjd0c73qewbuyo1g");
         RequestQueue queue = Volley.newRequestQueue(GlobalClass.context);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.GET,url,headers,new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -58,30 +73,30 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
                             boolean currentlyLive = channel.isIsLive();
                             String channelID = channel.getId();
                             StreamerChannel topresult = new TwitchChannel(name,verified,pic,followers, currentlyLive, channelID);
-                            searchResults.add(topresult);
+                            m_searchResults.add(topresult);
                         }
-
+                        volleyListener.requestFinished(true);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.v(TAG, "that didn't work!");
-
+                        volleyListener.requestFinished(false);
                     }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer ref82ho2xug5awjywyggqnd3ilhnnt");
-                params.put("Client-ID", "cfu1ujuc54ske6vjd0c73qewbuyo1g");
+                });
 
-                return params;
+        try {
+            Log.v(TAG,""+jsObjRequest.getHeaders().size());
+            for (Map.Entry<String,String> entry :jsObjRequest.getHeaders().entrySet()){
+                Log.v(TAG,entry.toString());
             }
-        };
-        queue.add(jsonObjectRequest);
+        }
+        catch(Exception e){
+            Log.v(TAG,e.toString());
+        }
+        queue.add(jsObjRequest);
 
-        return searchResults;
     }
 
     public Bitmap getBitmapFromURL(String src) {
