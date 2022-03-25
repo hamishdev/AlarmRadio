@@ -45,7 +45,7 @@ public class TwitchClient {
     public TwitchClient(){
         m_searchResults = new ArrayList<StreamerChannel>();
     }
-    public void loadChannelsFromString(Context context, String searchInput){
+    public void loadChannelsFromString(VolleyListener context, String searchInput){
         VolleyListener volleyListener = (VolleyListener) context;
         Log.v(TAG, "got here");
         VolleyLog.DEBUG = true;

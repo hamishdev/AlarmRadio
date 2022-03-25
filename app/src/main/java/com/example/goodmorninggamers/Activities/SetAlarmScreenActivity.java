@@ -3,6 +3,7 @@ package com.example.goodmorninggamers.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -14,10 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.goodmorninggamers.Data.StreamerChannel;
 import com.example.goodmorninggamers.Data.TwitchChannel;
 import com.example.goodmorninggamers.Network.TwitchClient;
@@ -31,7 +37,7 @@ import com.example.goodmorninggamers.invisibleapppieces.RingtoneOption;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnTimePass,UrlPickerFragment.ONURLPASS, VolleyListener {
+public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnTimePass,UrlPickerFragment.ONURLPASS {
 
 
     int alarmHour;
@@ -61,7 +67,7 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         ImageButton setDefaultStreamerButton = (ImageButton) findViewById(R.id.defaultStreamer);
         ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
-        m_twitchClient = new TwitchClient();
+
         Glide.with(this).load("http://goo.gl/gEgYUd").into(setFirstStreamerButton);
 
 
@@ -85,48 +91,38 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch(which){
-                            //First RingtoneOption twitchSearchDialog
+                            //twitch Stream
                             case 0:
-                            AlertDialog.Builder builder2 = new AlertDialog.Builder(SetAlarmScreenActivity.this);
+
                             final EditText input = new EditText(SetAlarmScreenActivity.this);
                             //on Enter button
-                                input.setOnKeyListener(new View.OnKeyListener() {
-                                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                                        if (keyCode==KeyEvent.KEYCODE_ENTER) {
-                                           //SearchTwitch API
-                                            String searchString = input.getText().toString();
-                                            m_twitchClient.loadChannelsFromString(SetAlarmScreenActivity.this, searchString);
-                                            //wait until channels load
-                                            Boolean loading = true;
-                                            int count = 0;
-                                            /*
-                                            while(loading){
-                                                loading = !m_loaded;
-                                                Log.v(TAG, ""+count);
-                                                count++;
-                                            }
-                                            */
-/*
-                                            StreamerChannel topChannel = m_twitchClient.getChannelsFromSearch().get(0);
-                                            String url = topChannel.getLiveContentURL();
-                                            String picURL = topChannel.getPicURL();
-                                            m_wakeupRingtoneOptions.set(0, new RingtoneOption(url,picURL));
+                                input.setOnKeyListener(new CustomOnKeyListener() {
+                                    ImageView pic = new ImageView(SetAlarmScreenActivity.this);
+                                    TwitchClient tc = new TwitchClient();
+                                    @Override
+                                    public void requestFinished(boolean existence) {
+                                        Log.v(TAG, "Requestfinished in Listener");
+                                        glideHelperLoadURL(tc.getChannelsFromSearch().get(0).getPicURL(),pic);
+                                    }
 
- */
-                                            AlertDialog.Builder builder3 = new AlertDialog.Builder(SetAlarmScreenActivity.this);
-                                            ImageView temporary = new ImageView(SetAlarmScreenActivity.this);
-                                            temporary.setImageResource(R.drawable.number1);
-                                            builder3.setView(temporary);
-                                            Glide.with(SetAlarmScreenActivity.this).load("https://lh6.ggpht.com/9SZhHdv4URtBzRmXpnWxZcYhkgTQurFuuQ8OR7WZ3R7fyTmha77dYkVvcuqMu3DLvMQ=w300").into(temporary);
-                                            builder3.create().show();
+                                    @Override
+                                    public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
+                                        if (keyCode==KeyEvent.KEYCODE_ENTER) {
+                                            //SearchTwitch API
+                                            String searchString = input.getText().toString();
+                                            tc.loadChannelsFromString(this,searchString);
+
 
 
                                         }
                                         return false;
-                                    }});
+                                    }
+                                });
                             input.setInputType(InputType.TYPE_CLASS_TEXT);
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(SetAlarmScreenActivity.this);
                             builder2.setView(input);
-                            builder2.show();
+                            AlertDialog alert2 = builder2.create();
+                            alert2.show();
 
                             //youtubeSearchDialog
                             //TODO
@@ -177,6 +173,23 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
 
     }
 
+
+    public void glideHelperLoadURL(String url, ImageView imageView){
+        Glide.with(this).load(url)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .error(R.drawable.number2)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                }).into(imageView);
+    }
 
 
     public void updateAlarmTime(int hourOfDay,int minute){
@@ -244,11 +257,6 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         return fromData;
     }
 
-    @Override
-    public void requestFinished(boolean existence) {
-        Log.v(TAG,"requestFinished");
-
-    }
 
     private void setLoaded(){
         m_loaded = true;

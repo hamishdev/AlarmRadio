@@ -1,17 +1,25 @@
 package com.example.goodmorninggamers.Activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.goodmorninggamers.apppieces.Alarm;
 import com.example.goodmorninggamers.AlarmAdapter;
 import com.example.goodmorninggamers.R;
@@ -63,7 +71,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        glideHelperLoadURL("https://yt3.ggpht.com/ytc/AKedOLQ7yNgtuMI57nCVDgm6Ifwdyavm5HLbS7h69co8tw=s48-c-k-c0x00ffffff-no-rj", (ImageView) findViewById(R.id.imageView3));
 
+    }
+
+    public void glideHelperLoadURL(String url, ImageView imageView){
+        Glide.with(this).load(url)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .error(R.drawable.number2)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                }).into(imageView);
     }
 
 
