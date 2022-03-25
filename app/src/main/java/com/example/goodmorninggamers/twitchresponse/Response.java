@@ -1,9 +1,15 @@
 package com.example.goodmorninggamers.twitchresponse;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
-public class twitchResponse {
+public class Response{
+
+	@SerializedName("pagination")
 	private Pagination pagination;
+
+	@SerializedName("data")
 	private List<DataItem> data;
 
 	public Pagination getPagination(){

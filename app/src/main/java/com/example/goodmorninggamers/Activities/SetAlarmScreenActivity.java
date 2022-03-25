@@ -97,12 +97,21 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
                             final EditText input = new EditText(SetAlarmScreenActivity.this);
                             //on Enter button
                                 input.setOnKeyListener(new CustomOnKeyListener() {
+
                                     ImageView pic = new ImageView(SetAlarmScreenActivity.this);
                                     TwitchClient tc = new TwitchClient();
                                     @Override
                                     public void requestFinished(boolean existence) {
                                         Log.v(TAG, "Requestfinished in Listener");
                                         glideHelperLoadURL(tc.getChannelsFromSearch().get(0).getPicURL(),pic);
+                                        AlertDialog.Builder builder3 = new AlertDialog.Builder(SetAlarmScreenActivity.this);
+                                        AlertDialog alert3 = builder3.create();
+                                        String url = tc.getChannelsFromSearch().get(0).getPicURL();
+                                        alert3.setTitle(url);
+                                        ImageView pic = new ImageView(SetAlarmScreenActivity.this);
+                                        alert3.setView(pic);
+                                        glideHelperLoadURL(url,pic);
+                                        alert3.show();
                                     }
 
                                     @Override
@@ -111,7 +120,6 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
                                             //SearchTwitch API
                                             String searchString = input.getText().toString();
                                             tc.loadChannelsFromString(this,searchString);
-
 
 
                                         }

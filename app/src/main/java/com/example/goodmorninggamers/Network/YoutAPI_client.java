@@ -48,7 +48,7 @@ public class YoutAPI_client {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.v(TAG,"Response: " + response.toString());
+                        Log.v(TAG,"com.example.goodmorninggamers.twitchresponse.Response: " + response.toString());
                         String JsonString = response.toString();
                         Gson gson = new Gson();
                         YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(),YoutAPI_getLiveStream_JSONobject.class);
