@@ -1,5 +1,6 @@
 package com.example.goodmorninggamers.Activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,15 +25,17 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.goodmorninggamers.Data.StreamerChannel;
-import com.example.goodmorninggamers.Data.TwitchChannel;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.AlarmOptionClickedListener;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.AlarmOptionFinishedListener;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.CustomOnKeyListener;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.StreamerButton;
+import com.example.goodmorninggamers.Channels.StreamerChannel;
 import com.example.goodmorninggamers.Network.TwitchClient;
-import com.example.goodmorninggamers.Network.VolleyListener;
 import com.example.goodmorninggamers.R;
-import com.example.goodmorninggamers.Pickers.TimePickerFragment;
-import com.example.goodmorninggamers.Pickers.UrlPickerFragment;
-import com.example.goodmorninggamers.apppieces.Alarm;
-import com.example.goodmorninggamers.invisibleapppieces.RingtoneOption;
+import com.example.goodmorninggamers.UI_Classes.Pickers.TimePickerFragment;
+import com.example.goodmorninggamers.UI_Classes.Pickers.UrlPickerFragment;
+import com.example.goodmorninggamers.Alarms.Alarm;
+import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,13 +65,11 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         setContentView(R.layout.set_alarm);
 
         TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
-        ImageButton setFirstStreamerButton = (ImageButton) findViewById(R.id.firstStreamer);
-        ImageButton setSecondStreamerButton = (ImageButton) findViewById(R.id.secondsStreamer);
+        StreamerButton setFirstStreamerButton =  (StreamerButton) findViewById(R.id.firstStreamer);
+        StreamerButton setSecondStreamerButton = (StreamerButton) findViewById(R.id.secondsStreamer);
         ImageButton setDefaultStreamerButton = (ImageButton) findViewById(R.id.defaultStreamer);
         ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
-
-        Glide.with(this).load("http://goo.gl/gEgYUd").into(setFirstStreamerButton);
 
 
         clock.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -79,83 +80,12 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
             }
         });
 
-        //FirstRingtoneOption choose platform of ringtone
-        setFirstStreamerButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-
-                String[] options = {"Twitch stream", "Youtube stream"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(SetAlarmScreenActivity.this);
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-
-                    //FirstRingtoneOption search Streamer
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch(which){
-                            //twitch Stream
-                            case 0:
-
-                            final EditText input = new EditText(SetAlarmScreenActivity.this);
-                            //on Enter button
-                                input.setOnKeyListener(new CustomOnKeyListener() {
-
-                                    ImageView pic = new ImageView(SetAlarmScreenActivity.this);
-                                    TwitchClient tc = new TwitchClient();
-                                    @Override
-                                    public void requestFinished(boolean existence) {
-                                        Log.v(TAG, "Requestfinished in Listener");
-                                        glideHelperLoadURL(tc.getChannelsFromSearch().get(0).getPicURL(),pic);
-                                        AlertDialog.Builder builder3 = new AlertDialog.Builder(SetAlarmScreenActivity.this);
-                                        AlertDialog alert3 = builder3.create();
-                                        String url = tc.getChannelsFromSearch().get(0).getPicURL();
-                                        alert3.setTitle(url);
-                                        ImageView pic = new ImageView(SetAlarmScreenActivity.this);
-                                        alert3.setView(pic);
-                                        glideHelperLoadURL(url,pic);
-                                        alert3.show();
-                                    }
-
-                                    @Override
-                                    public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
-                                        if (keyCode==KeyEvent.KEYCODE_ENTER) {
-                                            //SearchTwitch API
-                                            String searchString = input.getText().toString();
-                                            tc.loadChannelsFromString(this,searchString);
-
-
-                                        }
-                                        return false;
-                                    }
-                                });
-                            input.setInputType(InputType.TYPE_CLASS_TEXT);
-                            AlertDialog.Builder builder2 = new AlertDialog.Builder(SetAlarmScreenActivity.this);
-                            builder2.setView(input);
-                            AlertDialog alert2 = builder2.create();
-                            alert2.show();
-
-                            //youtubeSearchDialog
-                            //TODO
-                            case 1:
-                        }
-
-                    }
-                });
-                AlertDialog alert = builder.create();
-
-                alert.show();
-            //Show search youtube/twitch dialogue
-                //Show input text dialogue
-                //Show returned results dialogue
-                //Add Option to SetAlarm activity
-            }
-        });
+        //FirstStreamer
+        setFirstStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreenActivity.this,setFirstStreamerButton));
 
 
         //SecondStreamer
-        setSecondStreamerButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-
-            }
-        });
+        setSecondStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreenActivity.this,setSecondStreamerButton));
 
 
         //DefaultStreamer
@@ -182,8 +112,10 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
     }
 
 
-    public void glideHelperLoadURL(String url, ImageView imageView){
-        Glide.with(this).load(url)
+
+
+    public void glideHelperLoadURL(Activity activity, String url, ImageView imageView){
+        Glide.with(activity).load(url)
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .error(R.drawable.number2)
                 .listener(new RequestListener<Drawable>() {
@@ -266,7 +198,5 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
     }
 
 
-    private void setLoaded(){
-        m_loaded = true;
-    }
+
 }

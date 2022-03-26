@@ -20,10 +20,10 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.goodmorninggamers.apppieces.Alarm;
-import com.example.goodmorninggamers.AlarmAdapter;
+import com.example.goodmorninggamers.Alarms.Alarm;
+import com.example.goodmorninggamers.UI_Classes.Pickers.AlarmAdapter;
 import com.example.goodmorninggamers.R;
-import com.example.goodmorninggamers.apppieces.AlarmCreator;
+import com.example.goodmorninggamers.Alarms.AlarmCreator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -71,25 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        glideHelperLoadURL("https://yt3.ggpht.com/ytc/AKedOLQ7yNgtuMI57nCVDgm6Ifwdyavm5HLbS7h69co8tw=s48-c-k-c0x00ffffff-no-rj", (ImageView) findViewById(R.id.imageView3));
 
-    }
-
-    public void glideHelperLoadURL(String url, ImageView imageView){
-        Glide.with(this).load(url)
-                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .error(R.drawable.number2)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                }).into(imageView);
     }
 
 

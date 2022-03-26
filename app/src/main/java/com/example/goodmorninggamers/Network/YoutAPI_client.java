@@ -9,7 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.goodmorninggamers.GlobalClass;
-import com.example.goodmorninggamers.helpers.getLiveStreamJSONObject.YoutAPI_getLiveStream_JSONobject;
+import com.example.goodmorninggamers.Network.getLiveStreamJSONObject.YoutAPI_getLiveStream_JSONobject;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -48,7 +48,7 @@ public class YoutAPI_client {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.v(TAG,"com.example.goodmorninggamers.twitchresponse.Response: " + response.toString());
+                        Log.v(TAG,"com.example.goodmorninggamers.Network.twitchresponse.Response: " + response.toString());
                         String JsonString = response.toString();
                         Gson gson = new Gson();
                         YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(),YoutAPI_getLiveStream_JSONobject.class);

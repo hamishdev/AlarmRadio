@@ -9,7 +9,7 @@ import android.net.Uri;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.goodmorninggamers.apppieces.Alarm;
+import com.example.goodmorninggamers.Alarms.Alarm;
 
 public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver {
 

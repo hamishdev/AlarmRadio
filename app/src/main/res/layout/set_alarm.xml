@@ -63,50 +63,48 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/less_than_transparent" />
 
-    <ImageButton
+    <com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.StreamerButton
         android:id="@+id/firstStreamer"
-        android:layout_width="165dp"
-        android:layout_height="124dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="488dp"
+        android:layout_width="@dimen/AlarmOptionSquareSize"
+        android:layout_height="@dimen/AlarmOptionSquareSize"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="492dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
-        android:background="#00000000"
-        android:padding="20dp"
+        android:background="@drawable/button_border"
         android:scaleType="fitCenter"
+        android:src ="@drawable/magnifying_transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/number1" />
+        />
 
-    <ImageButton
+    <com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.StreamerButton
         android:id="@+id/secondsStreamer"
-        android:layout_width="70dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="592dp"
+        android:layout_width="@dimen/AlarmOptionSquareSize"
+        android:layout_height="@dimen/AlarmOptionSquareSize"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="492dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
-        android:background="#00000000"
-        android:padding="20dp"
+        android:background="@drawable/button_border"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/magnifying_transparent"/>
 
     <ImageButton
         android:id="@+id/defaultStreamer"
-        android:layout_width="116dp"
-        android:layout_height="110dp"
-        android:layout_marginStart="248dp"
-        android:layout_marginTop="560dp"
+        android:layout_width="@dimen/AlarmOptionSquareSize"
+        android:layout_height="@dimen/AlarmOptionSquareSize"
+        android:layout_marginStart="288dp"
+        android:layout_marginTop="492dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
-        android:background="#00000000"
-        android:padding="20dp"
+        android:background="@drawable/button_border"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/resource_default" />
+        app:srcCompat="@drawable/magnifying_transparent"></ImageButton>
 
     <ImageButton
         android:id="@+id/setAlarmButton"
@@ -142,6 +140,36 @@
         android:layout_marginStart="124dp"
         android:layout_marginTop="436dp"
         android:text="Next alarm will ring in 24h"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/DefaultOptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="288dp"
+        android:layout_marginTop="552dp"
+        android:text="Default"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/AlarmOption1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="552dp"
+        android:text="Alarm 1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/AlarmOption2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="552dp"
+        android:text="Alarm 2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -10,10 +10,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
-import com.example.goodmorninggamers.Data.StreamerChannel;
-import com.example.goodmorninggamers.Data.TwitchChannel;
+import com.example.goodmorninggamers.Channels.StreamerChannel;
+import com.example.goodmorninggamers.Channels.TwitchChannel;
 import com.example.goodmorninggamers.GlobalClass;
-import com.example.goodmorninggamers.twitchresponse.DataItem;
+import com.example.goodmorninggamers.Network.twitchresponse.DataItem;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -50,10 +50,10 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.v(TAG,"com.example.goodmorninggamers.twitchresponse.Response: " + response.toString());
+                        Log.v(TAG,"com.example.goodmorninggamers.Network.twitchresponse.Response: " + response.toString());
                         Gson gson = new Gson();
 
-                        com.example.goodmorninggamers.twitchresponse.Response obj = gson.fromJson(response.toString(), com.example.goodmorninggamers.twitchresponse.Response.class);
+                        com.example.goodmorninggamers.Network.twitchresponse.Response obj = gson.fromJson(response.toString(), com.example.goodmorninggamers.Network.twitchresponse.Response.class);
 
                         if(!obj.getData().isEmpty()){
                             DataItem channel = obj.getData().get(0);
@@ -90,19 +90,4 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
 
     }
 
-    public Bitmap getBitmapFromURL(String src) {
-        try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
