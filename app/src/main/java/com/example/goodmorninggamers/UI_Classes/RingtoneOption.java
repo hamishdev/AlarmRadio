@@ -6,16 +6,16 @@ public class RingtoneOption {
     String m_ringtonePictureURL;
 
 
-    public RingtoneOption(String LiveContentURL, String RingtonePictureID){
+    public RingtoneOption(String LiveContentURL, String pictureURL){
 m_LiveContentURL= LiveContentURL;
-m_ringtonePictureURL = RingtonePictureID;
+m_ringtonePictureURL = pictureURL;
     }
 
     public RingtoneOption(){
 
     }
 
-    public String getRingtonePictureID(){
+    public String getRingtonePicture(){
         return m_ringtonePictureURL;
     }
     public String getLiveContentURL() {

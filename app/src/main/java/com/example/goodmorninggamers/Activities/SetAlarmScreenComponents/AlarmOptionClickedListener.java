@@ -14,15 +14,20 @@ import com.example.goodmorninggamers.Activities.GlideHelper;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenActivity;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
 import com.example.goodmorninggamers.Network.TwitchClient;
+import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
 public class AlarmOptionClickedListener implements View.OnClickListener, GlideHelper {
 
     private String TAG = "AlarmOptionClickedListener";
     private SetAlarmScreenActivity m_context;
+    private int m_button;
     AlarmOptionFinishedListener alarmOptionFinishedListener;
-    public AlarmOptionClickedListener (SetAlarmScreenActivity context, StreamerButton buttonContext){
+    RingtoneOptionFinishedListener ringtoneOptionFinishedListener;
+    public AlarmOptionClickedListener (SetAlarmScreenActivity context, StreamerButton buttonContext, int button){
         m_context=context;
         alarmOptionFinishedListener = buttonContext;
+        m_button=button;
+        ringtoneOptionFinishedListener = context;
     }
     public void onClick(View arg0) {
 
@@ -59,7 +64,10 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                                     @Override
                                     public void onClick(DialogInterface dialog,int which) {
                                         StreamerChannel choice = tc.getChannelsFromSearch().get(0);
-                                        alarmOptionFinishedListener.saveOption(choice,m_context);
+                                        RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL());
+                                        alarmOptionFinishedListener.saveOption(ringtoneOption,m_context);
+                                        ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button,ringtoneOption);
+
                                     }
                                 });
 

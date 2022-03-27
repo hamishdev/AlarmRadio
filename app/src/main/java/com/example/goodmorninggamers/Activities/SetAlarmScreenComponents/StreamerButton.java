@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.goodmorninggamers.Activities.GlideHelper;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
+import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
 public class StreamerButton extends androidx.appcompat.widget.AppCompatImageButton implements GlideHelper,AlarmOptionFinishedListener {
     public StreamerButton(@NonNull Context context) {
@@ -25,7 +26,7 @@ public class StreamerButton extends androidx.appcompat.widget.AppCompatImageButt
     }
 
     @Override
-    public void saveOption(StreamerChannel option, Activity activity) {
-        glideResizeandLoadURL(activity,option.getPicURL(),this);
+    public void saveOption(RingtoneOption option, Activity activity) {
+        glideResizeandLoadURL(activity,option.getRingtonePicture(),this);
     }
 }

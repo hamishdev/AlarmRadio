@@ -28,6 +28,9 @@ import com.bumptech.glide.request.target.Target;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.AlarmOptionClickedListener;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.AlarmOptionFinishedListener;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.CustomOnKeyListener;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.DefaultButton;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.DefaultOptionClickedListener;
+import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.RingtoneOptionFinishedListener;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.StreamerButton;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
 import com.example.goodmorninggamers.Network.TwitchClient;
@@ -40,7 +43,7 @@ import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SetAlarmScreenActivity extends AppCompatActivity implements TimePickerFragment.OnTimePass,UrlPickerFragment.ONURLPASS {
+public class SetAlarmScreenActivity extends AppCompatActivity implements  RingtoneOptionFinishedListener {
 
 
     int alarmHour;
@@ -67,7 +70,7 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
         StreamerButton setFirstStreamerButton =  (StreamerButton) findViewById(R.id.firstStreamer);
         StreamerButton setSecondStreamerButton = (StreamerButton) findViewById(R.id.secondsStreamer);
-        ImageButton setDefaultStreamerButton = (ImageButton) findViewById(R.id.defaultStreamer);
+        DefaultButton setDefaultStreamerButton = (DefaultButton) findViewById(R.id.defaultStreamer);
         ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
 
@@ -81,19 +84,15 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         });
 
         //FirstStreamer
-        setFirstStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreenActivity.this,setFirstStreamerButton));
+        setFirstStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreenActivity.this,setFirstStreamerButton,0));
 
 
         //SecondStreamer
-        setSecondStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreenActivity.this,setSecondStreamerButton));
+        setSecondStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreenActivity.this,setSecondStreamerButton,1));
 
 
         //DefaultStreamer
-        setDefaultStreamerButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-
-            }
-        });
+        setDefaultStreamerButton.setOnClickListener(new DefaultOptionClickedListener(SetAlarmScreenActivity.this,setDefaultStreamerButton,2));
 
         //SetAlarm
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
@@ -113,23 +112,6 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
 
 
 
-
-    public void glideHelperLoadURL(Activity activity, String url, ImageView imageView){
-        Glide.with(activity).load(url)
-                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .error(R.drawable.number2)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                }).into(imageView);
-    }
 
 
     public void updateAlarmTime(int hourOfDay,int minute){
@@ -167,36 +149,21 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements TimePic
         alarmMinute=fragmentAlarmMinute;
     }
 
-    @Override
-    public void onUrlPass(String data) {
-
-        Log.d(TAG,"passing URL data:"+data);
-        URL= data;
-        DialogFragment finalFragment = new TimePickerFragment();
-        finalFragment.show(getSupportFragmentManager(), "timePicker");
-
-    }
-    @Override
-    public void onTimePass(String data) {
-
-        Log.d(TAG,"passing time data:"+data);
-
-        String allData = data + " " + URL;
 
 
-
-    }
 
 
     //Copy pasted from main activity to help with making the alarm when time comes to it.
     private Alarm turnFieldsIntoAlarm(){
 
 
-        Alarm fromData = new Alarm(m_clockTime,null);
+        Alarm fromData = new Alarm(m_clockTime,m_wakeupRingtoneOptions);
         Log.v(TAG,"alarm time set!");
         return fromData;
     }
 
-
-
+    @Override
+    public void RingtoneOptionFinished(int option, RingtoneOption ringtone) {
+        m_wakeupRingtoneOptions.set(option,ringtone);
+    }
 }

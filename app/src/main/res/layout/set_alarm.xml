@@ -92,7 +92,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/magnifying_transparent"/>
 
-    <ImageButton
+    <com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.DefaultButton
         android:id="@+id/defaultStreamer"
         android:layout_width="@dimen/AlarmOptionSquareSize"
         android:layout_height="@dimen/AlarmOptionSquareSize"
@@ -104,7 +104,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/magnifying_transparent"></ImageButton>
+        app:srcCompat="@drawable/magnifying_transparent"></com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.DefaultButton>
 
     <ImageButton
         android:id="@+id/setAlarmButton"
