@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,14 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
         Alarm currentAlarm = alarms.get(position);
 
+        TextView time = (TextView) listItem.findViewById(R.id.textView_name);
+        time.setText(currentAlarm.getTwelvehourclock());
 
+        TextView day = (TextView) listItem.findViewById(R.id.textView_release);
+        day.setText(currentAlarm.getDay());
+
+        TextView URL = (TextView) listItem.findViewById(R.id.textView_URL);
+        URL.setText(currentAlarm.getWakeupOptions().get(0).getLiveContentURL());
 
 
         return listItem;

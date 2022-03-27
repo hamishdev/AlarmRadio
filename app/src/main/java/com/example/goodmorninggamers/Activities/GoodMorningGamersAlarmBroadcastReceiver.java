@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -20,13 +21,14 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Alarm receivedAlarm = (Alarm)intent.getSerializableExtra("Alarm");
+        Alarm receivedAlarm = (Alarm)intent.getSerializableExtra("alarm");
 
         //Check which streamer to get
         int ChannelChoice = findChannelToOpen(receivedAlarm);
 
         //Build streamer intent
         String StreamerURL = receivedAlarm.getWakeupOptions().get(ChannelChoice).getLiveContentURL();
+        Log.v(TAG,"alarm: "+StreamerURL);
         Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
         StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -36,7 +38,7 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver {
 
     private int findChannelToOpen(Alarm alarm){
         //Check channels in priority order finding the first one that is live.
-        return 2;
+        return 0;
     }
 
     private void NotifyUser(Intent StreamerIntent, Context context){

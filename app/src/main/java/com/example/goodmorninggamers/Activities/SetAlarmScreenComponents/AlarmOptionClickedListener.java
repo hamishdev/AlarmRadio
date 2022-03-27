@@ -17,6 +17,7 @@ import com.example.goodmorninggamers.Activities.GlideHelper;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenActivity;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
 import com.example.goodmorninggamers.Network.TwitchClient;
+import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
 public class AlarmOptionClickedListener implements View.OnClickListener, GlideHelper {
@@ -62,34 +63,28 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                                 glideResizeandLoadURL(m_context, tc.getChannelsFromSearch().get(0).getPicURL(),pic);
                                 AlertDialog.Builder builder3 = new AlertDialog.Builder(m_context);
 
-                                //RecyclerView
-                                View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
-
-                                CustomAdapter searchResultsAdapter = new CustomAdapter(new String[]{"1","2"});
+                                AlertDialog alert3 = builder3.create();
+                                //recycler view
+                                //add searchresultsitems
+                                CustomAdapter searchResultsAdapter = new CustomAdapter(tc.getChannelsFromSearch(),m_context);
+                                searchResultsAdapter.setClickListener(new CustomAdapter.ItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View view, int position) {
+                                        StreamerChannel choice = tc.getChannelsFromSearch().get(position);
+                                        RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL());
+                                        alarmOptionFinishedListener.saveOption(ringtoneOption,m_context);
+                                        ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button,ringtoneOption);
+                                        alert3.dismiss();
+                                    }
+                                });
                                 RecyclerView searchResultsRecyclerView = new RecyclerView(m_context);
                                 RecyclerView.LayoutManager searchResultsLayoutManager = new LinearLayoutManager(m_context);
                                 searchResultsRecyclerView.setLayoutManager(searchResultsLayoutManager);
                                 searchResultsRecyclerView.setAdapter(searchResultsAdapter);
 
 
-                                builder3.setPositiveButton("Add streamer",new DialogInterface.OnClickListener(){
 
-                                    @Override
-                                    public void onClick(DialogInterface dialog,int which) {
-                                        StreamerChannel choice = tc.getChannelsFromSearch().get(0);
-                                        RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL());
-                                        alarmOptionFinishedListener.saveOption(ringtoneOption,m_context);
-                                        ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button,ringtoneOption);
-
-                                    }
-                                });
-
-                                AlertDialog alert3 = builder3.create();
-                                String url = tc.getChannelsFromSearch().get(0).getPicURL();
-                                alert3.setTitle(url);
-                                ImageView pic = new ImageView(m_context);
-                                alert3.setView(pic);
-                                glideResizeandLoadURL(m_context,url,pic);
+                                alert3.setView(searchResultsRecyclerView);
                                 alert3.show();
 
                                 //Click which streamer you want

@@ -56,15 +56,18 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
                         com.example.goodmorninggamers.Network.twitchresponse.Response obj = gson.fromJson(response.toString(), com.example.goodmorninggamers.Network.twitchresponse.Response.class);
 
                         if(!obj.getData().isEmpty()){
-                            DataItem channel = obj.getData().get(0);
-                            String name = channel.getDisplayName();
-                            Boolean verified = false;
-                            String pic = channel.getThumbnailUrl();
-                            long followers = 0;
-                            boolean currentlyLive = channel.isIsLive();
-                            String channelID = channel.getId();
-                            StreamerChannel topresult = new TwitchChannel(name,verified,pic,followers, currentlyLive, channelID);
-                            m_searchResults.add(topresult);
+                            for (DataItem channel:obj.getData()
+                                 ) {
+                                String name = channel.getDisplayName();
+                                Boolean verified = false;
+                                String pic = channel.getThumbnailUrl();
+                                long followers = 0;
+                                boolean currentlyLive = channel.isIsLive();
+                                String channelID = channel.getId();
+                                StreamerChannel nextChannel = new TwitchChannel(name,verified,pic,followers, currentlyLive, channelID);
+                                m_searchResults.add(nextChannel);
+
+                            }
                         }
                         volleyListener.requestFinished(true);
                     }

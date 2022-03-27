@@ -1,6 +1,8 @@
 package com.example.goodmorninggamers.UI_Classes;
 
-public class RingtoneOption {
+import java.io.Serializable;
+
+public class RingtoneOption implements Serializable {
 
     String m_LiveContentURL;
     String m_ringtonePictureURL;

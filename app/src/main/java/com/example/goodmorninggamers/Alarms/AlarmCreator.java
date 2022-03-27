@@ -28,11 +28,11 @@ public class AlarmCreator extends AppCompatActivity {
         Calendar now = Calendar.getInstance();
         Calendar AlarmTime = alarm.getCalendarTime();
 
-        Intent intent = new Intent(this, GoodMorningGamersAlarmBroadcastReceiver.class);
+        Intent intent = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
         intent.putExtra("alarm", alarm);
 
         final int id= (int) System.currentTimeMillis();
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this,id,intent,PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_IMMUTABLE);
 
 
 

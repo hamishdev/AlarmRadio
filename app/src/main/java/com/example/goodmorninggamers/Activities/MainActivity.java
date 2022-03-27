@@ -85,17 +85,17 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 // get Alarm from SetAlarmScreen
-                try {
-                    Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
-                    m_alarms.add(alarm);
 
+                    Log.v(TAG,data.getSerializableExtra("alarm").toString());
+                    Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
+                    Log.v(TAG,"alarmurl"+alarm.getWakeupOptions().get(0).getLiveContentURL());
+                    m_alarms.add(alarm);
+                    Log.v(TAG,"alarms:"+m_alarms.size());
                     m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
                     alarmArrayAdapter.notifyDataSetChanged();
                     Log.v(TAG, "All alarms: " + m_alarms.get(0).ToString());
-                }
-                catch(java.lang.NullPointerException e){
-                    Log.e(TAG,e.toString());
-                }
+
+
 
 
             }

@@ -15,7 +15,6 @@ public class Alarm implements Serializable {
     private int dayInRelationToToday;
     private Calendar today;
     private int amPM;
-    private String murl;
 
     private Calendar m_time;
     private ArrayList<RingtoneOption> m_Ringtone_Options;
@@ -72,9 +71,6 @@ public class Alarm implements Serializable {
 
     public Calendar getCalendarTime(){
         return m_time;
-    }
-    public String getURL(){
-        return murl;
     }
 
     public String getTimeToString() {

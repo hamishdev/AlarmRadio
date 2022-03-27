@@ -40,20 +40,19 @@ import com.example.goodmorninggamers.UI_Classes.Pickers.UrlPickerFragment;
 import com.example.goodmorninggamers.Alarms.Alarm;
 import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SetAlarmScreenActivity extends AppCompatActivity implements  RingtoneOptionFinishedListener {
+public class SetAlarmScreenActivity extends AppCompatActivity implements  RingtoneOptionFinishedListener, Serializable {
 
 
     int alarmHour;
     int alarmMinute;
     private static final String TAG = "SetAlarmScreenActivity";
-    private String URL;
     private Calendar m_clockTime;
     private ArrayList<RingtoneOption> m_wakeupRingtoneOptions;
-    private TwitchClient m_twitchClient;
-    private Boolean m_loaded = false;
+    private Boolean defaultIsSet = false;
 
     public void onCreate(Bundle SavedInstanceState) {
 
@@ -98,11 +97,19 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements  Ringto
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
-                Intent intent = new Intent();
-                Alarm alarm = turnFieldsIntoAlarm();
-                intent.putExtra("Alarm",alarm);
-                setResult(RESULT_OK, intent);
-                finish();
+                if(defaultIsSet) {
+                    Intent intent = new Intent();
+                    //build alarm
+                    intent.putExtra("alarm", new Alarm(m_clockTime,m_wakeupRingtoneOptions));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SetAlarmScreenActivity.this);
+                    builder.setMessage("Cannot create an alarm without a backup alarm (in case your streamers aren't live)");
+                    builder.create().show();
+
+                }
             }
         });
 
@@ -110,6 +117,15 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements  Ringto
 
     }
 
+    public void updateDefault(Boolean defaultstatus){
+        defaultIsSet=defaultstatus;
+    }
+
+    private Alarm turnFieldsIntoAlarm(){
+        Alarm fromData = new Alarm(m_clockTime,m_wakeupRingtoneOptions);
+        Log.v(TAG,"alarm time set!");
+        return fromData;
+    }
 
 
 
@@ -153,17 +169,12 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements  Ringto
 
 
 
-    //Copy pasted from main activity to help with making the alarm when time comes to it.
-    private Alarm turnFieldsIntoAlarm(){
-
-
-        Alarm fromData = new Alarm(m_clockTime,m_wakeupRingtoneOptions);
-        Log.v(TAG,"alarm time set!");
-        return fromData;
-    }
 
     @Override
     public void RingtoneOptionFinished(int option, RingtoneOption ringtone) {
         m_wakeupRingtoneOptions.set(option,ringtone);
+        if(option==2){
+            updateDefault(true);
+        }
     }
 }
