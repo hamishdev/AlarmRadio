@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.goodmorninggamers.Activities.GlideHelper;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenActivity;
@@ -58,6 +61,16 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                                 Log.v(TAG, "Requestfinished in Listener");
                                 glideResizeandLoadURL(m_context, tc.getChannelsFromSearch().get(0).getPicURL(),pic);
                                 AlertDialog.Builder builder3 = new AlertDialog.Builder(m_context);
+
+                                //RecyclerView
+                                View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
+
+                                CustomAdapter searchResultsAdapter = new CustomAdapter(new String[]{"1","2"});
+                                RecyclerView searchResultsRecyclerView = new RecyclerView(m_context);
+                                RecyclerView.LayoutManager searchResultsLayoutManager = new LinearLayoutManager(m_context);
+                                searchResultsRecyclerView.setLayoutManager(searchResultsLayoutManager);
+                                searchResultsRecyclerView.setAdapter(searchResultsAdapter);
+
 
                                 builder3.setPositiveButton("Add streamer",new DialogInterface.OnClickListener(){
 
