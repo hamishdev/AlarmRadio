@@ -2,12 +2,18 @@ package com.example.goodmorninggamers.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.style.AlignmentSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -67,6 +73,7 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements  Ringto
         setContentView(R.layout.set_alarm);
 
         TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
+        ImageButton backButton = (ImageButton) findViewById(R.id.SetAlarmBackBUtton);
         StreamerButton setFirstStreamerButton =  (StreamerButton) findViewById(R.id.firstStreamer);
         StreamerButton setSecondStreamerButton = (StreamerButton) findViewById(R.id.secondsStreamer);
         DefaultButton setDefaultStreamerButton = (DefaultButton) findViewById(R.id.defaultStreamer);
@@ -110,6 +117,52 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements  Ringto
                     builder.create().show();
 
                 }
+            }
+        });
+
+        //backButton
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SetAlarmScreenActivity.this);
+                SpannableString title = new SpannableString("Discard modifications?");
+
+                // alert dialog title align center
+                title.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+                        0,
+                        title.length(),
+                        0
+                );
+
+                builder.setTitle(title);
+
+                SpannableString[] items = new SpannableString[]{
+                        new SpannableString("Discard"),new SpannableString("Cancel")
+                };
+                items[0].setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+                        0,
+                        items[0].length(),
+                        0
+                );
+                items[1].setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+                        0,
+                        items[1].length(),
+                        0
+                );
+                builder.setItems(items,new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(i==0){
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        }
+                        else{
+
+                        }
+                    }
+                });
+                AlertDialog alert =builder.create();
+                alert.show();
             }
         });
 

@@ -1,6 +1,5 @@
 package com.example.goodmorninggamers.Activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -8,23 +7,16 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.goodmorninggamers.Alarms.Alarm;
 import com.example.goodmorninggamers.PersistentData.AlarmDao;
 import com.example.goodmorninggamers.PersistentData.AppDatabase;
-import com.example.goodmorninggamers.UI_Classes.Pickers.AlarmAdapter;
+import com.example.goodmorninggamers.Alarms.AlarmAdapter;
 import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.Alarms.AlarmCreator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
         //ONCREATE
         super.onCreate(savedInstanceState);
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-1").build();
-        AlarmDao alarmDao = db.alarmDao();
-        List<Alarm> alarms = alarmDao.getAll();
+        //AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-1").build();
+        //AlarmDao alarmDao = db.alarmDao();
+       // List<Alarm> alarms = alarmDao.getAll();
         setContentView(R.layout.home_screen);
         createNotificationChannel();
 
-        m_alarms = (ArrayList<Alarm>)  alarms;
+        //m_alarms = (ArrayList<Alarm>)  alarms;
         //INITIALISE ALARMS
         //Initialise alarm list
         if(m_alarms ==null){
@@ -106,7 +98,12 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
+            if(resultCode== RESULT_CANCELED){
+
+            }
         }
+
+
     }
 
 

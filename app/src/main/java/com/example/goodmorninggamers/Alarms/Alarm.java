@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-@Entity
+//@Entity
 public class Alarm implements Serializable {
 
     private static final int TODAY = 0;
