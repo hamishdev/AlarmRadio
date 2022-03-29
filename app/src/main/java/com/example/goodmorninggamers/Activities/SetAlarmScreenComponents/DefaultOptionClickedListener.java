@@ -32,7 +32,7 @@ public DefaultOptionClickedListener(SetAlarmScreenActivity context, DefaultButto
         builder.setItems(new String[]{"Lofi HipHop"},new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                RingtoneOption createdRingtone = new RingtoneOption(lofiHiphop,lofiHiphopPic);
+                RingtoneOption createdRingtone = new RingtoneOption(lofiHiphop,lofiHiphopPic,"Lofi Hip Hop");
                 defaultOptionFinishedListener.saveDefaultOption(m_context,createdRingtone);
                 ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button,createdRingtone);
             }

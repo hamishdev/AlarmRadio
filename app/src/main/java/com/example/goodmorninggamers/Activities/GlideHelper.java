@@ -18,7 +18,7 @@ public interface GlideHelper {
     default void glideResizeandLoadURL(Activity activity, String url, ImageView imageView){
         Glide.with(activity).load(url)
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .error(R.drawable.number2)
+                .error(R.drawable.magnifying_transparent)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

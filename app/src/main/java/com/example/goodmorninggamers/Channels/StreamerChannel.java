@@ -22,6 +22,7 @@ public class StreamerChannel {
     }
 
     public String getLiveContentURL(){
-        return null;
+        return "ERROR";
     }
+    public String getName(){return m_name;}
 }

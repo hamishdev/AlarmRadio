@@ -1,31 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <TextView
-        android:id="@+id/textView_name"
+        android:id="@+id/alarm12hourtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:textSize="20sp"
         android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/textView_release"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/textView_name"
-        android:layout_margin="20dp"
-        android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/textView_URL"
+        android:id="@+id/listviewAlarms_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/textView_release"
-        android:layout_margin="20dp"
-        android:textSize="20sp"/>
+        android:layout_toRightOf="@id/alarm12hourtime"
+        android:layout_below="@id/StreamerRing1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="0dp"
+        android:textSize="10sp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/StreamerRing"
+        android:layout_height="@dimen/StreamerRing"
+        android:layout_toRightOf="@id/alarm12hourtime"
+        android:id="@+id/StreamerRing1"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="250dp"
+        app:cardBackgroundColor="@color/twitchPurple">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/ringtone_icon"
+            android:layout_height="@dimen/ringtone_icon"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center"
+            android:id ="@+id/innerRing1">
+
+            <ImageView
+                android:id="@+id/RingRingtonePic1"
+                android:layout_width="@dimen/ringtone_icon"
+                android:layout_height="@dimen/ringtone_icon"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/StreamerRing"
+        android:layout_height="@dimen/StreamerRing"
+        android:layout_toRightOf="@id/StreamerRing1"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/StreamerRing2"
+        app:cardCornerRadius="250dp"
+        app:cardBackgroundColor="@color/twitchPurple">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/ringtone_icon"
+            android:layout_height="@dimen/ringtone_icon"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/RingRingtonePic2"
+                android:layout_width="@dimen/ringtone_icon"
+                android:layout_height="@dimen/ringtone_icon"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/StreamerRing"
+        android:layout_height="@dimen/StreamerRing"
+        android:layout_toRightOf="@id/StreamerRing2"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/StreamerRing3"
+        app:cardCornerRadius="250dp"
+        app:cardBackgroundColor="@color/twitchPurple">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/ringtone_icon"
+            android:layout_height="@dimen/ringtone_icon"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/RingRingtonePic3"
+                android:layout_width="@dimen/ringtone_icon"
+                android:layout_height="@dimen/ringtone_icon"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+
+    <Switch
+        android:id="@+id/AlarmToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/StreamerRing3" />
+
 
 </RelativeLayout>

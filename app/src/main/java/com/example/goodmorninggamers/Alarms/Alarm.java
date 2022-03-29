@@ -30,9 +30,6 @@ public class Alarm implements Serializable {
 
 
 
-    public String getTwelvehourclock(){
-        return null;
-    }
     public ArrayList<RingtoneOption> getWakeupOptions(){
         return m_Ringtone_Options;
     }
@@ -73,7 +70,7 @@ public class Alarm implements Serializable {
         return m_time;
     }
 
-    public String getTimeToString() {
+    public String getTwelvehourclock() {
         return getDisplayHour() + ":" + getDisplayMinute() + (amPM == Calendar.AM ? "am" : "pm");
     }
 

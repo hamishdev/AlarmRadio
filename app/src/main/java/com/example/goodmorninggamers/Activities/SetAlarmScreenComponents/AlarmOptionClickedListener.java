@@ -71,7 +71,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                                     @Override
                                     public void onItemClick(View view, int position) {
                                         StreamerChannel choice = tc.getChannelsFromSearch().get(position);
-                                        RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL());
+                                        RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(),choice.getName());
                                         alarmOptionFinishedListener.saveOption(ringtoneOption,m_context);
                                         ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button,ringtoneOption);
                                         alert3.dismiss();
