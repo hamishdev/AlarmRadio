@@ -2,6 +2,7 @@ package com.example.goodmorninggamers.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -21,12 +22,15 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.goodmorninggamers.Alarms.Alarm;
+import com.example.goodmorninggamers.PersistentData.AlarmDao;
+import com.example.goodmorninggamers.PersistentData.AppDatabase;
 import com.example.goodmorninggamers.UI_Classes.Pickers.AlarmAdapter;
 import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.Alarms.AlarmCreator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,10 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
         //ONCREATE
         super.onCreate(savedInstanceState);
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-1").build();
+        AlarmDao alarmDao = db.alarmDao();
+        List<Alarm> alarms = alarmDao.getAll();
         setContentView(R.layout.home_screen);
         createNotificationChannel();
 
-
+        m_alarms = (ArrayList<Alarm>)  alarms;
         //INITIALISE ALARMS
         //Initialise alarm list
         if(m_alarms ==null){

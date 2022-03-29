@@ -1,5 +1,7 @@
 package com.example.goodmorninggamers.Alarms;
 
+import androidx.room.Entity;
+
 import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
 import java.io.Serializable;
@@ -7,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+@Entity
 public class Alarm implements Serializable {
 
     private static final int TODAY = 0;
