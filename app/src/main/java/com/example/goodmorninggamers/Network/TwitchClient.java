@@ -25,17 +25,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TwitchClient {
+public class TwitchClient implements PlatformClient {
 
     private  String TAG = "TwitchClient";
     private ArrayList<StreamerChannel> m_searchResults;
 
+    @Override
     public ArrayList<StreamerChannel> getChannelsFromSearch(){
         return m_searchResults;
     }
     public TwitchClient(){
         m_searchResults = new ArrayList<StreamerChannel>();
     }
+    @Override
     public void loadChannelsFromString(VolleyListener context, String searchInput){
         VolleyListener volleyListener = (VolleyListener) context;
         Log.v(TAG, "got here");
