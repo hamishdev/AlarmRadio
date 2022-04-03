@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.goodmorninggamers.Channels.StreamerChannel;
 import com.example.goodmorninggamers.Channels.YoutubeChannel;
 import com.example.goodmorninggamers.GlobalClass;
 import com.example.goodmorninggamers.Network.YoutubeChannelResponse.ItemsItem;
@@ -20,19 +21,20 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class YoutubeClient  {
     private String TAG= "Youtube Client";
-    public ArrayList<YoutubeChannel> m_searchResults;
+    public ArrayList<StreamerChannel> m_searchResults;
     public String APIKey = "AIzaSyBErDC2FJEo492JeSC1kPYZrSzsBwdQd3g";
     public String youtubeSearchURL = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&type=channel&key="+APIKey+"&q=";
     public String channelSearchURL = "https://youtube.googleapis.com/youtube/v3/channels?part=snippet&key="+APIKey+"&id=";
 
     public YoutubeClient(){
-        m_searchResults = new ArrayList<YoutubeChannel>();
+        m_searchResults = new ArrayList<StreamerChannel>();
     }
 
-    public ArrayList<YoutubeChannel> getChannelsFromSearch() {
+    public ArrayList<StreamerChannel> getChannelsFromSearch() {
         return m_searchResults;
     }
 
@@ -57,14 +59,14 @@ YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(), YoutAP
                         m_searchResults.add(nextChannel);
                     }
                 }
-                volleyListener.searchRequestFinished(true, );
+                volleyListener.searchRequestFinished(true);
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.v(TAG, "that didn't work!");
-                volleyListener.searchRequestFinished(false, );
+                volleyListener.searchRequestFinished(false);
             }
         });
 
@@ -73,7 +75,7 @@ YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(), YoutAP
     }
 
 
-    public String generateLiveContentURL(VolleyListener context, String id) {
+    public void generateLiveContentURL(VolleyListener context, String id) {
         VolleyListener volleyListener = (VolleyListener) context;
         String url =channelSearchURL+id;
         Log.v(TAG, "url");
@@ -85,20 +87,17 @@ YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(), YoutAP
                 Gson gson = new Gson();
                 YoutubeChannelResponse obj = gson.fromJson(response.toString(), YoutubeChannelResponse.class);
                 if(!obj.getItems().isEmpty()) {
-                    for (ItemsItem i:obj.getItems()
-                    ) {
-                        com.example.goodmorninggamers.Network.YoutubeChannelResponse.Snippet data = i.getSnippet();
-                        return
-                    }
+
+                    com.example.goodmorninggamers.Network.YoutubeChannelResponse.Snippet data = obj.getItems().get(0).getSnippet();
+                    volleyListener.ChannelRequestFinished(data.getCustomUrl());
+
                 }
-                volleyListener.searchRequestFinished(true, );
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.v(TAG, "that didn't work!");
-                volleyListener.searchRequestFinished(false, );
             }
         });
 

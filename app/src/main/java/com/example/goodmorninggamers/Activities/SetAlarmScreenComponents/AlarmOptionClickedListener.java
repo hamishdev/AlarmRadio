@@ -22,6 +22,7 @@ import com.example.goodmorninggamers.Network.TwitchClient;
 import com.example.goodmorninggamers.Network.YoutubeClient;
 import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AlarmOptionClickedListener implements View.OnClickListener, GlideHelper {
@@ -110,6 +111,10 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                         }
 
                         @Override
+                        public void ChannelRequestFinished(String url) {
+                        }
+
+                        @Override
                         public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
                             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                                 //SearchTwitch API
@@ -148,27 +153,28 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                         //on Enter button
                         input1_2.setOnKeyListener(new CustomOnKeyListener() {
 
-                            alert2_2
+                            CustomOnKeyListener secretVolleyListener = this;
                             YoutubeClient yc = new YoutubeClient();
                             int searchResultChosen;
 
                             @Override
-                            public void ChannelRequestFinished() {
-                                YoutubeChannel choice = (YoutubeChannel) yc.getChannelsFromSearch().get(searchResultChosen);
+                            public void ChannelRequestFinished(String url) {
+                                YoutubeChannel choice =  (YoutubeChannel) yc.getChannelsFromSearch().get(searchResultChosen);
+                                choice.setLiveContentURL(url);
                                 RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName());
                                 alarmOptionFinishedListener.saveOption(ringtoneOption, m_context);
                                 ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button, ringtoneOption);
                             }
 
                             @Override
-                            public void searchRequestFinished(boolean existence,CustomOnKeyListener context) {
+                            public void searchRequestFinished(boolean existence) {
 
                                 AlertDialog.Builder builder3 = new AlertDialog.Builder(m_context);
                                 AlertDialog alert3 = builder3.create();
                                 //recycler view
                                 //add searchresultsitems
-                                ArrayList<YoutubeChannel> results = yc.getChannelsFromSearch();
-                                CustomAdapter searchResultsAdapter = new YoutubeAdapter(results, m_context);
+                                ArrayList<StreamerChannel> results = yc.getChannelsFromSearch();
+                                CustomAdapter searchResultsAdapter = new CustomAdapter(results, m_context);
                                 searchResultsAdapter.setClickListener(new CustomAdapter.ItemClickListener()  {
 
                                     @Override
@@ -176,9 +182,8 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                                     public void onItemClick(View view, int position) {
                                         searchResultChosen = position;
                                         YoutubeChannel choice = (YoutubeChannel) results.get(searchResultChosen);
-                                        yc.generateLiveContentURL(super().this, choice.getID());
+                                        yc.generateLiveContentURL(secretVolleyListener, choice.getID());
                                         alert3.dismiss();
-
 
                                     }
 

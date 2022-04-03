@@ -66,14 +66,14 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
 
                             }
                         }
-                        volleyListener.searchRequestFinished(true, );
+                        volleyListener.searchRequestFinished(true);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.v(TAG, "that didn't work!");
-                        volleyListener.searchRequestFinished(false, );
+                        volleyListener.searchRequestFinished(false);
                     }
                 });
 
