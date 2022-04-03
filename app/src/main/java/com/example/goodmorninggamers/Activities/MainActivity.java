@@ -24,6 +24,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+/**
+
+ * This class is the main activity
+
+ * And output
+
+ * @version 1.0
+
+ * @author Hamish Burns
+
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -36,6 +49,12 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Alarm> m_alarms;
     public AlarmAdapter alarmArrayAdapter;
     public AlarmCreator m_alarmCreator = new AlarmCreator();
+
+
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -74,7 +93,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // On SetAlarmScreen being completed
+    /**   // On SetAlarmScreen being completed
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -107,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     *
+     */
     //Create notification channel?
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

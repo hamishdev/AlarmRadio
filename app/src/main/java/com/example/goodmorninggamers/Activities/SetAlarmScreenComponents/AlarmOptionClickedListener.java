@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.goodmorninggamers.Activities.GlideHelper;
 import com.example.goodmorninggamers.Activities.SetAlarmScreenActivity;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
+import com.example.goodmorninggamers.Channels.YoutubeChannel;
 import com.example.goodmorninggamers.Network.PlatformClient;
 import com.example.goodmorninggamers.Network.TwitchClient;
 import com.example.goodmorninggamers.Network.YoutubeClient;
@@ -30,6 +31,8 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
     private int m_button;
     AlarmOptionFinishedListener alarmOptionFinishedListener;
     RingtoneOptionFinishedListener ringtoneOptionFinishedListener;
+    int SEARCHREQUEST = 0;
+    int CHANNELREQUEST = 0;
     public AlarmOptionClickedListener (SetAlarmScreenActivity context, StreamerButton buttonContext, int button){
         m_context=context;
         alarmOptionFinishedListener = buttonContext;
@@ -73,7 +76,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                         PlatformClient tc = new TwitchClient();
 
                         @Override
-                        public void requestFinished(boolean existence) {
+                        public void searchRequestFinished(boolean existence) {
                             Log.v(TAG, "Requestfinished in Listener");
                             glideResizeandLoadURL(m_context, tc.getChannelsFromSearch().get(0).getPicURL(), pic);
                             AlertDialog.Builder builder3 = new AlertDialog.Builder(m_context);
@@ -145,27 +148,40 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                         //on Enter button
                         input1_2.setOnKeyListener(new CustomOnKeyListener() {
 
-                            PlatformClient yc = new YoutubeClient();
+                            alert2_2
+                            YoutubeClient yc = new YoutubeClient();
+                            int searchResultChosen;
 
                             @Override
-                            public void requestFinished(boolean existence) {
+                            public void ChannelRequestFinished() {
+                                YoutubeChannel choice = (YoutubeChannel) yc.getChannelsFromSearch().get(searchResultChosen);
+                                RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName());
+                                alarmOptionFinishedListener.saveOption(ringtoneOption, m_context);
+                                ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button, ringtoneOption);
+                            }
+
+                            @Override
+                            public void searchRequestFinished(boolean existence,CustomOnKeyListener context) {
 
                                 AlertDialog.Builder builder3 = new AlertDialog.Builder(m_context);
                                 AlertDialog alert3 = builder3.create();
                                 //recycler view
                                 //add searchresultsitems
-                                ArrayList<StreamerChannel> results = yc.getChannelsFromSearch();
-                                CustomAdapter searchResultsAdapter = new CustomAdapter(results, m_context);
-                                searchResultsAdapter.setClickListener(new CustomAdapter.ItemClickListener() {
+                                ArrayList<YoutubeChannel> results = yc.getChannelsFromSearch();
+                                CustomAdapter searchResultsAdapter = new YoutubeAdapter(results, m_context);
+                                searchResultsAdapter.setClickListener(new CustomAdapter.ItemClickListener()  {
+
                                     @Override
                                     //On choosing searchresult
                                     public void onItemClick(View view, int position) {
-                                        StreamerChannel choice = results.get(position);
-                                        RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName());
-                                        alarmOptionFinishedListener.saveOption(ringtoneOption, m_context);
-                                        ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button, ringtoneOption);
+                                        searchResultChosen = position;
+                                        YoutubeChannel choice = (YoutubeChannel) results.get(searchResultChosen);
+                                        yc.generateLiveContentURL(super().this, choice.getID());
                                         alert3.dismiss();
+
+
                                     }
+
                                 });
                                 RecyclerView searchResultsRecyclerView = new RecyclerView(m_context);
                                 RecyclerView.LayoutManager searchResultsLayoutManager = new LinearLayoutManager(m_context);
@@ -178,7 +194,6 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
 
                                 //Click which streamer you want
                                 //Return to setAlarmScreen
-
                             }
 
                             @Override

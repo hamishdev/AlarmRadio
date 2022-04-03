@@ -2,5 +2,6 @@ package com.example.goodmorninggamers.Network;
 
 public interface VolleyListener {
 
-    public void requestFinished(boolean existence);
+    public void searchRequestFinished(boolean existence);
 }
+

@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers.Network;
+package com.example.goodmorninggamers.Network.YoutubeChannelResponse;
 
 public class YouTubePortal {
 

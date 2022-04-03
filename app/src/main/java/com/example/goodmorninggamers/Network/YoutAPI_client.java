@@ -9,7 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.goodmorninggamers.GlobalClass;
-import com.example.goodmorninggamers.Network.getLiveStreamJSONObject.YoutAPI_getLiveStream_JSONobject;
+import com.example.goodmorninggamers.Network.YoutubeSearchResponse.YoutAPI_getLiveStream_JSONobject;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;

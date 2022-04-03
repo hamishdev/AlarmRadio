@@ -8,4 +8,5 @@ public interface PlatformClient {
     ArrayList<StreamerChannel> getChannelsFromSearch();
 
     void loadChannelsFromString(VolleyListener context, String searchInput);
+
 }

@@ -16,43 +16,28 @@ public class YoutubeChannel extends StreamerChannel{
 
     */
 
-    //private image m_BannerProfilePic;
-    private String m_ChannelName;
-    private int m_SubscriberCount;
-    private int m_videoCount;
-    private boolean m_addedToApp;
-    //Backend
-    private String m_ChannelID;
 
 
+    String m_liveContentURL;
+    String m_id;
 
-    public YoutubeChannel(String name, Boolean verified, String pic, long followers, boolean currentlyLive) {
+    public YoutubeChannel(String name, Boolean verified, String pic, long followers, boolean currentlyLive, String id) {
         super(name, verified, pic, followers, currentlyLive);
+        m_id = id;
     }
 
-    //public image getBannerProfilePic(){
-    //    return m_BannerProfilePic;
-    //}
+    @Override
+    public String getLiveContentURL(){
+        return "https://www.youtube.com/"+m_liveContentURL+"/live";
 
-    public String getChannelName(){
-        return m_ChannelName;
-    }
-
-    public int getSubscriberCount(){
-        return m_SubscriberCount;
-    }
-
-    public int getVideoCount(){
-        return m_videoCount;
-    }
-
-    public boolean getAddedToApp(){
-        return m_addedToApp;
-    }
-
-    public String getChannelID(){
-        return m_ChannelID;
     }
 
 
+    public void setLiveContentURL(String liveContentURL) {
+        m_liveContentURL = liveContentURL;
+    }
+
+    public String getID() {
+        return m_id;
+    }
 }

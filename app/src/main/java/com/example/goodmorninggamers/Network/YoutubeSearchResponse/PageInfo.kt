@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers.Network.getLiveStreamJSONObject
+package com.example.goodmorninggamers.Network.YoutubeSearchResponse
 
 data class PageInfo(
     val resultsPerPage: Int,

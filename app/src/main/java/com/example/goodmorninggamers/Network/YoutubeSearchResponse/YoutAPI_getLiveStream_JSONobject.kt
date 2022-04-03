@@ -1,4 +1,4 @@
-package com.example.goodmorninggamers.Network.getLiveStreamJSONObject
+package com.example.goodmorninggamers.Network.YoutubeSearchResponse
 
 data class YoutAPI_getLiveStream_JSONobject(
         val etag: String,

@@ -1,7 +1,5 @@
 package com.example.goodmorninggamers.Network;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -18,9 +16,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,14 +66,14 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
 
                             }
                         }
-                        volleyListener.requestFinished(true);
+                        volleyListener.searchRequestFinished(true, );
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.v(TAG, "that didn't work!");
-                        volleyListener.requestFinished(false);
+                        volleyListener.searchRequestFinished(false, );
                     }
                 });
 
