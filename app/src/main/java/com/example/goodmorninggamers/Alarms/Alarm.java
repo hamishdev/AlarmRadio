@@ -9,18 +9,56 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-//@Entity
+@Entity
 public class Alarm implements Serializable {
 
     private static final int TODAY = 0;
     private static final int TOMORROW = 1;
     private static final int ANYOTHER = 2;
+
+    public static int getTODAY() {
+        return TODAY;
+    }
+
+    public static int getTOMORROW() {
+        return TOMORROW;
+    }
+
+    public static int getANYOTHER() {
+        return ANYOTHER;
+    }
+
+    public int getDayInRelationToToday() {
+        return dayInRelationToToday;
+    }
+
+    public Calendar getToday() {
+        return today;
+    }
+
+    public int getAmPM() {
+        return amPM;
+    }
+
+    public Calendar getM_time() {
+        return m_time;
+    }
+
+    public ArrayList<RingtoneOption> getM_Ringtone_Options() {
+        return m_Ringtone_Options;
+    }
+
+    public long getId() {
+        return id;
+    }
+
     private int dayInRelationToToday;
     private Calendar today;
     private int amPM;
 
     private Calendar m_time;
     private ArrayList<RingtoneOption> m_Ringtone_Options;
+    private long id;
 
 
     public Alarm(Calendar time, ArrayList<RingtoneOption> ringtoneOptions){
@@ -29,6 +67,7 @@ public class Alarm implements Serializable {
         today = Calendar.getInstance();
         SetAMPM();
         SetDayInRelationToToday();
+        id = time.getTimeInMillis();
     }
 
 

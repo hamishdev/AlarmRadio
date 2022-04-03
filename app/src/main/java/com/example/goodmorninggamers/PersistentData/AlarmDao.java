@@ -9,19 +9,15 @@ import com.example.goodmorninggamers.Alarms.Alarm;
 
 import java.util.List;
 
-//@Dao
+@Dao
 public interface AlarmDao {
-    //@Query("SELECT * FROM alarm")
+    @Query("SELECT * FROM alarm")
     List<Alarm> getAll();
 
-    //@Query("SELECT * FROM alarm WHERE id IN (:alarmIDs)")
-    //List<Alarm> loadAllByIds(int[] alarmids);
 
-
-
-    //@Insert
+    @Insert
     void insertAll(Alarm... alarms);
 
-    //@Delete
+    @Delete
     void delete(Alarm alarm);
 }

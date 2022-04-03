@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Alarm> m_alarms;
     public AlarmAdapter alarmArrayAdapter;
     public AlarmCreator m_alarmCreator = new AlarmCreator();
+    public AppDatabase db;
+    public AlarmDao alarmDao;
 
 
     /**
@@ -61,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         //ONCREATE
         super.onCreate(savedInstanceState);
-        //AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-1").build();
-        //AlarmDao alarmDao = db.alarmDao();
-       // List<Alarm> alarms = alarmDao.getAll();
         setContentView(R.layout.home_screen);
         createNotificationChannel();
 
-        //m_alarms = (ArrayList<Alarm>)  alarms;
+        db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-1").build();
+        alarmDao = db.alarmDao();
+        m_alarms = (ArrayList<Alarm>)  alarmDao.getAll();
+
         //INITIALISE ALARMS
         //Initialise alarm list
         if(m_alarms ==null){
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     m_alarms.add(alarm);
                     Log.v(TAG,"alarms:"+m_alarms.size());
                     m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
+                    alarmDao.insertAll(alarm);
                     alarmArrayAdapter.notifyDataSetChanged();
                     Log.v(TAG, "All alarms: " + m_alarms.get(0).ToString());
 
