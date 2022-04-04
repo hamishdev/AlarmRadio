@@ -2,7 +2,7 @@ package com.example.goodmorninggamers.PersistentData;
 
 import androidx.room.TypeConverter;
 
-import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
+import com.example.goodmorninggamers.Alarms.RingtoneOption;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -10,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Converters {
     @TypeConverter

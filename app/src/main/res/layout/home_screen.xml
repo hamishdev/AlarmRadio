@@ -27,28 +27,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.926" />
 
+
     <TextView
         android:id="@+id/Homescreen_title"
         android:layout_width="237dp"
         android:layout_height="74dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
         android:text="Alarms"
         android:textColor="@android:color/black"
         android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.007" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="22dp"
         android:layout_height="46dp"
-        android:layout_marginStart="388dp"
-        android:layout_marginTop="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.972"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05"
         app:srcCompat="@drawable/settings_icon_176440" />
-
 
     <ImageView
         android:id="@+id/imageView3"

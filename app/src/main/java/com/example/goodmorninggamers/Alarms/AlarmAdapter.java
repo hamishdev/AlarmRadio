@@ -15,8 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
-import com.example.goodmorninggamers.Activities.GlideHelper;
-import com.example.goodmorninggamers.Alarms.Alarm;
+import com.example.goodmorninggamers.Helpers.GlideHelper;
 import com.example.goodmorninggamers.R;
 
 import java.util.ArrayList;

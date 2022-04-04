@@ -30,93 +30,107 @@
         android:id="@+id/timePicker1"
         android:layout_width="380dp"
         android:layout_height="361dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="88dp"
         android:timePickerMode="clock"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.612"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.183" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="24dp"
         android:text="Set an Alarm"
         android:textColor="#000000"
         android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.036" />
 
     <ImageButton
         android:id="@+id/SetAlarmBackBUtton"
         android:layout_width="51dp"
         android:layout_height="64dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:background="#00000000"
         android:padding="20dp"
         android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.005"
         app:srcCompat="@drawable/less_than_transparent" />
 
-    <com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.StreamerButton
+    <com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.StreamerButton
         android:id="@+id/firstStreamer"
         android:layout_width="@dimen/AlarmOptionSquareSize"
         android:layout_height="@dimen/AlarmOptionSquareSize"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="492dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:background="@drawable/button_border"
         android:scaleType="fitCenter"
         android:src="@drawable/magnifying_transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.159"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.733" />
 
-    <com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.StreamerButton
+    <com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.StreamerButton
         android:id="@+id/secondsStreamer"
         android:layout_width="@dimen/AlarmOptionSquareSize"
         android:layout_height="@dimen/AlarmOptionSquareSize"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="492dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:background="@drawable/button_border"
         android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.733"
         app:srcCompat="@drawable/magnifying_transparent" />
 
-    <com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.DefaultButton
+    <com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.DefaultButton
         android:id="@+id/defaultStreamer"
         android:layout_width="@dimen/AlarmOptionSquareSize"
         android:layout_height="@dimen/AlarmOptionSquareSize"
-        android:layout_marginStart="288dp"
-        android:layout_marginTop="492dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:background="@drawable/button_border"
         android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.82"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/magnifying_transparent"></com.example.goodmorninggamers.Activities.SetAlarmScreenComponents.DefaultButton>
+        app:layout_constraintVertical_bias="0.733"
+        app:srcCompat="@drawable/magnifying_transparent"></com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.DefaultButton>
 
     <ImageButton
         android:id="@+id/setAlarmButton"
         android:layout_width="89dp"
         android:layout_height="39dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:background="#00000000"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.962"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976"
         app:srcCompat="@drawable/black_oblong_transparent_cropped" />
 
     <TextView
@@ -137,41 +151,49 @@
         android:id="@+id/alarmTimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="436dp"
         android:text="Next alarm will ring in 24h"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.613" />
 
     <TextView
         android:id="@+id/DefaultOptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="288dp"
-        android:layout_marginTop="552dp"
         android:text="Back-up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.775" />
 
     <TextView
         android:id="@+id/AlarmOption1TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="552dp"
         android:text="Alarm 1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.154"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.775" />
 
     <TextView
         android:id="@+id/AlarmOption2TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="552dp"
         android:text="Alarm 2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.775" />
 
     <!--https://stackoverflow.com/questions/32678968/android-timepickerdialog-styling-guide-docs-->
 </androidx.constraintlayout.widget.ConstraintLayout>

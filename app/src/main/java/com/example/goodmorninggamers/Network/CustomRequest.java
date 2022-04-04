@@ -11,6 +11,10 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 
+/**
+ *
+ * @Class customrequest to enable Auth headers for Volley
+ */
 public class CustomRequest extends Request<JSONObject> {
 
     private Listener<JSONObject> listener;

@@ -3,8 +3,6 @@ package com.example.goodmorninggamers.Alarms;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

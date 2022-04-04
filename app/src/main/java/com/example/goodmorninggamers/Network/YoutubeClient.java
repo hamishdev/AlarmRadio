@@ -1,5 +1,6 @@
 package com.example.goodmorninggamers.Network;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -10,18 +11,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
 import com.example.goodmorninggamers.Channels.YoutubeChannel;
-import com.example.goodmorninggamers.GlobalClass;
-import com.example.goodmorninggamers.Network.YoutubeChannelResponse.ItemsItem;
-import com.example.goodmorninggamers.Network.YoutubeChannelResponse.YoutubeChannelResponse;
-import com.example.goodmorninggamers.Network.YoutubeSearchResponse.Item;
-import com.example.goodmorninggamers.Network.YoutubeSearchResponse.Snippet;
-import com.example.goodmorninggamers.Network.YoutubeSearchResponse.YoutAPI_getLiveStream_JSONobject;
+import com.example.goodmorninggamers.Network.JSON_POJO.YoutubeChannelResponse.YoutubeChannelResponse;
+import com.example.goodmorninggamers.Network.JSON_POJO.YoutubeSearchResponse.Item;
+import com.example.goodmorninggamers.Network.JSON_POJO.YoutubeSearchResponse.Snippet;
+import com.example.goodmorninggamers.Network.JSON_POJO.YoutubeSearchResponse.YoutAPI_getLiveStream_JSONobject;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 public class YoutubeClient  {
     private String TAG= "Youtube Client";
@@ -43,7 +41,7 @@ public class YoutubeClient  {
         VolleyListener volleyListener = (VolleyListener) context;
         String url =youtubeSearchURL+searchInput;
         Log.v(TAG, "url");
-        RequestQueue queue = Volley.newRequestQueue(GlobalClass.context);
+        RequestQueue queue = Volley.newRequestQueue((Context)context);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET,url,null,new Response.Listener<JSONObject>() {
 
             @Override
@@ -79,7 +77,7 @@ YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(), YoutAP
         VolleyListener volleyListener = (VolleyListener) context;
         String url =channelSearchURL+id;
         Log.v(TAG, "url");
-        RequestQueue queue = Volley.newRequestQueue(GlobalClass.context);
+        RequestQueue queue = Volley.newRequestQueue((Context) context);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET,url,null,new Response.Listener<JSONObject>() {
 
             @Override
@@ -88,7 +86,7 @@ YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(), YoutAP
                 YoutubeChannelResponse obj = gson.fromJson(response.toString(), YoutubeChannelResponse.class);
                 if(!obj.getItems().isEmpty()) {
 
-                    com.example.goodmorninggamers.Network.YoutubeChannelResponse.Snippet data = obj.getItems().get(0).getSnippet();
+                    com.example.goodmorninggamers.Network.JSON_POJO.YoutubeChannelResponse.Snippet data = obj.getItems().get(0).getSnippet();
                     volleyListener.ChannelRequestFinished(data.getCustomUrl());
 
                 }

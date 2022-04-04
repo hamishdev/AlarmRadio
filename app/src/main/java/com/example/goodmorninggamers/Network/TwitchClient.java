@@ -1,5 +1,6 @@
 package com.example.goodmorninggamers.Network;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -10,8 +11,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
 import com.example.goodmorninggamers.Channels.TwitchChannel;
-import com.example.goodmorninggamers.GlobalClass;
-import com.example.goodmorninggamers.Network.twitchresponse.DataItem;
+import com.example.goodmorninggamers.Network.JSON_POJO.twitchresponse.DataItem;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -42,15 +42,15 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization","Bearer ref82ho2xug5awjywyggqnd3ilhnnt");
         headers.put("Client-ID", "cfu1ujuc54ske6vjd0c73qewbuyo1g");
-        RequestQueue queue = Volley.newRequestQueue(GlobalClass.context);
+        RequestQueue queue = Volley.newRequestQueue((Context) context);
         CustomRequest jsObjRequest = new CustomRequest(Request.Method.GET,url,headers,new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.v(TAG,"com.example.goodmorninggamers.Network.twitchresponse.Response: " + response.toString());
+                        Log.v(TAG,"com.example.goodmorninggamers.Network.JSON_POJO.twitchresponse.Response: " + response.toString());
                         Gson gson = new Gson();
 
-                        com.example.goodmorninggamers.Network.twitchresponse.Response obj = gson.fromJson(response.toString(), com.example.goodmorninggamers.Network.twitchresponse.Response.class);
+                        com.example.goodmorninggamers.Network.JSON_POJO.twitchresponse.Response obj = gson.fromJson(response.toString(), com.example.goodmorninggamers.Network.JSON_POJO.twitchresponse.Response.class);
 
                         if(!obj.getData().isEmpty()){
                             for (DataItem channel:obj.getData()

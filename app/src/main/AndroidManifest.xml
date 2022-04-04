@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"></uses-permission>
 
     <application
-        android:name=".GlobalClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +15,7 @@
         >
 
 
-        <activity android:name=".Activities.MainActivity"
+        <activity android:name=".Activities.Main_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +28,8 @@
                 <data android:host="www.youtube.com" android:mimeType="text/*" />
             </intent-filter>
         </activity>
-        <activity android:name = ".Activities.SetAlarmScreenActivity"> </activity>
-        <receiver android:name=".Activities.GoodMorningGamersAlarmBroadcastReceiver" android:exported = "true">
+        <activity android:name = ".Activities.SetAlarmScreen_Activity"> </activity>
+        <receiver android:name=".Helpers.GoodMorningGamersAlarmBroadcastReceiver" android:exported = "true">
 
         </receiver>
     </application>
