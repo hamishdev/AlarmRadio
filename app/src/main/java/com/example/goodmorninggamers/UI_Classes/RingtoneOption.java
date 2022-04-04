@@ -15,9 +15,6 @@ m_ringtonePictureURL = pictureURL;
 m_name = name;
     }
 
-    public RingtoneOption(){
-
-    }
 
     public String getRingtonePicture(){
         return m_ringtonePictureURL;

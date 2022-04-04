@@ -1,6 +1,7 @@
 package com.example.goodmorninggamers.Alarms;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
 
@@ -12,58 +13,29 @@ import java.util.Calendar;
 @Entity
 public class Alarm implements Serializable {
 
-    private static final int TODAY = 0;
-    private static final int TOMORROW = 1;
-    private static final int ANYOTHER = 2;
+    public static final int TODAY = 0;
+    public static final int TOMORROW = 1;
+    public static final int ANYOTHER = 2;
 
-    public static int getTODAY() {
-        return TODAY;
-    }
-
-    public static int getTOMORROW() {
-        return TOMORROW;
-    }
-
-    public static int getANYOTHER() {
-        return ANYOTHER;
-    }
-
-    public int getDayInRelationToToday() {
-        return dayInRelationToToday;
-    }
-
-    public Calendar getToday() {
-        return today;
-    }
-
-    public int getAmPM() {
-        return amPM;
-    }
-
-    public Calendar getM_time() {
-        return m_time;
-    }
-
-    public ArrayList<RingtoneOption> getM_Ringtone_Options() {
-        return m_Ringtone_Options;
-    }
 
     public long getId() {
         return id;
     }
 
-    private int dayInRelationToToday;
-    private Calendar today;
-    private int amPM;
+    public int dayInRelationToToday;
+    public Calendar today;
+    public int amPM;
 
-    private Calendar m_time;
-    private ArrayList<RingtoneOption> m_Ringtone_Options;
-    private long id;
+    public Calendar time;
+    public ArrayList<RingtoneOption> ringtoneOptions;
+
+    @PrimaryKey
+    public long id;
 
 
     public Alarm(Calendar time, ArrayList<RingtoneOption> ringtoneOptions){
-        m_time = time;
-        m_Ringtone_Options = ringtoneOptions;
+        this.time = time;
+        this.ringtoneOptions = ringtoneOptions;
         today = Calendar.getInstance();
         SetAMPM();
         SetDayInRelationToToday();
@@ -73,19 +45,19 @@ public class Alarm implements Serializable {
 
 
     public ArrayList<RingtoneOption> getWakeupOptions(){
-        return m_Ringtone_Options;
+        return ringtoneOptions;
     }
     public void SetAMPM() {
-        amPM = m_time.get(Calendar.AM_PM);
+        amPM = time.get(Calendar.AM_PM);
     }
 
     private void SetDayInRelationToToday() {
         //if date && year matches
-        if (m_time.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) && m_time.get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
+        if (time.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) && time.get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
             dayInRelationToToday = TODAY;
         }
         //if year matches && day == next one
-        else if (m_time.get(Calendar.YEAR) == today.get(Calendar.YEAR) && m_time.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) + 1) {
+        else if (time.get(Calendar.YEAR) == today.get(Calendar.YEAR) && time.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) + 1) {
             dayInRelationToToday = TOMORROW;
         }
         //NOT TODAY OR TOMORROW
@@ -103,13 +75,13 @@ public class Alarm implements Serializable {
             case 1:
                 return "Tomorrow";
             case 2:
-                return m_time.get(Calendar.DAY_OF_MONTH) + " " + m_time.get(Calendar.MONTH);
+                return time.get(Calendar.DAY_OF_MONTH) + " " + time.get(Calendar.MONTH);
         }
         return "ERORR";
     }
 
     public Calendar getCalendarTime(){
-        return m_time;
+        return time;
     }
 
     public String getTwelvehourclock() {
@@ -121,12 +93,12 @@ public class Alarm implements Serializable {
     }
 
     public String ToString() {
-        String alarmTimeToString = new SimpleDateFormat("MM/dd/yyyy").format(m_time.getTime());
+        String alarmTimeToString = new SimpleDateFormat("MM/dd/yyyy").format(time.getTime());
         return alarmTimeToString;
     }
 
     private String getDisplayMinute(){
-        int minute = m_time.get(Calendar.MINUTE);
+        int minute = time.get(Calendar.MINUTE);
         if(String.valueOf(minute).length()==1){
             return "0"+String.valueOf(minute);
         }
@@ -134,7 +106,7 @@ public class Alarm implements Serializable {
     }
 
     private String getDisplayHour(){
-        int hour = m_time.get(Calendar.HOUR);
+        int hour = time.get(Calendar.HOUR);
         if(hour==0){
             return "12";
         }

@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.home_screen);
         createNotificationChannel();
 
-        db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-1").build();
+        db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"database-1").allowMainThreadQueries().build();
         alarmDao = db.alarmDao();
         m_alarms = (ArrayList<Alarm>)  alarmDao.getAll();
 
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         if(m_alarms ==null){
             m_alarms = new ArrayList<Alarm>(){};
         };
+        Log.v(TAG,m_alarms.size()+"");
         alarmArrayAdapter = new AlarmAdapter(this, m_alarms);
         //Initialise alarm ListView
         ListView alarmsListView = (ListView) findViewById(R.id.list);

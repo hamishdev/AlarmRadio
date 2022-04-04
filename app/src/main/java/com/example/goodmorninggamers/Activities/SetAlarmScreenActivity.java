@@ -66,9 +66,11 @@ public class SetAlarmScreenActivity extends AppCompatActivity implements  Ringto
         m_clockTime = Calendar.getInstance();
         m_wakeupRingtoneOptions = new ArrayList<RingtoneOption>(){
         };
-        m_wakeupRingtoneOptions.add(new RingtoneOption());
-        m_wakeupRingtoneOptions.add(new RingtoneOption());
-        m_wakeupRingtoneOptions.add(new RingtoneOption());
+        //setting empty ringtones
+        m_wakeupRingtoneOptions.add(new RingtoneOption("1","1","1"));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("2","2","2"));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("3","3","3"));
+
 
         setContentView(R.layout.set_alarm);
 

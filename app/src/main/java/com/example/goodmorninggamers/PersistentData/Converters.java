@@ -3,7 +3,12 @@ package com.example.goodmorninggamers.PersistentData;
 import androidx.room.TypeConverter;
 
 import com.example.goodmorninggamers.UI_Classes.RingtoneOption;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,16 +25,23 @@ public class Converters {
         return calendar == null ? null : calendar.getTimeInMillis();
     }
 
-    @TypeConverter
-    public static RingtoneOption fromStrings(String[] strings){
-        return new RingtoneOption(strings[0],strings[1],strings[2]);
+
+
+
+        @TypeConverter
+        public static ArrayList<RingtoneOption> arrayListfromString(String value) {
+            Type listType = new TypeToken<ArrayList<RingtoneOption>>() {}.getType();
+            return new Gson().fromJson(value, listType);
+        }
+
+        @TypeConverter
+        public static String fromArrayList(ArrayList<RingtoneOption> list) {
+        GsonBuilder builder = new GsonBuilder();
+        builder.serializeNulls();
+        Gson gson = builder.create();
+        Type listType = new TypeToken<ArrayList<RingtoneOption>>() {}.getType();
+            String json = gson.toJson(list,listType);
+            return json;
+        }
     }
 
-    @TypeConverter
-    public static String[] RingtoneOptiontoStrings(RingtoneOption ringtoneOption) {
-        return ringtoneOption == null ? null : new String[]{
-                ringtoneOption.getLiveContentURL(),ringtoneOption.getRingtonePicture(),ringtoneOption.getName()
-        };
-    }
-
-}
