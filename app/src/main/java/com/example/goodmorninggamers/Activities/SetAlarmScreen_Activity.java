@@ -50,7 +50,7 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
         m_wakeupRingtoneOptions.add(new RingtoneOption("3","3","3"));
 
 
-        setContentView(R.layout.set_alarm);
+        setContentView(R.layout.setalarm_screen);
 
         TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
         ImageButton backButton = (ImageButton) findViewById(R.id.SetAlarmBackBUtton);
