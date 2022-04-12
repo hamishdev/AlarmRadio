@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.goodmorninggamers.Helpers.GlideHelper;
 import com.example.goodmorninggamers.R;
@@ -52,32 +54,43 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
 
 
         Activity activity = (Activity) context;
-
+        int youtubeRed = ContextCompat.getColor(context,R.color.youtubeRed);
+        int twitchPurple = ContextCompat.getColor(context,R.color.twitchPurple);
         //Ring#1
-        CardView cardView =(CardView)listItem.findViewById(R.id.StreamerRing1);
-        CardView cardView2 =(CardView)cardView.findViewById(R.id.StreamerRing1);
-        ImageView ringPic = (ImageView) cardView2.findViewById(R.id.RingRingtonePic1);
-        Log.v(TAG,"ID"+ringPic.getId());
-        Log.v(TAG,"PICURL"+currentAlarm.getWakeupOptions().get(0).getRingtonePicture());
+        ImageView ringPic = (ImageView) listItem.findViewById(R.id.RingRingtonePic1);
+        CardView cardview1 = listItem.findViewById(R.id.StreamerRing1);
+        if(currentAlarm.getWakeupOptions().get(0).getLiveChecker()!=null){
+            int platform = currentAlarm.getWakeupOptions().get(0).getLiveChecker().m_platform;
+            cardview1.setCardBackgroundColor(platform==0?twitchPurple:youtubeRed);
+        }
+
         glideResizeandLoadURL(activity, currentAlarm.getWakeupOptions().get(0).getRingtonePicture(),ringPic);
 
 
         //Ring#2
         ImageView ring2Pic = (ImageView) listItem.findViewById(R.id.RingRingtonePic2);
+        CardView cardview2 = listItem.findViewById(R.id.StreamerRing2);
+        if(currentAlarm.getWakeupOptions().get(1).getLiveChecker()!=null){
+            int platform2 = currentAlarm.getWakeupOptions().get(1).getLiveChecker().m_platform;
+            cardview2.setCardBackgroundColor(platform2==0?twitchPurple:youtubeRed);
+        }
         glideResizeandLoadURL(activity, currentAlarm.getWakeupOptions().get(1).getRingtonePicture(),ring2Pic);
 
-        Log.v(TAG,"ID"+ring2Pic.getId());
-        Log.v(TAG,"PICURL"+currentAlarm.getWakeupOptions().get(1).getRingtonePicture());
 
         //Ring#3
+
+        CardView cardview3 = listItem.findViewById(R.id.StreamerRing3);
+
+        if(currentAlarm.getWakeupOptions().get(1).getLiveChecker()!=null){
+            int platform3 = currentAlarm.getWakeupOptions().get(2).getLiveChecker().m_platform;
+            cardview3.setCardBackgroundColor(platform3==0?twitchPurple:youtubeRed);
+        }
         ImageView ring3pic = (ImageView) listItem.findViewById(R.id.RingRingtonePic3);
         glideResizeandLoadURL(activity, currentAlarm.getWakeupOptions().get(2).getRingtonePicture(),ring3pic);
 
         //Toggle
         Switch toggleButton = (Switch) listItem.findViewById(R.id.AlarmToggle);
         toggleButton.setChecked(true);
-        Log.v(TAG,"ID"+ring3pic.getId());
-        Log.v(TAG,"PICURL"+currentAlarm.getWakeupOptions().get(2).getRingtonePicture());
 
         return listItem;
     }

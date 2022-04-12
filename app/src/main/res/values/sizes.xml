@@ -3,8 +3,8 @@
     <dimen name="AlarmOptionSquareSize">60dp</dimen>
     <dimen name="list_item_height">60dp</dimen>
     <dimen name="margin_medium">60dp</dimen>
-    <dimen name="ringtone_icon">25dp</dimen>
-    <dimen name ="StreamerRing"> 30dp</dimen>
+    <dimen name="ringtone_icon">30dp</dimen>
+    <dimen name ="StreamerRing"> 35dp</dimen>
 
 
 </resources>
