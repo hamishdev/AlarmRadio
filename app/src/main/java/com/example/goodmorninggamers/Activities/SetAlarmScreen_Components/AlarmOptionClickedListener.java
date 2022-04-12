@@ -5,10 +5,12 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,7 +58,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                     Log.v(TAG, "0:" + which);
                     EditText input = new EditText(m_context);
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    input.setText("Search Twitch");
+                    input.setGravity(Gravity.CENTER);
                     input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                         @Override
                         public void onFocusChange(View view, boolean b) {
@@ -68,7 +70,10 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                     });
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(m_context);
                     builder2.setView(input);
-                    builder2.setTitle("Enter name of Channel");
+                    TextView title = new TextView(m_context);
+                    title.setText("Search twitch");
+                    title.setGravity(Gravity.CENTER);
+                    builder2.setCustomTitle(title);
                     AlertDialog alert2 = builder2.create();
                     //on Enter button
                     input.setOnKeyListener(new CustomOnKeyListener() {
@@ -133,7 +138,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                         Log.v(TAG,"1:"+which);
                         EditText input1_2 = new EditText(m_context);
                         input1_2.setInputType(InputType.TYPE_CLASS_TEXT);
-                        input1_2.setText("Search Youtube");
+                        input1_2.setGravity(Gravity.CENTER);
                         input1_2.setTextColor(Color.GRAY);
                         input1_2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                             @Override
@@ -145,7 +150,10 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                             }
                         });
                         AlertDialog.Builder builder2_2 = new AlertDialog.Builder(m_context);
-                        builder2_2.setTitle("Enter name of Channel");
+                        TextView title = new TextView(m_context);
+                        title.setText("Search Youtube");
+                        title.setGravity(Gravity.CENTER);
+                        builder2_2.setCustomTitle(title);
                         builder2_2.setView(input1_2);
 
                         AlertDialog alert2_2 = builder2_2.create();
