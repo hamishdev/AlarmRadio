@@ -81,7 +81,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
 
         CardView cardview3 = listItem.findViewById(R.id.StreamerRing3);
 
-        if(currentAlarm.getWakeupOptions().get(1).getLiveChecker()!=null){
+        if(currentAlarm.getWakeupOptions().get(2).getLiveChecker()!=null){
             int platform3 = currentAlarm.getWakeupOptions().get(2).getLiveChecker().m_platform;
             cardview3.setCardBackgroundColor(platform3==0?twitchPurple:youtubeRed);
         }

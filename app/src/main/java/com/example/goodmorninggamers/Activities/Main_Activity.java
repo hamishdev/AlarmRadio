@@ -74,6 +74,7 @@ public class Main_Activity extends AppCompatActivity {
             m_alarms = new ArrayList<Alarm>(){};
         };
         Log.v(TAG,m_alarms.size()+"");
+        m_alarms.sort((o1,o2) ->o1.time.compareTo(o2.time));
         alarmArrayAdapter = new AlarmAdapter(this, m_alarms);
         //Initialise alarm ListView
         ListView alarmsListView = (ListView) findViewById(R.id.list);
@@ -115,6 +116,7 @@ public class Main_Activity extends AppCompatActivity {
                     Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
                     Log.v(TAG,"alarmurl"+alarm.getWakeupOptions().get(0).getLiveContentURL());
                     m_alarms.add(alarm);
+                    m_alarms.sort((o1,o2) ->o1.time.compareTo(o2.time));
                     Log.v(TAG,"alarms:"+m_alarms.size());
                     m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
                     alarmDao.insertAll(alarm);
