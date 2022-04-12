@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.goodmorninggamers.Alarms.LiveChecker;
 import com.example.goodmorninggamers.Helpers.GlideHelper;
 import com.example.goodmorninggamers.Activities.SetAlarmScreen_Activity;
 import com.example.goodmorninggamers.Channels.StreamerChannel;
@@ -73,7 +74,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                     input.setOnKeyListener(new CustomOnKeyListener() {
 
                         ImageView pic = new ImageView(m_context);
-                        PlatformClient tc = new TwitchClient();
+                        PlatformClient tc = new TwitchClient(m_context);
 
                         @Override
                         public void searchRequestFinished(boolean existence) {
@@ -89,7 +90,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                                 @Override
                                 public void onItemClick(View view, int position) {
                                     StreamerChannel choice = tc.getChannelsFromSearch().get(position);
-                                    RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName());
+                                    RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName(),new LiveChecker(choice.getName(),0));
                                     alarmOptionFinishedListener.saveOption(ringtoneOption, m_context);
                                     ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button, ringtoneOption);
                                     alert3.dismiss();
@@ -153,14 +154,14 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                         input1_2.setOnKeyListener(new CustomOnKeyListener() {
 
                             CustomOnKeyListener secretVolleyListener = this;
-                            YoutubeClient yc = new YoutubeClient();
+                            YoutubeClient yc = new YoutubeClient(m_context);
                             int searchResultChosen;
 
                             @Override
                             public void ChannelRequestFinished(String url) {
                                 YoutubeChannel choice =  (YoutubeChannel) yc.getChannelsFromSearch().get(searchResultChosen);
                                 choice.setLiveContentURL(url);
-                                RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName());
+                                RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName(),new LiveChecker(choice.getID(), 1));
                                 alarmOptionFinishedListener.saveOption(ringtoneOption, m_context);
                                 ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button, ringtoneOption);
                             }

@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name = ".Activities.SetAlarmScreen_Activity"> </activity>
-        <receiver android:name=".Helpers.GoodMorningGamersAlarmBroadcastReceiver" android:exported = "true">
+        <receiver android:name=".AlarmBroadcastReceiver.GoodMorningGamersAlarmBroadcastReceiver" android:exported = "true">
 
         </receiver>
     </application>

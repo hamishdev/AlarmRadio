@@ -7,9 +7,10 @@ public class RingtoneOption implements Serializable {
     String m_LiveContentURL;
     String m_ringtonePictureURL;
     String m_name;
+    LiveChecker m_liveChecker;
 
-
-    public RingtoneOption(String LiveContentURL, String pictureURL, String name){
+    public RingtoneOption(String LiveContentURL, String pictureURL, String name, LiveChecker liveChecker){
+        m_liveChecker=liveChecker;
 m_LiveContentURL= LiveContentURL;
 m_ringtonePictureURL = pictureURL;
 m_name = name;
@@ -23,6 +24,10 @@ m_name = name;
         return m_LiveContentURL;
     }
     public String getName() {return m_name;}
+
+    public LiveChecker getLiveChecker() {
+        return m_liveChecker;
+    }
 
     //Picture
     //Process that tries to get a ringtone

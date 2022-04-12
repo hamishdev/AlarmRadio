@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 
+import com.example.goodmorninggamers.Alarms.LiveChecker;
 import com.example.goodmorninggamers.Helpers.GlideHelper;
 import com.example.goodmorninggamers.Activities.SetAlarmScreen_Activity;
 import com.example.goodmorninggamers.Alarms.RingtoneOption;
@@ -32,7 +33,7 @@ public DefaultOptionClickedListener(SetAlarmScreen_Activity context, DefaultButt
         builder.setItems(new String[]{"Lofi HipHop"},new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                RingtoneOption createdRingtone = new RingtoneOption(lofiHiphop,lofiHiphopPic,"Lofi Hip Hop");
+                RingtoneOption createdRingtone = new RingtoneOption(lofiHiphop,lofiHiphopPic,"Lofi Hip Hop",new LiveChecker("UCSJ4gkVC6NrvII8umztf0Ow",1));
                 defaultOptionFinishedListener.saveDefaultOption(m_context,createdRingtone);
                 ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button,createdRingtone);
             }

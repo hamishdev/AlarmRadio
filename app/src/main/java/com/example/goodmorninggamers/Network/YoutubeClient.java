@@ -24,11 +24,13 @@ import java.util.ArrayList;
 public class YoutubeClient  {
     private String TAG= "Youtube Client";
     public ArrayList<StreamerChannel> m_searchResults;
+    private Context m_activityContext;
     public String APIKey = "AIzaSyBErDC2FJEo492JeSC1kPYZrSzsBwdQd3g";
     public String youtubeSearchURL = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&type=channel&key="+APIKey+"&q=";
     public String channelSearchURL = "https://youtube.googleapis.com/youtube/v3/channels?part=snippet&key="+APIKey+"&id=";
 
-    public YoutubeClient(){
+    public YoutubeClient(Context activityContext){
+        m_activityContext = activityContext;
         m_searchResults = new ArrayList<StreamerChannel>();
     }
 
@@ -41,7 +43,7 @@ public class YoutubeClient  {
         VolleyListener volleyListener = (VolleyListener) context;
         String url =youtubeSearchURL+searchInput;
         Log.v(TAG, "url");
-        RequestQueue queue = Volley.newRequestQueue((Context)context);
+        RequestQueue queue = Volley.newRequestQueue(m_activityContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET,url,null,new Response.Listener<JSONObject>() {
 
             @Override
@@ -77,7 +79,7 @@ YoutAPI_getLiveStream_JSONobject obj = gson.fromJson(response.toString(), YoutAP
         VolleyListener volleyListener = (VolleyListener) context;
         String url =channelSearchURL+id;
         Log.v(TAG, "url");
-        RequestQueue queue = Volley.newRequestQueue((Context) context);
+        RequestQueue queue = Volley.newRequestQueue((Context) m_activityContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET,url,null,new Response.Listener<JSONObject>() {
 
             @Override

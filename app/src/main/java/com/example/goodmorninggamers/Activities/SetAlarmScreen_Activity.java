@@ -45,9 +45,9 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
         m_wakeupRingtoneOptions = new ArrayList<RingtoneOption>(){
         };
         //setting empty ringtones
-        m_wakeupRingtoneOptions.add(new RingtoneOption("1","1","1"));
-        m_wakeupRingtoneOptions.add(new RingtoneOption("2","2","2"));
-        m_wakeupRingtoneOptions.add(new RingtoneOption("3","3","3"));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("1","1","1",null));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("2","2","2",null));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("3","3","3",null));
 
 
         setContentView(R.layout.setalarm_screen);

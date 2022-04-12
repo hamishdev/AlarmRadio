@@ -8,7 +8,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.goodmorninggamers.Helpers.GoodMorningGamersAlarmBroadcastReceiver;
+import com.example.goodmorninggamers.AlarmBroadcastReceiver.GoodMorningGamersAlarmBroadcastReceiver;
 
 import java.util.Calendar;
 

@@ -24,17 +24,18 @@ public class TwitchClient implements PlatformClient {
 
     private  String TAG = "TwitchClient";
     private ArrayList<StreamerChannel> m_searchResults;
-
+    private Context m_activityContext;
     @Override
     public ArrayList<StreamerChannel> getChannelsFromSearch(){
         return m_searchResults;
     }
-    public TwitchClient(){
+    public TwitchClient(Context activityContext){
+        m_activityContext = activityContext;
         m_searchResults = new ArrayList<StreamerChannel>();
     }
     @Override
-    public void loadChannelsFromString(VolleyListener context, String searchInput){
-        VolleyListener volleyListener = (VolleyListener) context;
+    public void loadChannelsFromString(VolleyListener vlContext, String searchInput){
+        VolleyListener volleyListener = vlContext;
         Log.v(TAG, "got here");
         VolleyLog.DEBUG = true;
 String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
@@ -42,7 +43,7 @@ String url = "https://api.twitch.tv/helix/search/channels?query=" + searchInput;
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization","Bearer ref82ho2xug5awjywyggqnd3ilhnnt");
         headers.put("Client-ID", "cfu1ujuc54ske6vjd0c73qewbuyo1g");
-        RequestQueue queue = Volley.newRequestQueue((Context) context);
+        RequestQueue queue = Volley.newRequestQueue( m_activityContext);
         CustomRequest jsObjRequest = new CustomRequest(Request.Method.GET,url,headers,new Response.Listener<JSONObject>() {
 
                     @Override
