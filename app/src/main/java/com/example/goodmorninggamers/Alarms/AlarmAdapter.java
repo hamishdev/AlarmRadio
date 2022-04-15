@@ -41,13 +41,25 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
         if(listItem == null)
             listItem = LayoutInflater.from(context).inflate(R.layout.listview_alarms,parent,false);
 
+        Alarm currentAlarm = m_alarms.get(position);
+        ToggleListener tl = (ToggleListener) context;
 
-
+        listItem.setLongClickable(true);
+        listItem.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                //createDeleteScreen()
+                tl.turnOffAlarm(currentAlarm);
+                m_alarms.remove(position);
+                notifyDataSetChanged();
+                return true;
+            }
+        });
 
         //Populating listview Data
 
 
-        Alarm currentAlarm = m_alarms.get(position);
+
 
         //Digitaltime
         TextView time = (TextView) listItem.findViewById(R.id.alarm12hourtime);
@@ -96,7 +108,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
         //Toggle
         Switch toggleButton = (Switch) listItem.findViewById(R.id.AlarmToggle);
         toggleButton.setChecked(currentAlarm.on);
-        ToggleListener tl = (ToggleListener) context;
 
 
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
