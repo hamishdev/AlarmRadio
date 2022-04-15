@@ -25,7 +25,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/StreamerRing"
         android:layout_height="@dimen/StreamerRing"
-       android:layout_marginStart="110dp"
+       android:layout_marginStart="150dp"
         android:id="@+id/StreamerRing1"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="250dp"

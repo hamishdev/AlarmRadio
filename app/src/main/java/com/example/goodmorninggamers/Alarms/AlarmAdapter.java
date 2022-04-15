@@ -2,11 +2,12 @@ package com.example.goodmorninggamers.Alarms;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -15,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.example.goodmorninggamers.Helpers.GlideHelper;
 import com.example.goodmorninggamers.R;
@@ -25,14 +25,13 @@ import java.util.ArrayList;
 public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
 
     private Context context;
-    private ArrayList<Alarm> alarms;
-
+    private ArrayList<Alarm> m_alarms;
     public String TAG ="Alarm Adapter";
 
     public AlarmAdapter(Context context, ArrayList<Alarm> alarms){
         super(context,0,alarms);
         this.context=context;
-        this.alarms=alarms;
+        this.m_alarms =alarms;
     }
 
 
@@ -42,7 +41,13 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
         if(listItem == null)
             listItem = LayoutInflater.from(context).inflate(R.layout.listview_alarms,parent,false);
 
-        Alarm currentAlarm = alarms.get(position);
+
+
+
+        //Populating listview Data
+
+
+        Alarm currentAlarm = m_alarms.get(position);
 
         //Digitaltime
         TextView time = (TextView) listItem.findViewById(R.id.alarm12hourtime);
@@ -90,7 +95,25 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
 
         //Toggle
         Switch toggleButton = (Switch) listItem.findViewById(R.id.AlarmToggle);
-        toggleButton.setChecked(true);
+        toggleButton.setChecked(currentAlarm.on);
+        ToggleListener tl = (ToggleListener) context;
+
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    tl.turnOnAlarm(currentAlarm);
+                    currentAlarm.switchOn();
+                }
+                else{
+                    tl.turnOffAlarm(currentAlarm);
+                    currentAlarm.switchOff();
+
+                }
+            }
+        });
+
 
         return listItem;
     }

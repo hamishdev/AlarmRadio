@@ -16,7 +16,7 @@ public class Alarm implements Serializable {
     public static final int ANYOTHER = 2;
 
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -26,18 +26,20 @@ public class Alarm implements Serializable {
 
     public Calendar time;
     public ArrayList<RingtoneOption> ringtoneOptions;
+    public boolean on;
 
     @PrimaryKey
-    public long id;
+    public int id;
 
 
     public Alarm(Calendar time, ArrayList<RingtoneOption> ringtoneOptions){
+        on = true;
         this.time = time;
         this.ringtoneOptions = ringtoneOptions;
         today = Calendar.getInstance();
         SetAMPM();
         SetDayInRelationToToday();
-        id = time.getTimeInMillis();
+        id = (int) System.currentTimeMillis();
     }
 
 
@@ -86,9 +88,6 @@ public class Alarm implements Serializable {
         return getDisplayHour() + ":" + getDisplayMinute() + (amPM == Calendar.AM ? "am" : "pm");
     }
 
-    public int getmImageDrawable(){
-        return 0;
-    }
 
     public String ToString() {
         String alarmTimeToString = new SimpleDateFormat("MM/dd/yyyy").format(time.getTime());
@@ -112,4 +111,10 @@ public class Alarm implements Serializable {
 
     }
 
+    public void switchOff() {
+        this.on = false;
+    }
+    public void switchOn(){
+        this.on = true;
+    }
 }

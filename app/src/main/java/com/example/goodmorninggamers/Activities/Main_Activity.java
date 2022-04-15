@@ -9,11 +9,13 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import com.example.goodmorninggamers.Alarms.Alarm;
+import com.example.goodmorninggamers.Alarms.ToggleListener;
 import com.example.goodmorninggamers.PersistentData.AlarmDao;
 import com.example.goodmorninggamers.PersistentData.AppDatabase;
 import com.example.goodmorninggamers.Alarms.AlarmAdapter;
@@ -22,6 +24,7 @@ import com.example.goodmorninggamers.Alarms.AlarmCreator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -35,7 +38,7 @@ import java.util.ArrayList;
  * @author Hamish Burns
 
  */
-public class Main_Activity extends AppCompatActivity {
+public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
     private static final String TAG = "MainActivity";
 
@@ -45,6 +48,7 @@ public class Main_Activity extends AppCompatActivity {
 
     public static String AndroidChannelID = "Alarm";
     public ArrayList<Alarm> m_alarms;
+    public ArrayList<Alarm> m_UIalarms;
     public AlarmAdapter alarmArrayAdapter;
     public AlarmCreator m_alarmCreator = new AlarmCreator();
     public AppDatabase db;
@@ -74,6 +78,7 @@ public class Main_Activity extends AppCompatActivity {
             m_alarms = new ArrayList<Alarm>(){};
         };
         Log.v(TAG,m_alarms.size()+"");
+
         m_alarms.sort((o1,o2) ->o1.time.compareTo(o2.time));
         alarmArrayAdapter = new AlarmAdapter(this, m_alarms);
         //Initialise alarm ListView
@@ -159,7 +164,19 @@ public class Main_Activity extends AppCompatActivity {
     }
 
 
+    //Alarm turned OFF via main screen toggle
+    @Override
+    public void turnOffAlarm(Alarm alarm) {
+        m_alarmCreator.deleteAlarm(this,alarm);
 
-
-
+    }
+    //Alarm turned ON via main screen toggle
+    @Override
+    public void turnOnAlarm(Alarm alarm) {
+        Calendar now = Calendar.getInstance();
+        //Don't switch on in-the-past alarms
+        if(now.compareTo(alarm.getCalendarTime())<0) {
+            m_alarmCreator.createAlarm(this, alarm);
+        }
+    }
 }
