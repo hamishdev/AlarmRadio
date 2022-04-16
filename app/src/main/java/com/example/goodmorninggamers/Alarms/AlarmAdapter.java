@@ -49,10 +49,17 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
             @Override
             public boolean onLongClick(View view) {
                 //createDeleteScreen()
-                tl.turnOffAlarm(currentAlarm);
+                tl.deleteAlarm(currentAlarm);
                 m_alarms.remove(position);
                 notifyDataSetChanged();
                 return true;
+            }
+        });
+
+        listItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tl.editAlarm(currentAlarm);
             }
         });
 

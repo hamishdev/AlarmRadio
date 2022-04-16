@@ -48,7 +48,6 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
     public static String AndroidChannelID = "Alarm";
     public ArrayList<Alarm> m_alarms;
-    public ArrayList<Alarm> m_UIalarms;
     public AlarmAdapter alarmArrayAdapter;
     public AlarmCreator m_alarmCreator = new AlarmCreator();
     public AppDatabase db;
@@ -163,6 +162,12 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
         }
     }
 
+    @Override
+    public void onStop(){
+        //Save alarms
+        alarmDao.updateAlarms(m_alarms);
+        super.onStop();
+    }
 
     //Alarm turned OFF via main screen toggle
     @Override
@@ -170,6 +175,8 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
         m_alarmCreator.deleteAlarm(this,alarm);
 
     }
+
+
     //Alarm turned ON via main screen toggle
     @Override
     public void turnOnAlarm(Alarm alarm) {
@@ -178,5 +185,16 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
         if(now.compareTo(alarm.getCalendarTime())<0) {
             m_alarmCreator.createAlarm(this, alarm);
         }
+    }
+
+    @Override
+    public void deleteAlarm(Alarm currentAlarm) {
+        alarmDao.delete(currentAlarm);
+        m_alarmCreator.deleteAlarm(this,currentAlarm);
+    }
+
+    @Override
+    public void editAlarm(Alarm currentAlarm){
+
     }
 }
