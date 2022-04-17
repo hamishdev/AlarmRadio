@@ -3,16 +3,19 @@ package com.example.goodmorninggamers.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.text.SpannableString;
 import android.text.style.AlignmentSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.AlarmOptionClickedListener;
@@ -35,9 +38,14 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
     int alarmMinute;
     private static final String TAG = "SetAlarmScreenActivity";
     private Calendar m_clockTime;
+    private int m_selectedYear;
+    private int m_selectedMonth;
+    private int m_selectedDayOfMonth;
+
     private ArrayList<RingtoneOption> m_wakeupRingtoneOptions;
     private Boolean defaultIsSet = false;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onCreate(Bundle SavedInstanceState) {
 
         super.onCreate(SavedInstanceState);
@@ -59,13 +67,22 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
         DefaultButton setDefaultStreamerButton = (DefaultButton) findViewById(R.id.defaultStreamer);
         ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
+        DatePicker datepicker = (DatePicker) findViewById(R.id.datePicker1);
 
+        datepicker.setMinDate(System.currentTimeMillis() - 1000);
+        datepicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                updateDay(year,month,dayOfMonth);
+                updateNextAlarmTextString(alarmTimeText);
+            }
+        });
 
         clock.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker timePicker, int i, int i1) {
                 updateAlarmTime(i,i1);
-                updateAlarmTimeText(alarmTimeText);
+                updateNextAlarmTextString(alarmTimeText);
             }
         });
 
@@ -150,19 +167,25 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
 
     }
 
+
+
     public void updateDefault(Boolean defaultstatus){
         defaultIsSet=defaultstatus;
     }
 
-    private Alarm turnFieldsIntoAlarm(){
-        Alarm fromData = new Alarm(m_clockTime,m_wakeupRingtoneOptions);
-        Log.v(TAG,"alarm time set!");
-        return fromData;
+
+    private void updateDay(int year, int month, int dayOfMonth) {
+
+        m_selectedYear = year;
+        m_selectedMonth = month;
+        m_selectedDayOfMonth = dayOfMonth;
+        m_clockTime.set(year,month,dayOfMonth);
+        Log.v(TAG,"selectedYear:"+year);
+        Log.v(TAG,"selectedMonth:"+month);
+        Log.v(TAG,"selectedDayOfMonth:"+dayOfMonth);
+        Log.v(TAG, "clocktime date:"+m_clockTime.get(Calendar.DATE));
+
     }
-
-
-
-
     public void updateAlarmTime(int hourOfDay,int minute){
 
         Calendar clockTime =Calendar.getInstance();
@@ -183,19 +206,13 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
 
     }
 
-    public void updateAlarmTimeText(TextView alarmTimeText){
+    public void updateNextAlarmTextString(TextView alarmTimeText){
         long difference = m_clockTime.getTimeInMillis()-Calendar.getInstance().getTimeInMillis();
         int days = (int) (difference / (1000*60*60*24));
         int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
         int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
-        String clockAlarmString = "Next alarm will ring in "+(hours==0?"":hours+"h")+min+"m";
+        String clockAlarmString = "Next alarm will ring in "+(days==0?"":days+"days")+(hours==0?"":hours+"h")+min+"m";
         alarmTimeText.setText(clockAlarmString);
-    }
-    public void setAlarmHour(int fragmentAlarmHour){
-        alarmHour=fragmentAlarmHour;
-    }
-    public void setAlarmMinute(int fragmentAlarmMinute){
-        alarmMinute=fragmentAlarmMinute;
     }
 
 
