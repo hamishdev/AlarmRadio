@@ -84,7 +84,7 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
         };
         Log.v(TAG,m_alarms.size()+"");
 
-        m_alarms.sort((o1,o2) ->o1.time.compareTo(o2.time));
+        m_alarms.sort((o1,o2) ->(o1.totalMinutes.compareTo(o2.totalMinutes));
         alarmArrayAdapter = new AlarmAdapter(this, m_alarms);
         //Initialise alarm ListView
         ListView alarmsListView = (ListView) findViewById(R.id.list);
@@ -151,13 +151,12 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
                     Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
                     Log.v(TAG,"alarmurl"+alarm.getWakeupOptions().get(0).getLiveContentURL());
                     m_alarms.add(alarm);
-                    m_alarms.sort((o1,o2) ->o1.time.compareTo(o2.time));
+                    m_alarms.sort((o1,o2) ->o1.getTotalMinutes().compareTo(o2.getTotalMinutes()));
                     Log.v(TAG,"alarms:"+m_alarms.size());
                     m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
                     alarmDao.insertAll(alarm);
 
                     alarmArrayAdapter.notifyDataSetChanged();
-                    Log.v(TAG, "All alarms: " + m_alarms.get(0).ToString());
 
 
 
@@ -212,11 +211,8 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
     //Alarm turned ON via main screen toggle
     @Override
     public void turnOnAlarm(Alarm alarm) {
-        Calendar now = Calendar.getInstance();
-        //Don't switch on in-the-past alarms
-        if(now.compareTo(alarm.getCalendarTime())<0) {
-            m_alarmCreator.createAlarm(this, alarm);
-        }
+        m_alarmCreator.createAlarm(this, alarm);
+
     }
 
     @Override

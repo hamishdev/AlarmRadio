@@ -55,7 +55,6 @@ public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOpt
         TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
         clock.setHour(m_clockTime.get(Calendar.HOUR));
         clock.setMinute(m_clockTime.get(Calendar.MINUTE));
-
         ImageButton backButton = (ImageButton) findViewById(R.id.SetAlarmBackBUtton);
         StreamerButton setFirstStreamerButton =  (StreamerButton) findViewById(R.id.firstStreamer);
         setFirstStreamerButton.saveOption(m_wakeupRingtoneOptions.get(0),this);
@@ -66,6 +65,7 @@ public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOpt
 
         ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
+        updateNextAlarmTextString(alarmTimeText);
         DatePicker datepicker = (DatePicker) findViewById(R.id.datePicker1);
         datepicker.updateDate(m_clockTime.get(Calendar.YEAR),m_clockTime.get(Calendar.MONTH),m_clockTime.get(Calendar.DAY_OF_MONTH));
 

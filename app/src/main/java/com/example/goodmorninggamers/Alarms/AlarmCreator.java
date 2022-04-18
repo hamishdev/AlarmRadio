@@ -26,7 +26,9 @@ public class AlarmCreator extends AppCompatActivity {
 
 
 
-        Calendar AlarmTime = alarm.getCalendarTime();
+        Calendar alarmTime = Calendar.getInstance();
+                alarmTime.set(Calendar.HOUR_OF_DAY,alarm.getHour());
+                alarmTime.set(Calendar.MINUTE,alarm.getMinute());
 
 
             Intent intent = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
@@ -39,12 +41,12 @@ public class AlarmCreator extends AppCompatActivity {
 
             ////////Logging
             Log.v(TAG,"alarm broadcast set");
-            Log.v(TAG, String.valueOf(AlarmTime.getTimeInMillis()));
-            String timeOfTheAlarmAsWords = AlarmTime.getTime().toString();
+            Log.v(TAG, String.valueOf(alarmTime.getTimeInMillis()));
+            String timeOfTheAlarmAsWords = alarmTime.getTime().toString();
             Log.v(TAG,timeOfTheAlarmAsWords);
 
             //Create AlARM
-            myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, AlarmTime.getTimeInMillis(), alarmIntent);
+            myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);
 
 
 
@@ -69,13 +71,15 @@ public class AlarmCreator extends AppCompatActivity {
         myManager.cancel(alarmToCancel);
 
         //Create new Alarm
-        Calendar AlarmTime = toEditAlarm.getCalendarTime();
+        Calendar alarmTime = Calendar.getInstance();
+        alarmTime.set(Calendar.HOUR_OF_DAY,toEditAlarm.getHour());
+        alarmTime.set(Calendar.MINUTE,toEditAlarm.getMinute());
         Intent intent = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
         intent.putExtra("alarm", toEditAlarm);
         final int id= toEditAlarm.getId();
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_IMMUTABLE);
         //Create AlARM
-        myManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, AlarmTime.getTimeInMillis(), alarmIntent);
+        myManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);
 
 
     }
