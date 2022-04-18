@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.goodmorninggamers.Activities.Main_Activity;
 import com.example.goodmorninggamers.Alarms.Alarm;
+import com.example.goodmorninggamers.Alarms.AlarmCreator;
 import com.example.goodmorninggamers.Alarms.RingtoneOption;
 
 public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver implements LiveCheckerListener {
@@ -29,9 +30,16 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
         m_receivedAlarm = (Alarm)intent.getSerializableExtra("alarm");
 
         //Check which streamer to get
+        //(Checks youtube and twitch in background asynchronously and returns when a stream is found)
         findChannelToOpen();
+        
+        rescheduleAlarm();
 
+    }
 
+    private void rescheduleAlarm() {
+        AlarmCreator ac = new AlarmCreator();
+        ac.createAlarm(m_context,m_receivedAlarm);
     }
 
     private void findChannelToOpen(){

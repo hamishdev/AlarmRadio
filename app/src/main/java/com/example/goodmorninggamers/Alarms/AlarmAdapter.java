@@ -74,7 +74,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
 
         //Day
         TextView day = (TextView) listItem.findViewById(R.id.listviewAlarms_day);
-        day.setText(currentAlarm.getDay());
+        day.setText(currentAlarm.getDayofAlarminRelationtoNow());
 
 
         Activity activity = (Activity) context;

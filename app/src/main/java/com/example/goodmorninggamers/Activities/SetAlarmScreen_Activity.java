@@ -99,7 +99,7 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
                 if(defaultIsSet) {
                     Intent intent = new Intent();
                     //build alarm
-                    intent.putExtra("alarm", new Alarm(m_clockTime,m_wakeupRingtoneOptions));
+                    intent.putExtra("alarm", new Alarm(m_clockTime.get(Calendar.HOUR_OF_DAY),m_clockTime.get(Calendar.MINUTE),null,m_wakeupRingtoneOptions));
                     setResult(RESULT_OK, intent);
                     finish();
                 }

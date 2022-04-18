@@ -7,9 +7,10 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 
 @Entity
-public class Alarm implements Serializable {
+public class Alarm implements Serializable, Comparable {
 
     
     private int hour;
@@ -39,14 +40,14 @@ public class Alarm implements Serializable {
     }
 
     private  int minute;
-    public  int totalMinutes;
-
+    private  int totalMinutes;
+    public int TODAY=0;
+    public int TOMORROW=1;
 
     public int getId() {
         return id;
     }
 
-    public int dayInRelationToToday;
     public Calendar today;
 
     public ArrayList<RingtoneOption> ringtoneOptions;
@@ -76,14 +77,27 @@ public class Alarm implements Serializable {
         return ringtoneOptions;
     }
 
-    private String getDayofAlarminRelationtoNow() {
+
+    public int getDayOfAlarminRelationtoNow(){
         if(!calendarAlarm){
             int currentTimeTotalMinutes = today.get(Calendar.HOUR_OF_DAY)*60+today.get(Calendar.MINUTE);
-            if(currentTimeTotalMinutes<=totalMinutes){
-                return "Today";
+            if(currentTimeTotalMinutes>=totalMinutes){
+                return TODAY;
             }
             else{
+                return TOMORROW;
+            }
+        }
+        return -1;
+    }
+    public String getDayofAlarminRelationtoNow() {
+        if(!calendarAlarm){
+            int currentTimeTotalMinutes = today.get(Calendar.HOUR_OF_DAY)*60+today.get(Calendar.MINUTE);
+            if(currentTimeTotalMinutes>=totalMinutes){
                 return "Tomorrow";
+            }
+            else{
+                return "Today";
             }
         }
         return"Calendar date";
@@ -130,4 +144,17 @@ public class Alarm implements Serializable {
         this.hour = hour;
         this.minute= minute;
     }
+
+
+    @Override
+    public int compareTo(Object o) {
+        Alarm toCompare = (Alarm) o;
+        if(this.totalMinutes<toCompare.totalMinutes){
+            return -1;
+        }
+        else{
+            return 1;
+        }
+    }
 }
+

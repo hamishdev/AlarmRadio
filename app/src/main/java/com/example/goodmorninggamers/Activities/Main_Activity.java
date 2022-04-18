@@ -28,6 +28,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,8 +85,12 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
             m_alarms = new ArrayList<Alarm>(){};
         };
         Log.v(TAG,m_alarms.size()+"");
-
-        m_alarms.sort((o1,o2) ->(o1.totalMinutes.compareTo(o2.totalMinutes));
+        Collections.sort(m_alarms, new Comparator<Alarm>() {
+            @Override
+            public int compare(Alarm left, Alarm right) {
+                return left.compareTo(right);
+            }
+        });
         alarmArrayAdapter = new AlarmAdapter(this, m_alarms);
         //Initialise alarm ListView
         ListView alarmsListView = (ListView) findViewById(R.id.list);
@@ -151,7 +157,12 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
                     Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
                     Log.v(TAG,"alarmurl"+alarm.getWakeupOptions().get(0).getLiveContentURL());
                     m_alarms.add(alarm);
-                    m_alarms.sort((o1,o2) ->o1.getTotalMinutes().compareTo(o2.getTotalMinutes()));
+                Collections.sort(m_alarms, new Comparator<Alarm>() {
+                    @Override
+                    public int compare(Alarm left, Alarm right) {
+                        return left.compareTo(right);
+                    }
+                });
                     Log.v(TAG,"alarms:"+m_alarms.size());
                     m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
                     alarmDao.insertAll(alarm);

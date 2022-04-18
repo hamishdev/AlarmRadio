@@ -35,7 +35,8 @@ public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOpt
 
 
     private static final String TAG = "EditAlarm_Screen";
-    private Calendar m_clockTime;
+    private int hour;
+    private int minute;
 
     private ArrayList<RingtoneOption> m_wakeupRingtoneOptions;
     private Boolean defaultIsSet = true;
@@ -46,15 +47,16 @@ public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOpt
 
         Intent intent = getIntent();
         Alarm toEditAlarm = (Alarm)intent.getSerializableExtra("Alarm");
-        m_clockTime = toEditAlarm.time;
+        hour = toEditAlarm.getHour();
+        minute = toEditAlarm.getMinute();
         m_wakeupRingtoneOptions = toEditAlarm.getWakeupOptions();
-
+        Calendar now = Calendar.getInstance();
 
         setContentView(R.layout.setalarm_screen);
 
         TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
-        clock.setHour(m_clockTime.get(Calendar.HOUR));
-        clock.setMinute(m_clockTime.get(Calendar.MINUTE));
+        clock.setHour(hour);
+        clock.setMinute(minute);
         ImageButton backButton = (ImageButton) findViewById(R.id.SetAlarmBackBUtton);
         StreamerButton setFirstStreamerButton =  (StreamerButton) findViewById(R.id.firstStreamer);
         setFirstStreamerButton.saveOption(m_wakeupRingtoneOptions.get(0),this);
@@ -67,13 +69,19 @@ public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOpt
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
         updateNextAlarmTextString(alarmTimeText);
         DatePicker datepicker = (DatePicker) findViewById(R.id.datePicker1);
-        datepicker.updateDate(m_clockTime.get(Calendar.YEAR),m_clockTime.get(Calendar.MONTH),m_clockTime.get(Calendar.DAY_OF_MONTH));
-
         datepicker.setMinDate(System.currentTimeMillis() - 1000);
+
+        //Update calendar to reflect tomorrow's alarms
+        if(toEditAlarm.getDayOfAlarminRelationtoNow()== toEditAlarm.TOMORROW){
+            now.add(Calendar.DAY_OF_YEAR,1);
+            datepicker.updateDate(now.get(Calendar.YEAR),now.get(Calendar.MONTH),now.get(Calendar.DAY_OF_MONTH));
+        }
+
+
         datepicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                updateDay(year,month,dayOfMonth);
+                //Does nothing
                 updateNextAlarmTextString(alarmTimeText);
             }
         });
@@ -107,7 +115,7 @@ public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOpt
                     //edit alarm
                     Alarm toReturn = toEditAlarm;
                     toReturn.updateRingtoneOptions(m_wakeupRingtoneOptions);
-                    toReturn.updateTime(m_clockTime);
+                    toReturn.updateTime(hour,minute);
                     intent.putExtra("alarm", toReturn);
                     setResult(RESULT_OK, intent);
                     finish();
@@ -178,37 +186,19 @@ public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOpt
     }
 
 
-    private void updateDay(int year, int month, int dayOfMonth) {
-
-        m_clockTime.set(year,month,dayOfMonth);
-        Log.v(TAG,"selectedYear:"+year);
-        Log.v(TAG,"selectedMonth:"+month);
-        Log.v(TAG,"selectedDayOfMonth:"+dayOfMonth);
-        Log.v(TAG, "clocktime date:"+m_clockTime.get(Calendar.DATE));
-
-    }
     public void updateAlarmTime(int hourOfDay,int minute){
 
-        Calendar clockTime =Calendar.getInstance();
-        clockTime.set(Calendar.HOUR_OF_DAY,hourOfDay);
-        clockTime.set(Calendar.MINUTE,minute);
-        long clockTimeInMillis =clockTime.getTimeInMillis();
-        Calendar now = Calendar.getInstance();
+        this.minute=minute;
+        hour = hourOfDay;
 
-        //If alarm is set in the past assume alarm should be in the next day
-        if(clockTimeInMillis<now.getTimeInMillis()){
-            //(AS long as the alarm isn't set for the current minute)
-            if(!(now.get(Calendar.MINUTE)==clockTime.get(Calendar.MINUTE)&&now.get(Calendar.HOUR_OF_DAY)==clockTime.get(Calendar.HOUR_OF_DAY))){
-                clockTime.add(Calendar.DAY_OF_YEAR,+1);
-            }
-
-        }
-        m_clockTime = clockTime;
 
     }
 
     public void updateNextAlarmTextString(TextView alarmTimeText){
-        long difference = m_clockTime.getTimeInMillis()-Calendar.getInstance().getTimeInMillis();
+        Calendar currentClockTime = Calendar.getInstance();
+        currentClockTime.set(Calendar.HOUR_OF_DAY,hour);
+        currentClockTime.set(Calendar.MINUTE,minute);
+        long difference = currentClockTime.getTimeInMillis()-Calendar.getInstance().getTimeInMillis();
         int days = (int) (difference / (1000*60*60*24));
         int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
         int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);

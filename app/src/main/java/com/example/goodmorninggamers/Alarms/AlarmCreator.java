@@ -22,32 +22,37 @@ public class AlarmCreator extends AppCompatActivity {
 
     public void createAlarm(Context context, Alarm alarm){
 
-        AlarmManager myAlarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if(!alarm.calendarAlarm) {
+            AlarmManager myAlarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
 
-
-        Calendar alarmTime = Calendar.getInstance();
-                alarmTime.set(Calendar.HOUR_OF_DAY,alarm.getHour());
-                alarmTime.set(Calendar.MINUTE,alarm.getMinute());
+            Calendar alarmTime = Calendar.getInstance();
+            int dayTotalMinutes = alarmTime.get(Calendar.HOUR_OF_DAY)*60 +alarmTime.get(Calendar.MINUTE);
+            //Comparing whether alarm should be set today or tomorrow
+            if(dayTotalMinutes>=alarm.getTotalMinutes()){
+                alarmTime.add(Calendar.DAY_OF_YEAR,1);
+            }
+            alarmTime.set(Calendar.HOUR_OF_DAY, alarm.getHour());
+            alarmTime.set(Calendar.MINUTE, alarm.getMinute());
 
 
             Intent intent = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
             intent.putExtra("alarm", alarm);
 
-            final int id= alarm.getId();
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_IMMUTABLE);
-
+            final int id = alarm.getId();
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
             ////////Logging
-            Log.v(TAG,"alarm broadcast set");
+            Log.v(TAG, "alarm broadcast set");
             Log.v(TAG, String.valueOf(alarmTime.getTimeInMillis()));
             String timeOfTheAlarmAsWords = alarmTime.getTime().toString();
-            Log.v(TAG,timeOfTheAlarmAsWords);
+            Log.v(TAG, timeOfTheAlarmAsWords);
 
             //Create AlARM
             myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);
-
+        }
 
 
     }
@@ -64,23 +69,8 @@ public class AlarmCreator extends AppCompatActivity {
 
     public void editAlarm(Context context, Alarm toEditAlarm) {
         //Delete previous alarm
-        AlarmManager myManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent toCancel = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
-        PendingIntent alarmToCancel = PendingIntent.getBroadcast(context,toEditAlarm.getId(),toCancel,PendingIntent.FLAG_IMMUTABLE);
-        alarmToCancel.cancel();
-        myManager.cancel(alarmToCancel);
-
-        //Create new Alarm
-        Calendar alarmTime = Calendar.getInstance();
-        alarmTime.set(Calendar.HOUR_OF_DAY,toEditAlarm.getHour());
-        alarmTime.set(Calendar.MINUTE,toEditAlarm.getMinute());
-        Intent intent = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
-        intent.putExtra("alarm", toEditAlarm);
-        final int id= toEditAlarm.getId();
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_IMMUTABLE);
-        //Create AlARM
-        myManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);
-
+        deleteAlarm(context,toEditAlarm);
+        createAlarm(context,toEditAlarm);
 
     }
 }
