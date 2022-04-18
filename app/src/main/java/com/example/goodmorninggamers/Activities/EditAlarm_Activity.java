@@ -23,46 +23,51 @@ import com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.Defaul
 import com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.DefaultOptionClickedListener;
 import com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.RingtoneOptionFinishedListener;
 import com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.StreamerButton;
-import com.example.goodmorninggamers.R;
 import com.example.goodmorninggamers.Alarms.Alarm;
 import com.example.goodmorninggamers.Alarms.RingtoneOption;
+import com.example.goodmorninggamers.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SetAlarmScreen_Activity extends AppCompatActivity implements  RingtoneOptionFinishedListener, Serializable {
+public class EditAlarm_Activity extends AppCompatActivity implements RingtoneOptionFinishedListener, Serializable {
 
 
-    private static final String TAG = "SetAlarmScreenActivity";
+    private static final String TAG = "EditAlarm_Screen";
     private Calendar m_clockTime;
 
     private ArrayList<RingtoneOption> m_wakeupRingtoneOptions;
-    private Boolean defaultIsSet = false;
+    private Boolean defaultIsSet = true;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onCreate(Bundle SavedInstanceState) {
-
         super.onCreate(SavedInstanceState);
-        m_clockTime = Calendar.getInstance();
-        m_wakeupRingtoneOptions = new ArrayList<RingtoneOption>(){
-        };
-        //setting empty ringtones
-        m_wakeupRingtoneOptions.add(new RingtoneOption("1","1","1",null));
-        m_wakeupRingtoneOptions.add(new RingtoneOption("2","2","2",null));
-        m_wakeupRingtoneOptions.add(new RingtoneOption("3","3","3",null));
+
+        Intent intent = getIntent();
+        Alarm toEditAlarm = (Alarm)intent.getSerializableExtra("Alarm");
+        m_clockTime = toEditAlarm.time;
+        m_wakeupRingtoneOptions = toEditAlarm.getWakeupOptions();
 
 
         setContentView(R.layout.setalarm_screen);
 
         TimePicker clock = (TimePicker) findViewById(R.id.timePicker1);
+        clock.setHour(m_clockTime.get(Calendar.HOUR));
+        clock.setMinute(m_clockTime.get(Calendar.MINUTE));
+
         ImageButton backButton = (ImageButton) findViewById(R.id.SetAlarmBackBUtton);
         StreamerButton setFirstStreamerButton =  (StreamerButton) findViewById(R.id.firstStreamer);
+        setFirstStreamerButton.saveOption(m_wakeupRingtoneOptions.get(0),this);
         StreamerButton setSecondStreamerButton = (StreamerButton) findViewById(R.id.secondsStreamer);
+        setSecondStreamerButton.saveOption(m_wakeupRingtoneOptions.get(1),this);
         DefaultButton setDefaultStreamerButton = (DefaultButton) findViewById(R.id.defaultStreamer);
+        setDefaultStreamerButton.saveDefaultOption(this,m_wakeupRingtoneOptions.get(2));
+
         ImageButton setAlarmButton = (ImageButton) findViewById(R.id.setAlarmButton);
         TextView alarmTimeText = (TextView) findViewById(R.id.alarmTimeText);
         DatePicker datepicker = (DatePicker) findViewById(R.id.datePicker1);
+        datepicker.updateDate(m_clockTime.get(Calendar.YEAR),m_clockTime.get(Calendar.MONTH),m_clockTime.get(Calendar.DAY_OF_MONTH));
 
         datepicker.setMinDate(System.currentTimeMillis() - 1000);
         datepicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
@@ -81,16 +86,17 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
             }
         });
 
+
         //FirstStreamer
-        setFirstStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreen_Activity.this,setFirstStreamerButton,0));
+        setFirstStreamerButton.setOnClickListener(new AlarmOptionClickedListener(EditAlarm_Activity.this,setFirstStreamerButton,0));
 
 
         //SecondStreamer
-        setSecondStreamerButton.setOnClickListener(new AlarmOptionClickedListener(SetAlarmScreen_Activity.this,setSecondStreamerButton,1));
+        setSecondStreamerButton.setOnClickListener(new AlarmOptionClickedListener(EditAlarm_Activity.this,setSecondStreamerButton,1));
 
 
         //DefaultStreamer
-        setDefaultStreamerButton.setOnClickListener(new DefaultOptionClickedListener(SetAlarmScreen_Activity.this,setDefaultStreamerButton,2));
+        setDefaultStreamerButton.setOnClickListener(new DefaultOptionClickedListener(EditAlarm_Activity.this,setDefaultStreamerButton,2));
 
         //SetAlarm
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
@@ -98,13 +104,16 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
 
                 if(defaultIsSet) {
                     Intent intent = new Intent();
-                    //build alarm
-                    intent.putExtra("alarm", new Alarm(m_clockTime,m_wakeupRingtoneOptions));
+                    //edit alarm
+                    Alarm toReturn = toEditAlarm;
+                    toReturn.updateRingtoneOptions(m_wakeupRingtoneOptions);
+                    toReturn.updateTime(m_clockTime);
+                    intent.putExtra("alarm", toReturn);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
                 else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SetAlarmScreen_Activity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditAlarm_Activity.this);
                     builder.setMessage("Cannot create an alarm without a backup alarm (in case your streamers aren't live)");
                     builder.create().show();
 
@@ -115,7 +124,7 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
         //backButton
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(SetAlarmScreen_Activity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditAlarm_Activity.this);
                 SpannableString title = new SpannableString("Discard modifications?");
 
                 // alert dialog title align center
@@ -186,7 +195,7 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements  Ringt
         long clockTimeInMillis =clockTime.getTimeInMillis();
         Calendar now = Calendar.getInstance();
 
-        //If alarm is set in the past assume alarm should be in the next day 
+        //If alarm is set in the past assume alarm should be in the next day
         if(clockTimeInMillis<now.getTimeInMillis()){
             //(AS long as the alarm isn't set for the current minute)
             if(!(now.get(Calendar.MINUTE)==clockTime.get(Calendar.MINUTE)&&now.get(Calendar.HOUR_OF_DAY)==clockTime.get(Calendar.HOUR_OF_DAY))){

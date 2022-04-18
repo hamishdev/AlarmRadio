@@ -9,7 +9,10 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.ArrayMap;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -25,6 +28,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -44,6 +49,7 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
 
     private static final int SETALARM_ACTIVITY_REQUEST_CODE = 0;
+    private static final int EDITALARM_ACTIVITY_REQUESTCODE= 2;
     private static final int ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE = 1;
 
     public static String AndroidChannelID = "Alarm";
@@ -98,7 +104,32 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
     }
 
+    //New activity result handling ((Just using for editAlarm atm))
+    ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                        // ToDo : Do your stuff...
+                        Alarm editedAlarm = (Alarm)result.getData().getSerializableExtra("alarm");
+                        int indexOf=-1;
+                        int i=0;
+                        for (Alarm a: m_alarms
+                             ) {
+                            if(a.id==editedAlarm.id){
+                                indexOf=i;
+                            }
+                            i++;
+                        }
+                        m_alarms.set(indexOf,editedAlarm);
+                        alarmDao.updateAlarms(m_alarms);
+                        m_alarmCreator.editAlarm(Main_Activity.this,m_alarms.get(indexOf));
+                        alarmArrayAdapter.notifyDataSetChanged();
 
+                    }
+                }
+            });
     /**   // On SetAlarmScreen being completed
      *
      * @param requestCode
@@ -124,6 +155,7 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
                     Log.v(TAG,"alarms:"+m_alarms.size());
                     m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
                     alarmDao.insertAll(alarm);
+
                     alarmArrayAdapter.notifyDataSetChanged();
                     Log.v(TAG, "All alarms: " + m_alarms.get(0).ToString());
 
@@ -195,6 +227,8 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
     @Override
     public void editAlarm(Alarm currentAlarm){
-
+        final Intent editAlarmActivity = new Intent(this, EditAlarm_Activity.class);
+        editAlarmActivity.putExtra("Alarm",currentAlarm);
+        activityResultLaunch.launch(editAlarmActivity);
     }
 }

@@ -59,4 +59,24 @@ public class AlarmCreator extends AppCompatActivity {
         alarmToCancel.cancel();
         myManager.cancel(alarmToCancel);
     }
+
+    public void editAlarm(Context context, Alarm toEditAlarm) {
+        //Delete previous alarm
+        AlarmManager myManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent toCancel = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
+        PendingIntent alarmToCancel = PendingIntent.getBroadcast(context,toEditAlarm.getId(),toCancel,PendingIntent.FLAG_IMMUTABLE);
+        alarmToCancel.cancel();
+        myManager.cancel(alarmToCancel);
+
+        //Create new Alarm
+        Calendar AlarmTime = toEditAlarm.getCalendarTime();
+        Intent intent = new Intent(context, GoodMorningGamersAlarmBroadcastReceiver.class);
+        intent.putExtra("alarm", toEditAlarm);
+        final int id= toEditAlarm.getId();
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_IMMUTABLE);
+        //Create AlARM
+        myManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, AlarmTime.getTimeInMillis(), alarmIntent);
+
+
+    }
 }

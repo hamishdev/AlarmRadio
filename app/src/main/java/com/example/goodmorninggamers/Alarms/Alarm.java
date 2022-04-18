@@ -22,7 +22,6 @@ public class Alarm implements Serializable {
 
     public int dayInRelationToToday;
     public Calendar today;
-    public int amPM;
 
     public Calendar time;
     public ArrayList<RingtoneOption> ringtoneOptions;
@@ -37,7 +36,6 @@ public class Alarm implements Serializable {
         this.time = time;
         this.ringtoneOptions = ringtoneOptions;
         today = Calendar.getInstance();
-        SetAMPM();
         SetDayInRelationToToday();
         id = (int) System.currentTimeMillis();
     }
@@ -46,9 +44,6 @@ public class Alarm implements Serializable {
 
     public ArrayList<RingtoneOption> getWakeupOptions(){
         return ringtoneOptions;
-    }
-    public void SetAMPM() {
-        amPM = time.get(Calendar.AM_PM);
     }
 
     private void SetDayInRelationToToday() {
@@ -85,7 +80,7 @@ public class Alarm implements Serializable {
     }
 
     public String getTwelvehourclock() {
-        return getDisplayHour() + ":" + getDisplayMinute() + (amPM == Calendar.AM ? "am" : "pm");
+        return getDisplayHour() + ":" + getDisplayMinute() + (time.get(Calendar.AM_PM) == Calendar.AM ? "am" : "pm");
     }
 
 
@@ -116,5 +111,13 @@ public class Alarm implements Serializable {
     }
     public void switchOn(){
         this.on = true;
+    }
+
+    public void updateRingtoneOptions(ArrayList<RingtoneOption> m_wakeupRingtoneOptions) {
+        this.ringtoneOptions=m_wakeupRingtoneOptions;
+    }
+
+    public void updateTime(Calendar m_clockTime) {
+        this.time = m_clockTime;
     }
 }

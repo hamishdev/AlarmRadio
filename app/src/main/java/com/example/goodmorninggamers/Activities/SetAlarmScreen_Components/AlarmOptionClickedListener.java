@@ -1,5 +1,6 @@
 package com.example.goodmorninggamers.Activities.SetAlarmScreen_Components;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -30,17 +31,17 @@ import java.util.ArrayList;
 public class AlarmOptionClickedListener implements View.OnClickListener, GlideHelper {
 
     private String TAG = "AlarmOptionClickedListener";
-    private SetAlarmScreen_Activity m_context;
+    private Activity m_context;
     private int m_button;
     AlarmOptionFinishedListener alarmOptionFinishedListener;
     RingtoneOptionFinishedListener ringtoneOptionFinishedListener;
     int SEARCHREQUEST = 0;
     int CHANNELREQUEST = 0;
-    public AlarmOptionClickedListener (SetAlarmScreen_Activity context, StreamerButton buttonContext, int button){
+    public AlarmOptionClickedListener (Activity context, StreamerButton buttonContext, int button){
         m_context=context;
         alarmOptionFinishedListener = buttonContext;
         m_button=button;
-        ringtoneOptionFinishedListener = context;
+        ringtoneOptionFinishedListener = (RingtoneOptionFinishedListener) context;
     }
     public void onClick(View arg0) {
 

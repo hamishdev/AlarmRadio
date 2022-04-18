@@ -1,5 +1,6 @@
 package com.example.goodmorninggamers.Activities.SetAlarmScreen_Components;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
@@ -11,7 +12,7 @@ import com.example.goodmorninggamers.Alarms.RingtoneOption;
 
 public class DefaultOptionClickedListener implements View.OnClickListener, GlideHelper {
 private String TAG = "Default Option Clicked Listener";
-private SetAlarmScreen_Activity m_context;
+private Activity m_context;
 private DefaultOptionFinishedListener defaultOptionFinishedListener;
 private RingtoneOptionFinishedListener ringtoneOptionFinishedListener;
 private int m_button;
@@ -19,10 +20,10 @@ private String lofiHiphopVidID="5qap5aO4i9A";
 private String lofiHiphop = "https://www.youtube.com/watch?v="+lofiHiphopVidID;
 private String lofiHiphopPic ="https://img.youtube.com/vi/"+lofiHiphopVidID+"/hqdefault.jpg";
 
-public DefaultOptionClickedListener(SetAlarmScreen_Activity context, DefaultButton buttonContext, Integer button){
+public DefaultOptionClickedListener(Activity context, DefaultButton buttonContext, Integer button){
     m_context = context;
     defaultOptionFinishedListener = buttonContext;
-    ringtoneOptionFinishedListener = context;
+    ringtoneOptionFinishedListener = (RingtoneOptionFinishedListener) context;
     m_button=button;
 
 }
