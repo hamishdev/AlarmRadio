@@ -126,7 +126,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.775" />
-                    <com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.StreamerButton
+                    <my.app.goodmorninggamers.Activities.SetAlarmScreen_Components.StreamerButton
                         android:id="@+id/firstStreamer"
                         android:layout_width="@dimen/AlarmOptionSquareSize"
                         android:layout_height="@dimen/AlarmOptionSquareSize"
@@ -152,7 +152,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Alarm 2" />
-                    <com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.StreamerButton
+                    <my.app.goodmorninggamers.Activities.SetAlarmScreen_Components.StreamerButton
                         android:id="@+id/secondsStreamer"
                         android:layout_width="@dimen/AlarmOptionSquareSize"
                         android:layout_height="@dimen/AlarmOptionSquareSize"
@@ -179,7 +179,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.775" />
-                    <com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.DefaultButton
+                    <my.app.goodmorninggamers.Activities.SetAlarmScreen_Components.DefaultButton
                         android:id="@+id/defaultStreamer"
                         android:layout_width="@dimen/AlarmOptionSquareSize"
                         android:layout_height="@dimen/AlarmOptionSquareSize"
@@ -192,7 +192,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.733"
-                        app:srcCompat="@drawable/magnifying_transparent"></com.example.goodmorninggamers.Activities.SetAlarmScreen_Components.DefaultButton>
+                        app:srcCompat="@drawable/magnifying_transparent"></my.app.goodmorninggamers.Activities.SetAlarmScreen_Components.DefaultButton>
                 </LinearLayout>
             </LinearLayout>
 
