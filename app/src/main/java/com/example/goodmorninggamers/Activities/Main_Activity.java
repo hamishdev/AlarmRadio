@@ -134,6 +134,9 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
                         alarmArrayAdapter.notifyDataSetChanged();
 
                     }
+                    else{
+
+                    }
                 }
             });
     /**   // On SetAlarmScreen being completed
@@ -174,7 +177,6 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
             }
             if(resultCode== RESULT_CANCELED){
-
             }
         }
 

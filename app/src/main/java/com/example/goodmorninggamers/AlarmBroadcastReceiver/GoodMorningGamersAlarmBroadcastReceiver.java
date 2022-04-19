@@ -14,6 +14,7 @@ import com.example.goodmorninggamers.Activities.Main_Activity;
 import com.example.goodmorninggamers.Alarms.Alarm;
 import com.example.goodmorninggamers.Alarms.AlarmCreator;
 import com.example.goodmorninggamers.Alarms.RingtoneOption;
+import com.example.goodmorninggamers.R;
 
 public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver implements LiveCheckerListener {
 
@@ -89,9 +90,9 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, StreamerIntent, PendingIntent.FLAG_IMMUTABLE);
         final int notificationId= (int) System.currentTimeMillis();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Main_Activity.AndroidChannelID)
-                .setSmallIcon(android.R.drawable.arrow_up_float)
-                .setContentTitle("alarm!!")
-                .setContentText("content..,..")
+                .setSilent(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Watch"+m_receivedAlarm.ringtoneOptions.get(ChannelChoice).getName() +"?")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setFullScreenIntent(pendingIntent, true)
                 .setAutoCancel(true);

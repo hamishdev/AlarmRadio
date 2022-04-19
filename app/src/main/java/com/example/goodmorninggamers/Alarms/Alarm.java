@@ -31,16 +31,9 @@ public class Alarm implements Serializable, Comparable {
         this.minute = minute;
     }
 
-    public int getTotalMinutes() {
-        return totalMinutes;
-    }
 
-    public void setTotalMinutes(int totalMinutes) {
-        this.totalMinutes = totalMinutes;
-    }
 
     private  int minute;
-    private  int totalMinutes;
     public int TODAY=0;
     public int TOMORROW=1;
 
@@ -61,7 +54,6 @@ public class Alarm implements Serializable, Comparable {
         on = true;
         this.hour = hour;
         this.minute = minute;
-        this.totalMinutes = hour*60+ minute;
         this.ringtoneOptions = ringtoneOptions;
         id = (int) System.currentTimeMillis();
     }
@@ -77,7 +69,7 @@ public class Alarm implements Serializable, Comparable {
         Calendar rightNowCalendar = Calendar.getInstance();
 
         int currentTimeTotalMinutes = rightNowCalendar.get(Calendar.HOUR_OF_DAY)*60+rightNowCalendar.get(Calendar.MINUTE);
-            if(currentTimeTotalMinutes>=totalMinutes){
+            if(currentTimeTotalMinutes>=getTotalMinutes()){
                 return TODAY;
             }
             else{
@@ -87,7 +79,7 @@ public class Alarm implements Serializable, Comparable {
     public String getDayofAlarminRelationtoNow() {
             Calendar rightNowCalendar = Calendar.getInstance();
             int currentTimeTotalMinutes = rightNowCalendar.get(Calendar.HOUR_OF_DAY)*60+rightNowCalendar.get(Calendar.MINUTE);
-            if(currentTimeTotalMinutes>=totalMinutes){
+            if(currentTimeTotalMinutes>=getTotalMinutes()){
                 return "Tomorrow";
             }
             else{
@@ -137,11 +129,15 @@ public class Alarm implements Serializable, Comparable {
         this.minute= minute;
     }
 
+    public int getTotalMinutes(){
+        return hour*60+minute;
+    }
+
 
     @Override
     public int compareTo(Object o) {
         Alarm toCompare = (Alarm) o;
-        if(this.totalMinutes<toCompare.totalMinutes){
+        if(this.getTotalMinutes()<toCompare.getTotalMinutes()){
             return -1;
         }
         else{
