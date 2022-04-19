@@ -48,26 +48,21 @@ public class Alarm implements Serializable, Comparable {
         return id;
     }
 
-    public Calendar today;
 
     public ArrayList<RingtoneOption> ringtoneOptions;
     public boolean on;
-    public boolean calendarAlarm=false;
+    public boolean repeating=false;
     @PrimaryKey
     public int id;
 
 
     //by default repeats every day
-    public Alarm(int hour24, int minute,ArrayList<Calendar> repeating , ArrayList<RingtoneOption> ringtoneOptions){
+    public Alarm(int hour, int minute, ArrayList<RingtoneOption> ringtoneOptions){
         on = true;
-        this.hour = hour24;
+        this.hour = hour;
         this.minute = minute;
-        if(repeating==null){
-            calendarAlarm=false;
-        }
         this.totalMinutes = hour*60+ minute;
         this.ringtoneOptions = ringtoneOptions;
-        today = Calendar.getInstance();
         id = (int) System.currentTimeMillis();
     }
 
@@ -79,28 +74,25 @@ public class Alarm implements Serializable, Comparable {
 
 
     public int getDayOfAlarminRelationtoNow(){
-        if(!calendarAlarm){
-            int currentTimeTotalMinutes = today.get(Calendar.HOUR_OF_DAY)*60+today.get(Calendar.MINUTE);
+        Calendar rightNowCalendar = Calendar.getInstance();
+
+        int currentTimeTotalMinutes = rightNowCalendar.get(Calendar.HOUR_OF_DAY)*60+rightNowCalendar.get(Calendar.MINUTE);
             if(currentTimeTotalMinutes>=totalMinutes){
                 return TODAY;
             }
             else{
                 return TOMORROW;
             }
-        }
-        return -1;
     }
     public String getDayofAlarminRelationtoNow() {
-        if(!calendarAlarm){
-            int currentTimeTotalMinutes = today.get(Calendar.HOUR_OF_DAY)*60+today.get(Calendar.MINUTE);
+            Calendar rightNowCalendar = Calendar.getInstance();
+            int currentTimeTotalMinutes = rightNowCalendar.get(Calendar.HOUR_OF_DAY)*60+rightNowCalendar.get(Calendar.MINUTE);
             if(currentTimeTotalMinutes>=totalMinutes){
                 return "Tomorrow";
             }
             else{
                 return "Today";
             }
-        }
-        return"Calendar date";
 
 
     }

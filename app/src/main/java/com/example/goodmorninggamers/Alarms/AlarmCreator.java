@@ -23,7 +23,7 @@ public class AlarmCreator extends AppCompatActivity {
     public void createAlarm(Context context, Alarm alarm){
 
 
-        if(!alarm.calendarAlarm) {
+
             AlarmManager myAlarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
 
@@ -52,7 +52,7 @@ public class AlarmCreator extends AppCompatActivity {
 
             //Create AlARM
             myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);
-        }
+
 
 
     }

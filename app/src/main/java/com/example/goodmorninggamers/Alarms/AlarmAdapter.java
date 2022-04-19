@@ -37,6 +37,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        notifyDataSetChanged();
         View listItem = convertView;
         if(listItem == null)
             listItem = LayoutInflater.from(context).inflate(R.layout.listview_alarms,parent,false);
