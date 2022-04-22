@@ -91,7 +91,7 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
         final int notificationId= (int) System.currentTimeMillis();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Main_Activity.AndroidChannelID)
                 .setSilent(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.neveralone_icon_current)
                 .setContentTitle("Watch"+m_receivedAlarm.ringtoneOptions.get(ChannelChoice).getName() +"?")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setFullScreenIntent(pendingIntent, true)
