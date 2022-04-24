@@ -39,7 +39,7 @@ public class AlarmCreator extends AppCompatActivity {
             Calendar alarmTime = Calendar.getInstance();
             int dayTotalMinutes = alarmTime.get(Calendar.HOUR_OF_DAY)*60 +alarmTime.get(Calendar.MINUTE);
             //Comparing whether alarm should be set today or tomorrow
-            if(dayTotalMinutes>=alarm.getTotalMinutes()){
+            if(dayTotalMinutes>alarm.getTotalMinutes()){
                 alarmTime.add(Calendar.DAY_OF_YEAR,1);
             }
             alarmTime.set(Calendar.HOUR_OF_DAY, alarm.getHour());

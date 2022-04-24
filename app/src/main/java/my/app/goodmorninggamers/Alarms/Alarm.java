@@ -67,7 +67,7 @@ public class Alarm implements Serializable, Comparable {
         Calendar rightNowCalendar = Calendar.getInstance();
 
         int currentTimeTotalMinutes = rightNowCalendar.get(Calendar.HOUR_OF_DAY)*60+rightNowCalendar.get(Calendar.MINUTE);
-            if(currentTimeTotalMinutes>=getTotalMinutes()){
+            if(currentTimeTotalMinutes>getTotalMinutes()){
                 return TODAY;
             }
             else{
@@ -77,7 +77,7 @@ public class Alarm implements Serializable, Comparable {
     public String getDayofAlarminRelationtoNow() {
             Calendar rightNowCalendar = Calendar.getInstance();
             int currentTimeTotalMinutes = rightNowCalendar.get(Calendar.HOUR_OF_DAY)*60+rightNowCalendar.get(Calendar.MINUTE);
-            if(currentTimeTotalMinutes>=getTotalMinutes()){
+            if(currentTimeTotalMinutes>getTotalMinutes()){
                 return "Tomorrow";
             }
             else{

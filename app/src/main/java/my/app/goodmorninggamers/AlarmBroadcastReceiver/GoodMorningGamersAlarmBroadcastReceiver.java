@@ -35,7 +35,7 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
         //(Checks youtube and twitch in background asynchronously and returns when a stream is found)
         findChannelToOpen();
         
-        rescheduleAlarm();
+        //rescheduleAlarm();
 
     }
 
@@ -92,7 +92,7 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Main_Activity.AndroidChannelID)
                 .setSilent(true)
                 .setSmallIcon(R.drawable.neveralone_icon_current)
-                .setContentTitle("Watch"+m_receivedAlarm.ringtoneOptions.get(ChannelChoice).getName() +"?")
+                .setContentTitle("Watch "+m_receivedAlarm.ringtoneOptions.get(ChannelChoice).getName() +"?")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setFullScreenIntent(pendingIntent, true)
                 .setAutoCancel(true);
