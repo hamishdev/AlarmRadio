@@ -120,12 +120,14 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> implements GlideHelper {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
+                    m_alarms.get(position).switchOn();
                     tl.turnOnAlarm(currentAlarm);
-                    currentAlarm.switchOn();
+
                 }
                 else{
+                    m_alarms.get(position).switchOff();
                     tl.turnOffAlarm(currentAlarm);
-                    currentAlarm.switchOff();
+
 
                 }
             }

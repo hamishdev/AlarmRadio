@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +16,17 @@ public class AlarmCreator extends AppCompatActivity {
 
     private String TAG = "AlarmSetter";
 
+    public int getRealAlarms() {
+        return realAlarms;
+    }
+
+    public void setRealAlarms(int realAlarms) {
+        this.realAlarms = realAlarms;
+    }
+
+    int realAlarms;
     public AlarmCreator(){
+       realAlarms=0;
     }
 
     public void createAlarm(Context context, Alarm alarm){
@@ -47,8 +58,8 @@ public class AlarmCreator extends AppCompatActivity {
 
             //Create AlARM
             myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);
-
-
+            realAlarms++;
+        Log.v(TAG,"realalarms ="+realAlarms);
 
     }
 
@@ -60,6 +71,9 @@ public class AlarmCreator extends AppCompatActivity {
         PendingIntent alarmToCancel = PendingIntent.getBroadcast(context,alarm.getId(),toCancel,PendingIntent.FLAG_IMMUTABLE);
         alarmToCancel.cancel();
         myManager.cancel(alarmToCancel);
+        realAlarms--;
+        Log.v(TAG,"realalarms ="+realAlarms);
+
     }
 
     public void editAlarm(Context context, Alarm toEditAlarm) {

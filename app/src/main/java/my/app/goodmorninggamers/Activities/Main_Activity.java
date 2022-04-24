@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -128,7 +129,7 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
                         alarmDao.updateAlarms(m_alarms);
                         m_alarmCreator.editAlarm(Main_Activity.this,m_alarms.get(indexOf));
                         alarmArrayAdapter.notifyDataSetChanged();
-
+                        printRealAlarms();
                     }
                     else{
 
@@ -164,7 +165,7 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
                     alarmDao.insertAll(alarm);
 
                     alarmArrayAdapter.notifyDataSetChanged();
-
+                printRealAlarms();
 
 
 
@@ -210,6 +211,8 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
     @Override
     public void turnOffAlarm(Alarm alarm) {
         m_alarmCreator.deleteAlarm(this,alarm);
+        printRealAlarms();
+
 
     }
 
@@ -218,6 +221,8 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
     @Override
     public void turnOnAlarm(Alarm alarm) {
         m_alarmCreator.createAlarm(this, alarm);
+        printRealAlarms();
+
 
     }
 
@@ -225,6 +230,8 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
     public void deleteAlarm(Alarm currentAlarm) {
         alarmDao.delete(currentAlarm);
         m_alarmCreator.deleteAlarm(this,currentAlarm);
+        printRealAlarms();
+
     }
 
     @Override
@@ -232,5 +239,26 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
         final Intent editAlarmActivity = new Intent(this, EditAlarm_Activity.class);
         editAlarmActivity.putExtra("Alarm",currentAlarm);
         activityResultLaunch.launch(editAlarmActivity);
+
+    }
+
+    public void printRealAlarms(){
+        Log.v(TAG,"------------");
+        Log.v(TAG,"Number of android alarms ="+m_alarmCreator.getRealAlarms());
+        Log.v(TAG,"Number of app known alarms="+getOnAlarms());
+        Log.v(TAG,"Number of app UI placeholders="+m_alarms.size());
+        Log.v(TAG,"------------");
+
+    }
+
+    public int getOnAlarms(){
+        int i=0;
+        for (Alarm a: m_alarms
+             ) {
+            if(a.on){
+                i++;
+            }
+        }
+        return i;
     }
 }

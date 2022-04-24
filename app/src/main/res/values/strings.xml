@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Good Morning Gamers</string>
+    <string name="app_name">Parasocial</string>
     <string name="AlarmHomeScreenTitle">Alarms</string>
     <string name="alarmIconContentDescription">Picture of an alarm</string>
     <string name="scrollViewContentDescription">ScrollView</string>
