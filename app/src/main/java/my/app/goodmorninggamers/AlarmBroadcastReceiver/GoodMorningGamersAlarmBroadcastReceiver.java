@@ -1,7 +1,10 @@
 package my.app.goodmorninggamers.AlarmBroadcastReceiver;
 
+import static my.app.goodmorninggamers.Activities.Main_Activity.YOUTUBE;
+
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -76,21 +79,29 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
     private void throwAlarm() {
 
         //Build streamer intent
-        String StreamerURL = m_receivedAlarm.getWakeupOptions().get(ChannelChoice).getLiveContentURL();
-        Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
-        StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        if(getWakeup().getPlatform()==YOUTUBE){
+            String StreamerURL = getWakeup().getLiveContentURL();
+            Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
+            StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            NotifyUserYoutube(StreamerIntent,m_context);
+        }
+        else{
+            String StreamerURL = getWakeup().getLiveContentURL();
+            Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
+            StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            NotifyUserTwitch(StreamerIntent,m_context);
+        }
 
-        NotifyUser(StreamerIntent,m_context);
     }
 
 
-    private void NotifyUser(Intent StreamerIntent, Context context){
+    private void NotifyUserYoutube(Intent StreamerIntent, Context context){
         //Build Notification
         ////////////////////NEED TO REBUILD NOTIFICATION ALERTER BASED ON HOW IT INTERACTS WITH CLOSED SCREENS AND YOUTUBE VS TWITCH AND A WHOLE HEAP OF THINGS
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, StreamerIntent, PendingIntent.FLAG_IMMUTABLE);
         final int notificationId= (int) System.currentTimeMillis();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Main_Activity.AndroidChannelID)
-                .setSilent(true)
+                //.setSilent(false)
                 .setSmallIcon(R.drawable.neveralone_icon_current)
                 .setContentTitle("Watch "+m_receivedAlarm.ringtoneOptions.get(ChannelChoice).getName() +"?")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -100,5 +111,28 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
 
         //Trigger Notification
         notificationManager.notify(notificationId, builder.build());
+    }
+
+    private void NotifyUserTwitch(Intent StreamerIntent, Context context){
+        //Build Notification
+        ////////////////////NEED TO REBUILD NOTIFICATION ALERTER BASED ON HOW IT INTERACTS WITH CLOSED SCREENS AND YOUTUBE VS TWITCH AND A WHOLE HEAP OF THINGS
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, StreamerIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        final int notificationId= (int) System.currentTimeMillis();
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Main_Activity.AndroidChannelID)
+                //.setSilent(false)
+                .setSmallIcon(R.drawable.neveralone_icon_current)
+                .setContentTitle("Watch "+m_receivedAlarm.ringtoneOptions.get(ChannelChoice).getName() +"?")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setFullScreenIntent(pendingIntent, true)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        //Trigger Notification
+        notificationManager.notify(notificationId, builder.build());
+    }
+
+    private RingtoneOption getWakeup(){
+        return m_receivedAlarm.getWakeupOptions().get(ChannelChoice);
     }
 }

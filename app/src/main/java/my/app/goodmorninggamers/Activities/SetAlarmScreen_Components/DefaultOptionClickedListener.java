@@ -1,5 +1,7 @@
 package my.app.goodmorninggamers.Activities.SetAlarmScreen_Components;
 
+import static my.app.goodmorninggamers.Activities.Main_Activity.YOUTUBE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,7 +35,7 @@ public DefaultOptionClickedListener(Activity context, DefaultButton buttonContex
         builder.setItems(new String[]{"Lofi HipHop"},new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                RingtoneOption createdRingtone = new RingtoneOption(lofiHiphop,lofiHiphopPic,"Lofi Hip Hop",new LiveChecker("UCSJ4gkVC6NrvII8umztf0Ow",1));
+                RingtoneOption createdRingtone = new RingtoneOption(lofiHiphop,lofiHiphopPic,"Lofi Hip Hop",new LiveChecker("UCSJ4gkVC6NrvII8umztf0Ow",YOUTUBE),YOUTUBE );
                 defaultOptionFinishedListener.saveDefaultOption(m_context,createdRingtone);
                 ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button,createdRingtone);
             }

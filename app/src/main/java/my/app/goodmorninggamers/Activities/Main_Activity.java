@@ -48,9 +48,11 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
     private static final String TAG = "MainActivity";
 
 
-    private static final int SETALARM_ACTIVITY_REQUEST_CODE = 0;
-    private static final int EDITALARM_ACTIVITY_REQUESTCODE= 2;
-    private static final int ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE = 1;
+    public static final int SETALARM_ACTIVITY_REQUEST_CODE = 0;
+    public static final int EDITALARM_ACTIVITY_REQUESTCODE= 2;
+    public static final int ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE = 1;
+    public static final int YOUTUBE = 1;
+    public static final int TWITCH = 0;
 
     public static String AndroidChannelID = "Alarm";
     public ArrayList<Alarm> m_alarms;

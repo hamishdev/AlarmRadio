@@ -8,8 +8,10 @@ public class RingtoneOption implements Serializable {
     String m_ringtonePictureURL;
     String m_name;
     LiveChecker m_liveChecker;
+    int m_platform;
 
-    public RingtoneOption(String LiveContentURL, String pictureURL, String name, LiveChecker liveChecker){
+    public RingtoneOption(String LiveContentURL, String pictureURL, String name, LiveChecker liveChecker, int platform){
+        m_platform= platform;
         m_liveChecker=liveChecker;
 m_LiveContentURL= LiveContentURL;
 m_ringtonePictureURL = pictureURL;
@@ -27,6 +29,9 @@ m_name = name;
 
     public LiveChecker getLiveChecker() {
         return m_liveChecker;
+    }
+    public int getPlatform(){
+        return m_platform;
     }
 
     //Picture

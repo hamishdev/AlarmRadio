@@ -1,5 +1,8 @@
 package my.app.goodmorninggamers.Activities.SetAlarmScreen_Components;
 
+import static my.app.goodmorninggamers.Activities.Main_Activity.TWITCH;
+import static my.app.goodmorninggamers.Activities.Main_Activity.YOUTUBE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -92,7 +95,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                                 @Override
                                 public void onItemClick(View view, int position) {
                                     StreamerChannel choice = tc.getChannelsFromSearch().get(position);
-                                    RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName(),new LiveChecker(choice.getName(),0));
+                                    RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName(),new LiveChecker(choice.getName(),TWITCH),TWITCH);
                                     alarmOptionFinishedListener.saveOption(ringtoneOption, m_context);
                                     ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button, ringtoneOption);
                                     alert3.dismiss();
@@ -166,7 +169,7 @@ public class AlarmOptionClickedListener implements View.OnClickListener, GlideHe
                             public void ChannelRequestFinished(String url) {
                                 YoutubeChannel choice =  (YoutubeChannel) yc.getChannelsFromSearch().get(searchResultChosen);
                                 choice.setLiveContentURL(url);
-                                RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName(),new LiveChecker(choice.getID(), 1));
+                                RingtoneOption ringtoneOption = new RingtoneOption(choice.getLiveContentURL(), choice.getPicURL(), choice.getName(),new LiveChecker(choice.getID(), YOUTUBE),YOUTUBE);
                                 alarmOptionFinishedListener.saveOption(ringtoneOption, m_context);
                                 ringtoneOptionFinishedListener.RingtoneOptionFinished(m_button, ringtoneOption);
                             }

@@ -1,5 +1,7 @@
 package my.app.goodmorninggamers.Activities;
 
+import static my.app.goodmorninggamers.Activities.Main_Activity.YOUTUBE;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,9 +49,9 @@ public class SetAlarmScreen_Activity extends AppCompatActivity implements Ringto
         m_wakeupRingtoneOptions = new ArrayList<RingtoneOption>(){
         };
         //setting empty ringtones
-        m_wakeupRingtoneOptions.add(new RingtoneOption("1","1","1",null));
-        m_wakeupRingtoneOptions.add(new RingtoneOption("2","2","2",null));
-        m_wakeupRingtoneOptions.add(new RingtoneOption("3","3","3",null));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("1","1","1",null,YOUTUBE));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("2","2","2",null,YOUTUBE));
+        m_wakeupRingtoneOptions.add(new RingtoneOption("3","3","3",null,YOUTUBE));
 
 
         setContentView(R.layout.setalarm_screen);
