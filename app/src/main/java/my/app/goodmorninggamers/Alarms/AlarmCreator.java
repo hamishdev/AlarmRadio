@@ -54,7 +54,6 @@ public class AlarmCreator extends AppCompatActivity {
 
 
             ////////Logging
-            String timeOfTheAlarmAsWords = alarmTime.getTime().toString();
 
             //Create AlARM
             myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);

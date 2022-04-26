@@ -34,6 +34,9 @@
         </activity>
         <activity android:name = "my.app.goodmorninggamers.Activities.SetAlarmScreen_Activity"> </activity>
         <activity android:name="my.app.goodmorninggamers.Activities.EditAlarm_Activity"></activity>
+        <activity android:name=".Activities.FullScreenAlarm"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"></activity>
         <receiver android:name="my.app.goodmorninggamers.AlarmBroadcastReceiver.GoodMorningGamersAlarmBroadcastReceiver" android:exported = "true">
 
         </receiver>

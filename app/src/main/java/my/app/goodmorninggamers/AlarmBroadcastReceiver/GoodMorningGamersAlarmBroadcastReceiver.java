@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 
-
+import my.app.goodmorninggamers.Activities.FullScreenAlarm;
 import my.app.goodmorninggamers.Activities.Main_Activity;
 import my.app.goodmorninggamers.Alarms.Alarm;
 import my.app.goodmorninggamers.Alarms.AlarmCreator;
@@ -114,21 +114,20 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
     }
 
     private void NotifyUserTwitch(Intent StreamerIntent, Context context){
-        //Build Notification
-        ////////////////////NEED TO REBUILD NOTIFICATION ALERTER BASED ON HOW IT INTERACTS WITH CLOSED SCREENS AND YOUTUBE VS TWITCH AND A WHOLE HEAP OF THINGS
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, StreamerIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        final int notificationId= (int) System.currentTimeMillis();
+        Intent intent = new Intent(context, FullScreenAlarm.class);
+        PendingIntent twitchTestone = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Main_Activity.AndroidChannelID)
                 //.setSilent(false)
                 .setSmallIcon(R.drawable.neveralone_icon_current)
                 .setContentTitle("Watch "+m_receivedAlarm.ringtoneOptions.get(ChannelChoice).getName() +"?")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setFullScreenIntent(pendingIntent, true)
+                .setFullScreenIntent(twitchTestone, true)
                 .setAutoCancel(true);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         //Trigger Notification
+        final int notificationId= (int) System.currentTimeMillis();
         notificationManager.notify(notificationId, builder.build());
     }
 
