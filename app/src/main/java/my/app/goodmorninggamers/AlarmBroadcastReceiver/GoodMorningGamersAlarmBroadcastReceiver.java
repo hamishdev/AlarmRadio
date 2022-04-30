@@ -79,18 +79,18 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
     private void throwAlarm() {
 
         //Build streamer intent
-        if(getWakeup().getPlatform()==YOUTUBE){
-            String StreamerURL = getWakeup().getLiveContentURL();
-            Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
-            StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            NotifyUserYoutube(StreamerIntent,m_context);
-        }
-        else{
+       // if(getWakeup().getPlatform()==YOUTUBE){
+        //    String StreamerURL = getWakeup().getLiveContentURL();
+        //    Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
+         //   StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //    NotifyUserYoutube(StreamerIntent,m_context);
+        //}
+        //else{
             String StreamerURL = getWakeup().getLiveContentURL();
             Intent StreamerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(StreamerURL));
             StreamerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             NotifyUserTwitch(StreamerIntent,m_context);
-        }
+       // }
 
     }
 
@@ -115,7 +115,8 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
 
     private void NotifyUserTwitch(Intent StreamerIntent, Context context){
         Intent intent = new Intent(context, FullScreenAlarm.class);
-        PendingIntent twitchTestone = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE);
+        intent.putExtra("RingtoneOption",m_receivedAlarm.ringtoneOptions.get(ChannelChoice));
+        PendingIntent twitchTestone = PendingIntent.getActivity(context,0,intent,(PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Main_Activity.AndroidChannelID)
                 //.setSilent(false)
                 .setSmallIcon(R.drawable.neveralone_icon_current)
