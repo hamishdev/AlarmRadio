@@ -1,7 +1,8 @@
 package my.app.goodmorninggamers.Activities
 
+import android.content.Context
+import android.media.AudioManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -12,11 +13,20 @@ import my.app.goodmorninggamers.Activities.SetAlarmScreen_Components.turnScreenO
 import my.app.goodmorninggamers.Alarms.RingtoneOption
 import my.app.goodmorninggamers.R
 
+
 private const val TAG = "fullscreenalarm activity"
 class FullScreenAlarm : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        am.setStreamVolume(
+            AudioManager.STREAM_MUSIC,
+            am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+            0
+        )
         val rO  =  intent.getSerializableExtra("RingtoneOption") as RingtoneOption
         val url = rO.liveContentURL;
         setContentView(R.layout.activity_full_screen_alarm)
