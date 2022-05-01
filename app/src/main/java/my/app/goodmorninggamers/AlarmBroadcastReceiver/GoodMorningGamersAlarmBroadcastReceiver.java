@@ -52,8 +52,9 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
     }
 
     private void rescheduleAlarm() {
-        AlarmCreator ac = new AlarmCreator();
-        ac.createAlarm(m_context,m_receivedAlarm);
+        //AlarmCreator ac = new AlarmCreator();
+        //Need to add 1 day here to set alarm for tomorrow
+        //ac.createAlarm(m_context,m_receivedAlarm);
     }
 
     private void findChannelToOpen(){
