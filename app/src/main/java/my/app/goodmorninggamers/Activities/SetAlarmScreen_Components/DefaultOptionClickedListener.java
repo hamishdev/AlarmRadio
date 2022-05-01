@@ -18,7 +18,7 @@ private DefaultOptionFinishedListener defaultOptionFinishedListener;
 private RingtoneOptionFinishedListener ringtoneOptionFinishedListener;
 private int m_button;
 private String lofiHiphopVidID="5qap5aO4i9A";
-private String lofiHiphop = "https://www.youtube.com/watch?v="+lofiHiphopVidID;
+private String lofiHiphop = "https://www.youtube.com/LofiGirl/live";
 private String lofiHiphopPic ="https://img.youtube.com/vi/"+lofiHiphopVidID+"/hqdefault.jpg";
 
 public DefaultOptionClickedListener(Activity context, DefaultButton buttonContext, Integer button){

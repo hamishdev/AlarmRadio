@@ -24,7 +24,6 @@ class FullScreenAlarm : AppCompatActivity() {
         var myWebView = findViewById<View>(R.id.webview) as WebView
         val webSettings = myWebView.settings
         webSettings.javaScriptEnabled = true
-        Log.v(TAG,webSettings.mediaPlaybackRequiresUserGesture.toString())
         webSettings.mediaPlaybackRequiresUserGesture = false;
         myWebView.webViewClient = WebViewClient()
         myWebView.webChromeClient = WebChromeClient()

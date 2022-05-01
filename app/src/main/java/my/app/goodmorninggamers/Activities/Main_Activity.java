@@ -6,7 +6,10 @@ import androidx.room.Room;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResult;
@@ -18,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import my.app.goodmorninggamers.AlarmBroadcastReceiver.GoodMorningGamersAlarmBroadcastReceiver;
 import my.app.goodmorninggamers.Alarms.Alarm;
 import my.app.goodmorninggamers.Alarms.ToggleListener;
 import my.app.goodmorninggamers.PersistentData.AlarmDao;
@@ -53,13 +57,15 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
     public static final int ALARMHOMESCREEN_ACTIVITY_REQUEST_CODE = 1;
     public static final int YOUTUBE = 1;
     public static final int TWITCH = 0;
+    public static final String ALARMACTION ="alarm.open";
 
     public static String AndroidChannelID = "Alarm";
     public ArrayList<Alarm> m_alarms;
     public AlarmAdapter alarmArrayAdapter;
-    public AlarmCreator m_alarmCreator = new AlarmCreator();
+    public AlarmCreator m_alarmCreator;
     public AppDatabase db;
     public AlarmDao alarmDao;
+    private int realAlarms =0;
 
 
     /**
@@ -68,7 +74,7 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+m_alarmCreator = new AlarmCreator();
 
         //ONCREATE
         super.onCreate(savedInstanceState);
@@ -157,17 +163,16 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
                     Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
                     m_alarms.add(alarm);
+                    m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
+                    alarmDao.insertAll(alarm);
                 Collections.sort(m_alarms, new Comparator<Alarm>() {
                     @Override
                     public int compare(Alarm left, Alarm right) {
                         return left.compareTo(right);
                     }
                 });
-                    m_alarmCreator.createAlarm(this, m_alarms.get(m_alarms.size() - 1));
-                    alarmDao.insertAll(alarm);
-
                     alarmArrayAdapter.notifyDataSetChanged();
-                printRealAlarms();
+                    printRealAlarms();
 
 
 
@@ -246,7 +251,7 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
 
     public void printRealAlarms(){
         Log.v(TAG,"------------");
-        Log.v(TAG,"Number of android alarms ="+m_alarmCreator.getRealAlarms());
+        Log.v(TAG,"Number of android alarms ="+this.getRealAlarms());
         Log.v(TAG,"Number of app known alarms="+getOnAlarms());
         Log.v(TAG,"Number of app UI placeholders="+m_alarms.size());
         Log.v(TAG,"------------");
@@ -262,5 +267,19 @@ public class Main_Activity extends AppCompatActivity implements ToggleListener {
             }
         }
         return i;
+    }
+
+    public void addRealAlarm() {
+        realAlarms++;
+        printRealAlarms();
+    }
+
+    public void removeRealAlarm() {
+        realAlarms--;
+        printRealAlarms();
+    }
+
+    public int getRealAlarms(){
+        return realAlarms;
     }
 }

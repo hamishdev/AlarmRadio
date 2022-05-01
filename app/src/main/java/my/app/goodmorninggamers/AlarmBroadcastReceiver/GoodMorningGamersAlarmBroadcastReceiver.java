@@ -22,11 +22,20 @@ import my.app.goodmorninggamers.R;
 
 public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver implements LiveCheckerListener {
 
+
+    public GoodMorningGamersAlarmBroadcastReceiver(){
+
+    };
+
+    public GoodMorningGamersAlarmBroadcastReceiver(Main_Activity context){
+        testingContext = context;
+    }
     private static final String TAG = "broadcastReceiverAlarmNotificationBuild";
     private int ChannelChoice =2;
     Alarm m_receivedAlarm;
     Context m_context;
     Boolean alreadyThrown = false;
+    Main_Activity testingContext;
 
     //On Alarm going off (check streamers queued and notify)((Currently just gets backup Option))
     @Override
@@ -38,7 +47,7 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
         //(Checks youtube and twitch in background asynchronously and returns when a stream is found)
         findChannelToOpen();
         
-        //rescheduleAlarm();
+        rescheduleAlarm();
 
     }
 
