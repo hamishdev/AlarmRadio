@@ -13,6 +13,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import my.app.goodmorninggamers.Activities.FullScreenAlarm;
 import my.app.goodmorninggamers.Activities.Main_Activity;
 import my.app.goodmorninggamers.Alarms.Alarm;
@@ -46,15 +50,24 @@ public class GoodMorningGamersAlarmBroadcastReceiver extends BroadcastReceiver i
         //Check which streamer to get
         //(Checks youtube and twitch in background asynchronously and returns when a stream is found)
         findChannelToOpen();
-        
-        rescheduleAlarm();
+
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+        //Schedule alarm to be set 60 seconds from now so that it doesn't create a chain of infinitely creating alarms. Probably need to fix this using a date system.
+        executorService.schedule(new RescheduleAlarm(), 60, TimeUnit.SECONDS);
 
     }
 
-    private void rescheduleAlarm() {
-        //AlarmCreator ac = new AlarmCreator();
-        //Need to add 1 day here to set alarm for tomorrow
-        //ac.createAlarm(m_context,m_receivedAlarm);
+    private class RescheduleAlarm implements Runnable {
+
+
+        @Override
+        public void run() {
+            AlarmCreator ac = new AlarmCreator();
+            //Editing alarm instead of creating new one just in case the user has turned off the alarm in the time the reschedule alarm gets delayed
+            ac.editAlarm(m_context,m_receivedAlarm);
+        }
+
     }
 
     private void findChannelToOpen(){

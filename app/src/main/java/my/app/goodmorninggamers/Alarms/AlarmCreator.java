@@ -35,9 +35,9 @@ public class AlarmCreator extends AppCompatActivity {
 
 
             Calendar alarmTime = Calendar.getInstance();
-            int dayTotalMinutes = alarmTime.get(Calendar.HOUR_OF_DAY)*60 +alarmTime.get(Calendar.MINUTE);
+            int rightNowTotalMinutes = alarmTime.get(Calendar.HOUR_OF_DAY)*60 +alarmTime.get(Calendar.MINUTE);
             //Comparing whether alarm should be set today or tomorrow
-            if(dayTotalMinutes>alarm.getTotalMinutes()){
+            if(rightNowTotalMinutes>alarm.getTotalMinutes()){
                 alarmTime.add(Calendar.DAY_OF_YEAR,1);
             }
             alarmTime.set(Calendar.HOUR_OF_DAY, alarm.getHour());
@@ -51,10 +51,15 @@ public class AlarmCreator extends AppCompatActivity {
             PendingIntent alarmIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
-            ////////Logging
 
+        Intent i2=new Intent(context, Main_Activity.class);
+        PendingIntent pi2=PendingIntent.getActivity(context, 0, i2, 0);
+
+        AlarmManager.AlarmClockInfo ac=
+                new AlarmManager.AlarmClockInfo(alarmTime.getTimeInMillis(),
+                        pi2);
             //Create AlARM
-            myAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), alarmIntent);
+            myAlarm.setAlarmClock(ac,alarmIntent);
         //m_testingContext.addRealAlarm();
 
     }
